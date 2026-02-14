@@ -44,6 +44,8 @@ pub fn compile_fast_trampoline(out_dir: &str) {
         .include(&fast_interp_out);
 
     let is_debug = env::var("PROFILE").unwrap_or_default() == "debug";
+    let has_debug_info = env::var("CARGO_CFG_DEBUG_ASSERTIONS").is_ok() || env::var("DEBUG").as_deref() == Ok("true") || env::var("DEBUG").as_deref() == Ok("2");
+
     if !is_debug {
         build.define("NDEBUG", None);
     }
@@ -57,18 +59,29 @@ pub fn compile_fast_trampoline(out_dir: &str) {
             .flag("/clang:-flto=thin")
             .flag("/clang:-fomit-frame-pointer")
             .flag("/clang:-foptimize-sibling-calls")
-            .flag("/clang:-Wno-unused-parameter")
-            .compile("libvm_trampoline.a");
+            .flag("/clang:-Wno-unused-parameter");
+
+        if has_debug_info {
+            build.flag("/Zi");
+        }
+
+        build.compile("libvm_trampoline.a");
     } else {
         build
             .flag("-O3")
             .flag("-ffast-math")
             .flag("-fno-finite-math-only")
-            .flag("-fomit-frame-pointer")
             .flag("-foptimize-sibling-calls")
             .flag("-march=native")
-            .flag("-Wno-unused-parameter")
-            .compile("vm_trampoline");
+            .flag("-Wno-unused-parameter");
+
+        if has_debug_info {
+            build.flag("-g").flag("-fno-omit-frame-pointer");
+        } else {
+            build.flag("-fomit-frame-pointer");
+        }
+
+        build.compile("vm_trampoline");
     }
 
     track_c_files_in_dir(c_root);

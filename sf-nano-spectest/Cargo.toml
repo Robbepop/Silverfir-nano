@@ -11,7 +11,7 @@ name = "sf-nano-spectest"
 path = "src/main.rs"
 
 [dependencies]
-sf-nano-core = { path = "../sf-nano", features = ["validate"] }
+sf-nano-core = { path = "../sf-nano-core", features = ["validate"] }
 log = { version = "0.4", features = ["release_max_level_debug"] }
 env_logger = "0.9"
 structopt = "0.3"

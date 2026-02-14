@@ -11,4 +11,4 @@ name = "sf-nano-cli"
 path = "src/main.rs"
 
 [dependencies]
-sf-nano-core = { path = "../sf-nano", features = ["wasi"] }
+sf-nano-core = { path = "../sf-nano-core", features = ["wasi"] }
