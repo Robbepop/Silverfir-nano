@@ -1,0 +1,19 @@
+[package]
+name = "sf-nano-spectest"
+version = "0.1.0"
+edition = "2021"
+authors = ["Bill Ming <mbbill@gmail.com>"]
+description = "WebAssembly specification test runner for sf-nano"
+license = "MIT/Apache-2.0"
+
+[[bin]]
+name = "sf-nano-spectest"
+path = "src/main.rs"
+
+[dependencies]
+sf-nano-core = { path = "../sf-nano", features = ["validate"] }
+log = { version = "0.4", features = ["release_max_level_debug"] }
+env_logger = "0.9"
+structopt = "0.3"
+wast = "239.0"
+wat = "1.239"

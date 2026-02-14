@@ -1,0 +1,5939 @@
+# =============================================================================
+# AUTO-GENERATED — do not edit manually
+# =============================================================================
+# Regenerate: cargo run --bin sf-cli -- discover-fusion <wasm-file>
+
+# Auto-discovered: count=2922961, savings=2922961 dispatches
+[[fused]]
+op = "get_const"
+pattern = ["local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=1967332, savings=1967332 dispatches
+[[fused]]
+op = "get_get"
+pattern = ["local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=1815730, savings=1815730 dispatches
+[[fused]]
+op = "set_get"
+pattern = ["local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=891878, savings=1783756 dispatches
+[[fused]]
+op = "get_const_add"
+pattern = ["local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=416479, savings=1665916 dispatches
+[[fused]]
+op = "get_const_add_set_get"
+pattern = ["local_get", "i32_const", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=512151, savings=1536453 dispatches
+[[fused]]
+op = "const_shr_u_const_and"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=364861, savings=1459444 dispatches
+[[fused]]
+op = "tee_const_shr_u_const_and"
+pattern = ["local_tee", "i32_const", "i32_shr_u", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=712816, savings=1425632 dispatches
+[[fused]]
+op = "const_shl_add"
+pattern = ["i32_const", "i32_shl", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=1381734, savings=1381734 dispatches
+[[fused]]
+op = "const_and"
+pattern = ["i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=677033, savings=1354066 dispatches
+[[fused]]
+op = "get_set_get"
+pattern = ["local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=333010, savings=1332040 dispatches
+[[fused]]
+op = "add_set_get_const_add"
+pattern = ["i32_add", "local_set", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=649073, savings=1298146 dispatches
+[[fused]]
+op = "set_get_const"
+pattern = ["local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=11402, savings=34206 dispatches
+[[fused]]
+op = "get_const_add_set"
+pattern = ["local_get", "i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=313900, savings=1255600 dispatches
+[[fused]]
+op = "get_tee_load_set_get"
+pattern = ["local_get", "local_tee", "i32_load", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=416578, savings=1249734 dispatches
+[[fused]]
+op = "const_add_set_get"
+pattern = ["i32_const", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=286399, savings=572798 dispatches
+[[fused]]
+op = "add_set_get"
+pattern = ["i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=613237, savings=1226474 dispatches
+[[fused]]
+op = "get_get_const"
+pattern = ["local_get", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=306220, savings=1224880 dispatches
+[[fused]]
+op = "set_get_get_store_get"
+pattern = ["local_set", "local_get", "local_get", "i32_store", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=306100, savings=1224400 dispatches
+[[fused]]
+op = "tee_load_set_get_get"
+pattern = ["local_tee", "i32_load", "local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=306000, savings=1224000 dispatches
+[[fused]]
+op = "get_store_get_set_get"
+pattern = ["local_get", "i32_store", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=306000, savings=1224000 dispatches
+[[fused]]
+op = "get_get_store_get_set"
+pattern = ["local_get", "local_get", "i32_store", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=304200, savings=1216800 dispatches
+[[fused]]
+op = "get_mul_const_shl_add"
+pattern = ["local_get", "i32_mul", "i32_const", "i32_shl", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=382668, savings=1148004 dispatches
+[[fused]]
+op = "set_get_const_add"
+pattern = ["local_set", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=652619, savings=652619 dispatches
+[[fused]]
+op = "const_add"
+pattern = ["i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=512151, savings=1024302 dispatches
+[[fused]]
+op = "shr_u_const_and"
+pattern = ["i32_shr_u", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=242976, savings=971904 dispatches
+[[fused]]
+op = "get_const_add_tee_get"
+pattern = ["local_get", "i32_const", "i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=7900, savings=23700 dispatches
+[[fused]]
+op = "tee_load_set_get"
+pattern = ["local_tee", "i32_load", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=7567, savings=22701 dispatches
+[[fused]]
+op = "get_get_store_get"
+pattern = ["local_get", "local_get", "i32_store", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=937985, savings=937985 dispatches
+[[fused]]
+op = "get_load"
+pattern = ["local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=307800, savings=923400 dispatches
+[[fused]]
+op = "const_shl_add_load16_s"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=230794, savings=923176 dispatches
+[[fused]]
+op = "const_add_tee_get_ne"
+pattern = ["i32_const", "i32_add", "local_tee", "local_get", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=306305, savings=918915 dispatches
+[[fused]]
+op = "load_set_get_get"
+pattern = ["i32_load", "local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=306000, savings=918000 dispatches
+[[fused]]
+op = "store_get_set_get"
+pattern = ["i32_store", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=219060, savings=876240 dispatches
+[[fused]]
+op = "const_shr_u_const_and_tee"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=291600, savings=874800 dispatches
+[[fused]]
+op = "const_shl_add_load16_u"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=218404, savings=873616 dispatches
+[[fused]]
+op = "const_add_set_get_load8_u"
+pattern = ["i32_const", "i32_add", "local_set", "local_get", "i32_load8_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=218400, savings=873600 dispatches
+[[fused]]
+op = "add_set_get_load8_u_tee"
+pattern = ["i32_add", "local_set", "local_get", "i32_load8_u", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=218400, savings=873600 dispatches
+[[fused]]
+op = "get_set_get_const_ne"
+pattern = ["local_get", "local_set", "local_get", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=420726, savings=841452 dispatches
+[[fused]]
+op = "get_const_and"
+pattern = ["local_get", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=396432, savings=792864 dispatches
+[[fused]]
+op = "add_tee_get"
+pattern = ["i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=45116, savings=135348 dispatches
+[[fused]]
+op = "get_set_get_const"
+pattern = ["local_get", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=196101, savings=784404 dispatches
+[[fused]]
+op = "get_const_sub_const_and"
+pattern = ["local_get", "i32_const", "i32_sub", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=196044, savings=784176 dispatches
+[[fused]]
+op = "const_sub_const_and_const"
+pattern = ["i32_const", "i32_sub", "i32_const", "i32_and", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=194402, savings=777608 dispatches
+[[fused]]
+op = "get_get_const_shl_add"
+pattern = ["local_get", "local_get", "i32_const", "i32_shl", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=192301, savings=769204 dispatches
+[[fused]]
+op = "set_get_const_add_tee"
+pattern = ["local_set", "local_get", "i32_const", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=11053, savings=33159 dispatches
+[[fused]]
+op = "get_const_add_tee"
+pattern = ["local_get", "i32_const", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=29057, savings=29057 dispatches
+[[fused]]
+op = "const_shr_u"
+pattern = ["i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=189852, savings=759408 dispatches
+[[fused]]
+op = "and_tee_const_xor_get"
+pattern = ["i32_and", "local_tee", "i32_const", "i32_xor", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=189852, savings=759408 dispatches
+[[fused]]
+op = "const_and_tee_const_xor"
+pattern = ["i32_const", "i32_and", "local_tee", "i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=189852, savings=759408 dispatches
+[[fused]]
+op = "shr_u_const_and_tee_const"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=373287, savings=746574 dispatches
+[[fused]]
+op = "get_load_tee"
+pattern = ["local_get", "i32_load", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=12193, savings=36579 dispatches
+[[fused]]
+op = "const_add_tee_get"
+pattern = ["i32_const", "i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=41401, savings=124203 dispatches
+[[fused]]
+op = "get_get_const_shl"
+pattern = ["local_get", "local_get", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=175248, savings=700992 dispatches
+[[fused]]
+op = "const_shr_u_get_xor_const"
+pattern = ["i32_const", "i32_shr_u", "local_get", "i32_xor", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=175248, savings=700992 dispatches
+[[fused]]
+op = "get_const_shr_u_get_xor"
+pattern = ["local_get", "i32_const", "i32_shr_u", "local_get", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=175248, savings=700992 dispatches
+[[fused]]
+op = "get_get_const_shr_u_get"
+pattern = ["local_get", "local_get", "i32_const", "i32_shr_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=175248, savings=700992 dispatches
+[[fused]]
+op = "shr_u_get_xor_const_and"
+pattern = ["i32_shr_u", "local_get", "i32_xor", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=174600, savings=698400 dispatches
+[[fused]]
+op = "get_get_mul_const_shl"
+pattern = ["local_get", "local_get", "i32_mul", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=174600, savings=698400 dispatches
+[[fused]]
+op = "get_get_get_mul_const"
+pattern = ["local_get", "local_get", "local_get", "i32_mul", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=230794, savings=692382 dispatches
+[[fused]]
+op = "add_tee_get_ne"
+pattern = ["i32_add", "local_tee", "local_get", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=35314, savings=70628 dispatches
+[[fused]]
+op = "load_set_get"
+pattern = ["i32_load", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=166143, savings=332286 dispatches
+[[fused]]
+op = "get_const_shr_u"
+pattern = ["local_get", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=29424, savings=58848 dispatches
+[[fused]]
+op = "set_get_get"
+pattern = ["local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=22034, savings=44068 dispatches
+[[fused]]
+op = "get_get_store"
+pattern = ["local_get", "local_get", "i32_store"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=166000, savings=664000 dispatches
+[[fused]]
+op = "sub_const_and_const_gt_u"
+pattern = ["i32_sub", "i32_const", "i32_and", "i32_const", "i32_gt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=329647, savings=659294 dispatches
+[[fused]]
+op = "get_const_eq"
+pattern = ["local_get", "i32_const", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=29208, savings=87624 dispatches
+[[fused]]
+op = "shr_u_const_and_tee"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=218621, savings=655863 dispatches
+[[fused]]
+op = "set_get_load8_u_tee"
+pattern = ["local_set", "local_get", "i32_load8_u", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=218400, savings=655200 dispatches
+[[fused]]
+op = "set_get_const_ne"
+pattern = ["local_set", "local_get", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=162000, savings=648000 dispatches
+[[fused]]
+op = "const_shl_add_load16_s_get"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=280291, savings=280291 dispatches
+[[fused]]
+op = "tee_const"
+pattern = ["local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=159077, savings=636308 dispatches
+[[fused]]
+op = "const_add_set_get_const"
+pattern = ["i32_const", "i32_add", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=9369, savings=18738 dispatches
+[[fused]]
+op = "get_store_get"
+pattern = ["local_get", "i32_store", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=614851, savings=614851 dispatches
+[[fused]]
+op = "tee_get"
+pattern = ["local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=204456, savings=613368 dispatches
+[[fused]]
+op = "tee_const_xor_get"
+pattern = ["local_tee", "i32_const", "i32_xor", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=304210, savings=608420 dispatches
+[[fused]]
+op = "mul_const_shl"
+pattern = ["i32_mul", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=296444, savings=592888 dispatches
+[[fused]]
+op = "const_and_const"
+pattern = ["i32_const", "i32_and", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=147289, savings=589156 dispatches
+[[fused]]
+op = "get_const_shr_u_const_and"
+pattern = ["local_get", "i32_const", "i32_shr_u", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=30044, savings=90132 dispatches
+[[fused]]
+op = "sub_const_and_const"
+pattern = ["i32_sub", "i32_const", "i32_and", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=194411, savings=583233 dispatches
+[[fused]]
+op = "get_const_shl_add"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=145801, savings=583204 dispatches
+[[fused]]
+op = "const_shr_u_const_and_get"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=145800, savings=583200 dispatches
+[[fused]]
+op = "const_and_get_const_shr_u"
+pattern = ["i32_const", "i32_and", "local_get", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=145800, savings=583200 dispatches
+[[fused]]
+op = "const_shr_u_const_and_mul"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=145800, savings=583200 dispatches
+[[fused]]
+op = "const_shl_add_load16_u_get"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=145800, savings=583200 dispatches
+[[fused]]
+op = "load16_u_mul_tee_const_shr_u"
+pattern = ["i32_load16_u", "i32_mul", "local_tee", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=145800, savings=583200 dispatches
+[[fused]]
+op = "mul_tee_const_shr_u_const"
+pattern = ["i32_mul", "local_tee", "i32_const", "i32_shr_u", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=144750, savings=579000 dispatches
+[[fused]]
+op = "load16_u_get_const_and_eq"
+pattern = ["i32_load16_u", "local_get", "i32_const", "i32_and", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=111473, savings=222946 dispatches
+[[fused]]
+op = "get_get_get"
+pattern = ["local_get", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=189984, savings=569952 dispatches
+[[fused]]
+op = "get_xor_const_and"
+pattern = ["local_get", "i32_xor", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=139550, savings=558200 dispatches
+[[fused]]
+op = "load8_u_get_const_and_xor"
+pattern = ["i32_load8_u", "local_get", "i32_const", "i32_and", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=139550, savings=558200 dispatches
+[[fused]]
+op = "get_const_and_xor_eqz"
+pattern = ["local_get", "i32_const", "i32_and", "i32_xor", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3200, savings=9600 dispatches
+[[fused]]
+op = "get_const_shr_u_get"
+pattern = ["local_get", "i32_const", "i32_shr_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=3603, savings=10809 dispatches
+[[fused]]
+op = "get_get_get_mul"
+pattern = ["local_get", "local_get", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=133629, savings=534516 dispatches
+[[fused]]
+op = "get_get_const_or_tee"
+pattern = ["local_get", "local_get", "i32_const", "i32_or", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=64346, savings=128692 dispatches
+[[fused]]
+op = "get_const_sub"
+pattern = ["local_get", "i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=129610, savings=518440 dispatches
+[[fused]]
+op = "tee_get_mul_const_shl"
+pattern = ["local_tee", "local_get", "i32_mul", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=129600, savings=518400 dispatches
+[[fused]]
+op = "or_tee_get_mul_const"
+pattern = ["i32_or", "local_tee", "local_get", "i32_mul", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=129600, savings=518400 dispatches
+[[fused]]
+op = "const_or_tee_get_mul"
+pattern = ["i32_const", "i32_or", "local_tee", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=129600, savings=518400 dispatches
+[[fused]]
+op = "get_const_or_tee_get"
+pattern = ["local_get", "i32_const", "i32_or", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=172404, savings=517212 dispatches
+[[fused]]
+op = "get_load_const_add"
+pattern = ["local_get", "i32_load", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=11083, savings=22166 dispatches
+[[fused]]
+op = "const_add_tee"
+pattern = ["i32_const", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=166000, savings=498000 dispatches
+[[fused]]
+op = "const_and_const_gt_u"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_gt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=121204, savings=484816 dispatches
+[[fused]]
+op = "get_get_load_const_add"
+pattern = ["local_get", "local_get", "i32_load", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=168107, savings=168107 dispatches
+[[fused]]
+op = "store_get"
+pattern = ["i32_store", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=42313, savings=84626 dispatches
+[[fused]]
+op = "get_const_shl"
+pattern = ["local_get", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=233664, savings=467328 dispatches
+[[fused]]
+op = "const_xor_get"
+pattern = ["i32_const", "i32_xor", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=230795, savings=461590 dispatches
+[[fused]]
+op = "tee_get_ne"
+pattern = ["local_tee", "local_get", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=223801, savings=447602 dispatches
+[[fused]]
+op = "get_const_ne"
+pattern = ["local_get", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=223621, savings=447242 dispatches
+[[fused]]
+op = "get_load8_u_tee"
+pattern = ["local_get", "i32_load8_u", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=31312, savings=62624 dispatches
+[[fused]]
+op = "const_and_tee"
+pattern = ["i32_const", "i32_and", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=438244, savings=438244 dispatches
+[[fused]]
+op = "load_tee"
+pattern = ["i32_load", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=145801, savings=437403 dispatches
+[[fused]]
+op = "shr_u_const_and_get"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=145800, savings=437400 dispatches
+[[fused]]
+op = "and_get_const_shr_u"
+pattern = ["i32_and", "local_get", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=218022, savings=436044 dispatches
+[[fused]]
+op = "const_add_store"
+pattern = ["i32_const", "i32_add", "i32_store"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=144750, savings=434250 dispatches
+[[fused]]
+op = "get_const_and_eq"
+pattern = ["local_get", "i32_const", "i32_and", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=214788, savings=429576 dispatches
+[[fused]]
+op = "xor_const_and"
+pattern = ["i32_xor", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=139550, savings=418650 dispatches
+[[fused]]
+op = "const_and_xor_eqz"
+pattern = ["i32_const", "i32_and", "i32_xor", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=102402, savings=409608 dispatches
+[[fused]]
+op = "get_const_add_get_const"
+pattern = ["local_get", "i32_const", "i32_add", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=102401, savings=409604 dispatches
+[[fused]]
+op = "const_add_get_const_add"
+pattern = ["i32_const", "i32_add", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=403707, savings=403707 dispatches
+[[fused]]
+op = "const_eq"
+pattern = ["i32_const", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=401527, savings=401527 dispatches
+[[fused]]
+op = "const_set"
+pattern = ["i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=4032, savings=12096 dispatches
+[[fused]]
+op = "get_const_or_tee"
+pattern = ["local_get", "i32_const", "i32_or", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=97200, savings=388800 dispatches
+[[fused]]
+op = "get_const_shl_add_load16_s"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=39197, savings=78394 dispatches
+[[fused]]
+op = "const_and_get"
+pattern = ["i32_const", "i32_and", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=5494, savings=10988 dispatches
+[[fused]]
+op = "get_get_mul"
+pattern = ["local_get", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=3200, savings=6400 dispatches
+[[fused]]
+op = "const_shr_u_get"
+pattern = ["i32_const", "i32_shr_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=178200, savings=356400 dispatches
+[[fused]]
+op = "add_load16_s_get"
+pattern = ["i32_add", "i32_load16_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=172404, savings=344808 dispatches
+[[fused]]
+op = "load_const_add"
+pattern = ["i32_load", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=162000, savings=162000 dispatches
+[[fused]]
+op = "add_load16_s"
+pattern = ["i32_add", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=166000, savings=332000 dispatches
+[[fused]]
+op = "and_const_gt_u"
+pattern = ["i32_and", "i32_const", "i32_gt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=21743, savings=21743 dispatches
+[[fused]]
+op = "get_mul"
+pattern = ["local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=179650, savings=179650 dispatches
+[[fused]]
+op = "load16_u_get"
+pattern = ["i32_load16_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=6148, savings=6148 dispatches
+[[fused]]
+op = "get_tee"
+pattern = ["local_get", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=106422, savings=319266 dispatches
+[[fused]]
+op = "const_add_store_get"
+pattern = ["i32_const", "i32_add", "i32_store", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=104662, savings=313986 dispatches
+[[fused]]
+op = "set_get_set_get"
+pattern = ["local_set", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=102404, savings=307212 dispatches
+[[fused]]
+op = "add_get_const_add"
+pattern = ["i32_add", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=3601, savings=7202 dispatches
+[[fused]]
+op = "mul_tee_const"
+pattern = ["i32_mul", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=131494, savings=131494 dispatches
+[[fused]]
+op = "and_const"
+pattern = ["i32_and", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=74021, savings=296084 dispatches
+[[fused]]
+op = "get_const_and_const_eq"
+pattern = ["local_get", "i32_const", "i32_and", "i32_const", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=291600, savings=291600 dispatches
+[[fused]]
+op = "add_load16_u"
+pattern = ["i32_add", "i32_load16_u"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=145800, savings=291600 dispatches
+[[fused]]
+op = "add_load16_u_get"
+pattern = ["i32_add", "i32_load16_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=145800, savings=291600 dispatches
+[[fused]]
+op = "const_and_mul"
+pattern = ["i32_const", "i32_and", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=188135, savings=188135 dispatches
+[[fused]]
+op = "add_get"
+pattern = ["i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=144750, savings=289500 dispatches
+[[fused]]
+op = "const_and_eq"
+pattern = ["i32_const", "i32_and", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=282631, savings=282631 dispatches
+[[fused]]
+op = "get_add"
+pattern = ["local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=11232, savings=22464 dispatches
+[[fused]]
+op = "const_or_tee"
+pattern = ["i32_const", "i32_or", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=274963, savings=274963 dispatches
+[[fused]]
+op = "load8_u_tee"
+pattern = ["i32_load8_u", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=68400, savings=273600 dispatches
+[[fused]]
+op = "load16_s_mul_get_add_get"
+pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=65665, savings=65665 dispatches
+[[fused]]
+op = "const_sub"
+pattern = ["i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=64802, savings=259208 dispatches
+[[fused]]
+op = "get_get_get_get_mul"
+pattern = ["local_get", "local_get", "local_get", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=126911, savings=253822 dispatches
+[[fused]]
+op = "const_set_get"
+pattern = ["i32_const", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "load16_s_mul_get_add"
+pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=83564, savings=250692 dispatches
+[[fused]]
+op = "const_set_const_set"
+pattern = ["i32_const", "local_set", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=2807, savings=5614 dispatches
+[[fused]]
+op = "get_get_load"
+pattern = ["local_get", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=22566, savings=22566 dispatches
+[[fused]]
+op = "get_load8_u"
+pattern = ["local_get", "i32_load8_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10467, savings=10467 dispatches
+[[fused]]
+op = "const_xor"
+pattern = ["i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=80941, savings=242823 dispatches
+[[fused]]
+op = "set_const_set_const"
+pattern = ["local_set", "i32_const", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=242581, savings=242581 dispatches
+[[fused]]
+op = "get_ne"
+pattern = ["local_get", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=233664, savings=233664 dispatches
+[[fused]]
+op = "xor_get"
+pattern = ["i32_xor", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=229717, savings=229717 dispatches
+[[fused]]
+op = "const_ne"
+pattern = ["i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=74050, savings=222150 dispatches
+[[fused]]
+op = "const_and_const_eq"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=73786, savings=221358 dispatches
+[[fused]]
+op = "set_const_set_get"
+pattern = ["local_set", "i32_const", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=31313, savings=31313 dispatches
+[[fused]]
+op = "and_tee"
+pattern = ["i32_and", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=68400, savings=205200 dispatches
+[[fused]]
+op = "mul_get_add_get"
+pattern = ["i32_mul", "local_get", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=51200, savings=204800 dispatches
+[[fused]]
+op = "tee_get_load_const_add"
+pattern = ["local_tee", "local_get", "i32_load", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=100932, savings=201864 dispatches
+[[fused]]
+op = "const_get_get"
+pattern = ["i32_const", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=32400, savings=64800 dispatches
+[[fused]]
+op = "mul_get_add"
+pattern = ["i32_mul", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=44312, savings=44312 dispatches
+[[fused]]
+op = "set_const"
+pattern = ["local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=194616, savings=194616 dispatches
+[[fused]]
+op = "load16_s_get"
+pattern = ["i32_load16_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=4628, savings=4628 dispatches
+[[fused]]
+op = "get_xor"
+pattern = ["local_get", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=48400, savings=193600 dispatches
+[[fused]]
+op = "const_add_store_const_set"
+pattern = ["i32_const", "i32_add", "i32_store", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=63129, savings=189387 dispatches
+[[fused]]
+op = "add_tee_get_load"
+pattern = ["i32_add", "local_tee", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=62863, savings=188589 dispatches
+[[fused]]
+op = "get_set_get_set"
+pattern = ["local_get", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=62633, savings=187899 dispatches
+[[fused]]
+op = "get_add_tee_get"
+pattern = ["local_get", "i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=46816, savings=187264 dispatches
+[[fused]]
+op = "const_set_const_set_get"
+pattern = ["i32_const", "local_set", "i32_const", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=39233, savings=39233 dispatches
+[[fused]]
+op = "and_get"
+pattern = ["i32_and", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=45600, savings=182400 dispatches
+[[fused]]
+op = "get_get_const_add_store"
+pattern = ["local_get", "local_get", "i32_const", "i32_add", "i32_store"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=45103, savings=180412 dispatches
+[[fused]]
+op = "set_get_set_get_const"
+pattern = ["local_set", "local_get", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=3236, savings=3236 dispatches
+[[fused]]
+op = "shr_u_get"
+pattern = ["i32_shr_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=10400, savings=31200 dispatches
+[[fused]]
+op = "const_add_store_const"
+pattern = ["i32_const", "i32_add", "i32_store", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3600, savings=7200 dispatches
+[[fused]]
+op = "load16_s_mul_get"
+pattern = ["i32_load16_s", "i32_mul", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=56954, savings=170862 dispatches
+[[fused]]
+op = "add_set_const_set"
+pattern = ["i32_add", "local_set", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=10957, savings=32871 dispatches
+[[fused]]
+op = "get_get_const_add"
+pattern = ["local_get", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=166203, savings=166203 dispatches
+[[fused]]
+op = "const_gt_u"
+pattern = ["i32_const", "i32_gt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=41403, savings=165612 dispatches
+[[fused]]
+op = "const_shl_add_set_const"
+pattern = ["i32_const", "i32_shl", "i32_add", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=41401, savings=165604 dispatches
+[[fused]]
+op = "get_get_const_shl_tee"
+pattern = ["local_get", "local_get", "i32_const", "i32_shl", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=40501, savings=162004 dispatches
+[[fused]]
+op = "get_set_get_const_add"
+pattern = ["local_get", "local_set", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=73800, savings=73800 dispatches
+[[fused]]
+op = "load16_s_mul"
+pattern = ["i32_load16_s", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=40152, savings=160608 dispatches
+[[fused]]
+op = "get_set_get_set_get"
+pattern = ["local_get", "local_set", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10802, savings=32406 dispatches
+[[fused]]
+op = "const_shl_add_set"
+pattern = ["i32_const", "i32_shl", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=51200, savings=153600 dispatches
+[[fused]]
+op = "tee_load8_u_tee_eqz"
+pattern = ["local_tee", "i32_load8_u", "local_tee", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=50409, savings=151227 dispatches
+[[fused]]
+op = "const_shl_add_get"
+pattern = ["i32_const", "i32_shl", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=37800, savings=151200 dispatches
+[[fused]]
+op = "get_const_shl_tee_add"
+pattern = ["local_get", "i32_const", "i32_shl", "local_tee", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=74050, savings=148100 dispatches
+[[fused]]
+op = "and_const_eq"
+pattern = ["i32_and", "i32_const", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=36743, savings=146972 dispatches
+[[fused]]
+op = "const_set_const_set_const"
+pattern = ["i32_const", "local_set", "i32_const", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=36001, savings=144004 dispatches
+[[fused]]
+op = "add_set_get_set_get"
+pattern = ["i32_add", "local_set", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=36001, savings=144004 dispatches
+[[fused]]
+op = "load_tee_get_add_tee"
+pattern = ["i32_load", "local_tee", "local_get", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=36000, savings=144000 dispatches
+[[fused]]
+op = "add_tee_get_get_gt_s"
+pattern = ["i32_add", "local_tee", "local_get", "local_get", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=36000, savings=144000 dispatches
+[[fused]]
+op = "add_load_tee_get_add"
+pattern = ["i32_add", "i32_load", "local_tee", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=36000, savings=144000 dispatches
+[[fused]]
+op = "const_get_get_const_shl"
+pattern = ["i32_const", "local_get", "local_get", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=36000, savings=144000 dispatches
+[[fused]]
+op = "const_get_get_lt_s_get"
+pattern = ["i32_const", "local_get", "local_get", "i32_lt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=36000, savings=144000 dispatches
+[[fused]]
+op = "tee_get_get_gt_s_tee"
+pattern = ["local_tee", "local_get", "local_get", "i32_gt_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=36000, savings=144000 dispatches
+[[fused]]
+op = "tee_get_add_tee_get"
+pattern = ["local_tee", "local_get", "i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=36000, savings=144000 dispatches
+[[fused]]
+op = "set_const_get_get_lt_s"
+pattern = ["local_set", "i32_const", "local_get", "local_get", "i32_lt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=1648, savings=1648 dispatches
+[[fused]]
+op = "const_or"
+pattern = ["i32_const", "i32_or"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=1470, savings=1470 dispatches
+[[fused]]
+op = "load8_u_get"
+pattern = ["i32_load8_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=11235, savings=11235 dispatches
+[[fused]]
+op = "or_tee"
+pattern = ["i32_or", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=35200, savings=140800 dispatches
+[[fused]]
+op = "get_const_add_store_get"
+pattern = ["local_get", "i32_const", "i32_add", "i32_store", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=139550, savings=139550 dispatches
+[[fused]]
+op = "xor_eqz"
+pattern = ["i32_xor", "i32_eqz"]
+c_impl = true
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=46501, savings=139503 dispatches
+[[fused]]
+op = "const_set_get_const"
+pattern = ["i32_const", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=6186, savings=12372 dispatches
+[[fused]]
+op = "get_add_tee"
+pattern = ["local_get", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=34339, savings=137356 dispatches
+[[fused]]
+op = "add_set_const_set_const"
+pattern = ["i32_add", "local_set", "i32_const", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=68624, savings=137248 dispatches
+[[fused]]
+op = "get_add_get"
+pattern = ["local_get", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=34247, savings=136988 dispatches
+[[fused]]
+op = "store_get_const_add_tee"
+pattern = ["i32_store", "local_get", "i32_const", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=34209, savings=136836 dispatches
+[[fused]]
+op = "get_const_shl_add_get"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=28889, savings=57778 dispatches
+[[fused]]
+op = "add_load_tee"
+pattern = ["i32_add", "i32_load", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=64821, savings=129642 dispatches
+[[fused]]
+op = "get_get_gt_s"
+pattern = ["local_get", "local_get", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=64800, savings=129600 dispatches
+[[fused]]
+op = "get_gt_s_tee"
+pattern = ["local_get", "i32_gt_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=64484, savings=128968 dispatches
+[[fused]]
+op = "get_get_add"
+pattern = ["local_get", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=11930, savings=23860 dispatches
+[[fused]]
+op = "tee_get_load"
+pattern = ["local_tee", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=3634, savings=10902 dispatches
+[[fused]]
+op = "get_const_shl_tee"
+pattern = ["local_get", "i32_const", "i32_shl", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=30800, savings=123200 dispatches
+[[fused]]
+op = "const_set_get_const_sub"
+pattern = ["i32_const", "local_set", "local_get", "i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=5516, savings=16548 dispatches
+[[fused]]
+op = "store_get_const_add"
+pattern = ["i32_store", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=39124, savings=117372 dispatches
+[[fused]]
+op = "get_const_and_get"
+pattern = ["local_get", "i32_const", "i32_and", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=29208, savings=116832 dispatches
+[[fused]]
+op = "and_tee_get_const_xor"
+pattern = ["i32_and", "local_tee", "local_get", "i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=29208, savings=116832 dispatches
+[[fused]]
+op = "const_xor_get_const_and"
+pattern = ["i32_const", "i32_xor", "local_get", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=29208, savings=116832 dispatches
+[[fused]]
+op = "get_const_xor_get_const"
+pattern = ["local_get", "i32_const", "i32_xor", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=29208, savings=116832 dispatches
+[[fused]]
+op = "shr_u_const_and_tee_get"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=28800, savings=115200 dispatches
+[[fused]]
+op = "const_get_get_gt_s_get"
+pattern = ["i32_const", "local_get", "local_get", "i32_gt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=28800, savings=115200 dispatches
+[[fused]]
+op = "const_shl_tee_add_load"
+pattern = ["i32_const", "i32_shl", "local_tee", "i32_add", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=28800, savings=115200 dispatches
+[[fused]]
+op = "tee_add_load_tee_const"
+pattern = ["local_tee", "i32_add", "i32_load", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=28800, savings=115200 dispatches
+[[fused]]
+op = "get_add_load_tee_get"
+pattern = ["local_get", "i32_add", "i32_load", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=9081, savings=27243 dispatches
+[[fused]]
+op = "const_shl_tee_add"
+pattern = ["i32_const", "i32_shl", "local_tee", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=36000, savings=108000 dispatches
+[[fused]]
+op = "get_get_gt_s_tee"
+pattern = ["local_get", "local_get", "i32_gt_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=36000, savings=108000 dispatches
+[[fused]]
+op = "get_get_lt_s_get"
+pattern = ["local_get", "local_get", "i32_lt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=14133, savings=28266 dispatches
+[[fused]]
+op = "store_get_const"
+pattern = ["i32_store", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=26630, savings=106520 dispatches
+[[fused]]
+op = "get_get_add_tee_get"
+pattern = ["local_get", "local_get", "i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=3600, savings=3600 dispatches
+[[fused]]
+op = "mul_get"
+pattern = ["i32_mul", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=51200, savings=102400 dispatches
+[[fused]]
+op = "load8_u_tee_eqz"
+pattern = ["i32_load8_u", "local_tee", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=33640, savings=100920 dispatches
+[[fused]]
+op = "set_get_const_sub"
+pattern = ["local_set", "local_get", "i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=6093, savings=18279 dispatches
+[[fused]]
+op = "get_get_add_tee"
+pattern = ["local_get", "local_get", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=32400, savings=97200 dispatches
+[[fused]]
+op = "add_tee_get_load16_u"
+pattern = ["i32_add", "local_tee", "local_get", "i32_load16_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=48539, savings=97078 dispatches
+[[fused]]
+op = "store_const_set"
+pattern = ["i32_store", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=48006, savings=96012 dispatches
+[[fused]]
+op = "set_get_load"
+pattern = ["local_set", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=28830, savings=28830 dispatches
+[[fused]]
+op = "get_gt_s"
+pattern = ["local_get", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10558, savings=21116 dispatches
+[[fused]]
+op = "load_tee_get"
+pattern = ["i32_load", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=30630, savings=91890 dispatches
+[[fused]]
+op = "const_and_tee_get"
+pattern = ["i32_const", "i32_and", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=22615, savings=90460 dispatches
+[[fused]]
+op = "add_set_const_set_get"
+pattern = ["i32_add", "local_set", "i32_const", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=29314, savings=87942 dispatches
+[[fused]]
+op = "tee_get_const_xor"
+pattern = ["local_tee", "local_get", "i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=29208, savings=87624 dispatches
+[[fused]]
+op = "xor_get_const_and"
+pattern = ["i32_xor", "local_get", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=7290, savings=14580 dispatches
+[[fused]]
+op = "set_const_get"
+pattern = ["local_set", "i32_const", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=21600, savings=86400 dispatches
+[[fused]]
+op = "store16_get_get_add_tee"
+pattern = ["i32_store16", "local_get", "local_get", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=28800, savings=86400 dispatches
+[[fused]]
+op = "add_load_tee_const"
+pattern = ["i32_add", "i32_load", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=28800, savings=86400 dispatches
+[[fused]]
+op = "get_get_gt_s_get"
+pattern = ["local_get", "local_get", "i32_gt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=21600, savings=86400 dispatches
+[[fused]]
+op = "get_add_tee_get_load16_u"
+pattern = ["local_get", "i32_add", "local_tee", "local_get", "i32_load16_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=21600, savings=86400 dispatches
+[[fused]]
+op = "sub_const_and_const_ge_u"
+pattern = ["i32_sub", "i32_const", "i32_and", "i32_const", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3723, savings=7446 dispatches
+[[fused]]
+op = "const_shl_tee"
+pattern = ["i32_const", "i32_shl", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=27528, savings=82584 dispatches
+[[fused]]
+op = "get_load_set_get"
+pattern = ["local_get", "i32_load", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=80164, savings=80164 dispatches
+[[fused]]
+op = "get_eqz"
+pattern = ["local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=40062, savings=80124 dispatches
+[[fused]]
+op = "set_get_eqz"
+pattern = ["local_set", "local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10409, savings=20818 dispatches
+[[fused]]
+op = "get_const_xor"
+pattern = ["local_get", "i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=19773, savings=79092 dispatches
+[[fused]]
+op = "get_const_sub_set_get"
+pattern = ["local_get", "i32_const", "i32_sub", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=24804, savings=74412 dispatches
+[[fused]]
+op = "const_and_const_shr_u"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=36000, savings=72000 dispatches
+[[fused]]
+op = "get_lt_s_get"
+pattern = ["local_get", "i32_lt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=23047, savings=69141 dispatches
+[[fused]]
+op = "set_get_load_tee"
+pattern = ["local_set", "local_get", "i32_load", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3102, savings=9306 dispatches
+[[fused]]
+op = "get_const_sub_set"
+pattern = ["local_get", "i32_const", "i32_sub", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=64862, savings=64862 dispatches
+[[fused]]
+op = "tee_eqz"
+pattern = ["local_tee", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=32403, savings=64806 dispatches
+[[fused]]
+op = "tee_get_load16_u"
+pattern = ["local_tee", "local_get", "i32_load16_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=16200, savings=64800 dispatches
+[[fused]]
+op = "add_load16_s_get_get_add"
+pattern = ["i32_add", "i32_load16_s", "local_get", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=16200, savings=64800 dispatches
+[[fused]]
+op = "const_and_mul_get_add"
+pattern = ["i32_const", "i32_and", "i32_mul", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=21600, savings=64800 dispatches
+[[fused]]
+op = "const_and_const_ge_u"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=64800, savings=64800 dispatches
+[[fused]]
+op = "gt_s_tee"
+pattern = ["i32_gt_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=16200, savings=64800 dispatches
+[[fused]]
+op = "tee_const_shl_add_get"
+pattern = ["local_tee", "i32_const", "i32_shl", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=16200, savings=64800 dispatches
+[[fused]]
+op = "tee_get_load16_u_get_add"
+pattern = ["local_tee", "local_get", "i32_load16_u", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=16200, savings=64800 dispatches
+[[fused]]
+op = "tee_get_load16_u_get_sub"
+pattern = ["local_tee", "local_get", "i32_load16_u", "local_get", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=32400, savings=64800 dispatches
+[[fused]]
+op = "get_load16_u_get"
+pattern = ["local_get", "i32_load16_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=16200, savings=64800 dispatches
+[[fused]]
+op = "get_const_shl_add_load16_u"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_load16_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=16200, savings=64800 dispatches
+[[fused]]
+op = "get_get_add_load16_s_mul"
+pattern = ["local_get", "local_get", "i32_add", "i32_load16_s", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=1423, savings=2846 dispatches
+[[fused]]
+op = "and_tee_get"
+pattern = ["i32_and", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=3605, savings=10815 dispatches
+[[fused]]
+op = "tee_const_shl_add"
+pattern = ["local_tee", "i32_const", "i32_shl", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3600, savings=10800 dispatches
+[[fused]]
+op = "get_get_add_load16_s"
+pattern = ["local_get", "local_get", "i32_add", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=19773, savings=59319 dispatches
+[[fused]]
+op = "const_sub_set_get"
+pattern = ["i32_const", "i32_sub", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10462, savings=10462 dispatches
+[[fused]]
+op = "store_const"
+pattern = ["i32_store", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=14736, savings=58944 dispatches
+[[fused]]
+op = "get_get_xor_const_and"
+pattern = ["local_get", "local_get", "i32_xor", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=14632, savings=58528 dispatches
+[[fused]]
+op = "get_get_get_xor_const"
+pattern = ["local_get", "local_get", "local_get", "i32_xor", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=14604, savings=58416 dispatches
+[[fused]]
+op = "const_and_const_shr_u_eq"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_shr_u", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=14604, savings=58416 dispatches
+[[fused]]
+op = "const_shr_u_tee_const_xor"
+pattern = ["i32_const", "i32_shr_u", "local_tee", "i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=29208, savings=58416 dispatches
+[[fused]]
+op = "const_shr_u_eq"
+pattern = ["i32_const", "i32_shr_u", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=14604, savings=58416 dispatches
+[[fused]]
+op = "const_shr_u_xor_const_and"
+pattern = ["i32_const", "i32_shr_u", "i32_xor", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=14604, savings=58416 dispatches
+[[fused]]
+op = "get_const_shr_u_tee_const"
+pattern = ["local_get", "i32_const", "i32_shr_u", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=14604, savings=58416 dispatches
+[[fused]]
+op = "shr_u_tee_const_xor_get"
+pattern = ["i32_shr_u", "local_tee", "i32_const", "i32_xor", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=29142, savings=58284 dispatches
+[[fused]]
+op = "get_add_const"
+pattern = ["local_get", "i32_add", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=28861, savings=57722 dispatches
+[[fused]]
+op = "load_tee_const"
+pattern = ["i32_load", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=4600, savings=13800 dispatches
+[[fused]]
+op = "get_get_get_xor"
+pattern = ["local_get", "local_get", "local_get", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=28800, savings=57600 dispatches
+[[fused]]
+op = "get_gt_s_get"
+pattern = ["local_get", "i32_gt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=1058, savings=2116 dispatches
+[[fused]]
+op = "get_load_set"
+pattern = ["local_get", "i32_load", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=27183, savings=54366 dispatches
+[[fused]]
+op = "get_const_gt_s"
+pattern = ["local_get", "i32_const", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=18025, savings=54075 dispatches
+[[fused]]
+op = "get_add_set_get"
+pattern = ["local_get", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=13200, savings=52800 dispatches
+[[fused]]
+op = "const_add_store_get_const"
+pattern = ["i32_const", "i32_add", "i32_store", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=24804, savings=49608 dispatches
+[[fused]]
+op = "and_const_shr_u"
+pattern = ["i32_and", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=20409, savings=20409 dispatches
+[[fused]]
+op = "tee_add"
+pattern = ["local_tee", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "add_load16_s_get_mul"
+pattern = ["i32_add", "i32_load16_s", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "add_tee_const_shl"
+pattern = ["i32_add", "local_tee", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "load16_s_get_get_add"
+pattern = ["i32_load16_s", "local_get", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "get_mul_store_get"
+pattern = ["local_get", "i32_mul", "i32_store", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "get_load16_u_get_add"
+pattern = ["local_get", "i32_load16_u", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "get_load16_u_get_sub"
+pattern = ["local_get", "i32_load16_u", "local_get", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "get_sub_store16_get"
+pattern = ["local_get", "i32_sub", "i32_store16", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "get_add_store16_get"
+pattern = ["local_get", "i32_add", "i32_store16", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=16200, savings=48600 dispatches
+[[fused]]
+op = "get_add_load16_s_mul"
+pattern = ["local_get", "i32_add", "i32_load16_s", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=12000, savings=48000 dispatches
+[[fused]]
+op = "store_get_get_const_add"
+pattern = ["i32_store", "local_get", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=11929, savings=47716 dispatches
+[[fused]]
+op = "add_tee_get_load_tee"
+pattern = ["i32_add", "local_tee", "local_get", "i32_load", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=11929, savings=47716 dispatches
+[[fused]]
+op = "const_add_tee_get_load"
+pattern = ["i32_const", "i32_add", "local_tee", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=11929, savings=47716 dispatches
+[[fused]]
+op = "tee_get_load_tee_eqz"
+pattern = ["local_tee", "local_get", "i32_load", "local_tee", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=2216, savings=4432 dispatches
+[[fused]]
+op = "store16_get_get"
+pattern = ["i32_store16", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=15476, savings=46428 dispatches
+[[fused]]
+op = "const_add_set_const"
+pattern = ["i32_const", "i32_add", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10236, savings=10236 dispatches
+[[fused]]
+op = "get_lt_s"
+pattern = ["local_get", "i32_lt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=11450, savings=45800 dispatches
+[[fused]]
+op = "sub_set_get_set_get"
+pattern = ["i32_sub", "local_set", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10986, savings=43944 dispatches
+[[fused]]
+op = "get_const_add_tee_const"
+pattern = ["local_get", "i32_const", "i32_add", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=10917, savings=43668 dispatches
+[[fused]]
+op = "get_const_add_set_const"
+pattern = ["local_get", "i32_const", "i32_add", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10881, savings=43524 dispatches
+[[fused]]
+op = "store16_get_const_add_set"
+pattern = ["i32_store16", "local_get", "i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=10835, savings=43340 dispatches
+[[fused]]
+op = "get_get_const_add_tee"
+pattern = ["local_get", "local_get", "i32_const", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=9641, savings=19282 dispatches
+[[fused]]
+op = "store_get_get"
+pattern = ["i32_store", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=10801, savings=43204 dispatches
+[[fused]]
+op = "const_shl_add_set_get"
+pattern = ["i32_const", "i32_shl", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=21600, savings=43200 dispatches
+[[fused]]
+op = "and_const_ge_u"
+pattern = ["i32_and", "i32_const", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10800, savings=43200 dispatches
+[[fused]]
+op = "const_or_tee_add_load16_s"
+pattern = ["i32_const", "i32_or", "local_tee", "i32_add", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10800, savings=43200 dispatches
+[[fused]]
+op = "const_add_tee_const_shl"
+pattern = ["i32_const", "i32_add", "local_tee", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10800, savings=43200 dispatches
+[[fused]]
+op = "get_mul_store_get_get"
+pattern = ["local_get", "i32_mul", "i32_store", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=10800, savings=43200 dispatches
+[[fused]]
+op = "get_sub_store16_get_get"
+pattern = ["local_get", "i32_sub", "i32_store16", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=10800, savings=43200 dispatches
+[[fused]]
+op = "get_add_store16_get_get"
+pattern = ["local_get", "i32_add", "i32_store16", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=10800, savings=43200 dispatches
+[[fused]]
+op = "set_get_get_const_shl"
+pattern = ["local_set", "local_get", "local_get", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=10719, savings=42876 dispatches
+[[fused]]
+op = "get_get_add_set_get"
+pattern = ["local_get", "local_get", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=14150, savings=42450 dispatches
+[[fused]]
+op = "get_set_get_eqz"
+pattern = ["local_get", "local_set", "local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10512, savings=42048 dispatches
+[[fused]]
+op = "set_get_load_tee_get"
+pattern = ["local_set", "local_get", "i32_load", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=13978, savings=41934 dispatches
+[[fused]]
+op = "add_set_get_get"
+pattern = ["i32_add", "local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=13931, savings=41793 dispatches
+[[fused]]
+op = "const_set_get_get"
+pattern = ["i32_const", "local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=13907, savings=41721 dispatches
+[[fused]]
+op = "get_const_and_set"
+pattern = ["local_get", "i32_const", "i32_and", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=41616, savings=41616 dispatches
+[[fused]]
+op = "shl_tee"
+pattern = ["i32_shl", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10400, savings=41600 dispatches
+[[fused]]
+op = "get_const_add_store_const"
+pattern = ["local_get", "i32_const", "i32_add", "i32_store", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10309, savings=41236 dispatches
+[[fused]]
+op = "get_add_set_get_get"
+pattern = ["local_get", "i32_add", "local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=10300, savings=41200 dispatches
+[[fused]]
+op = "set_get_get_const_xor"
+pattern = ["local_set", "local_get", "local_get", "i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=10228, savings=40912 dispatches
+[[fused]]
+op = "const_add_set_get_load"
+pattern = ["i32_const", "i32_add", "local_set", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "add_extend16_s_tee_get_lt_s"
+pattern = ["i32_add", "i32_extend16_s", "local_tee", "local_get", "i32_lt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "const_and_const_shr_u_add"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_shr_u", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "const_add_extend16_s_tee_get"
+pattern = ["i32_const", "i32_add", "i32_extend16_s", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "const_shr_u_add_set_get"
+pattern = ["i32_const", "i32_shr_u", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "const_xor_const_and_const"
+pattern = ["i32_const", "i32_xor", "i32_const", "i32_and", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "get_set_get_extend16_s_const"
+pattern = ["local_get", "local_set", "local_get", "i32_extend16_s", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "get_const_add_extend16_s_tee"
+pattern = ["local_get", "i32_const", "i32_add", "i32_extend16_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "get_const_xor_const_and"
+pattern = ["local_get", "i32_const", "i32_xor", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "get_get_const_xor_const"
+pattern = ["local_get", "local_get", "i32_const", "i32_xor", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "set_get_const_add_extend16_s"
+pattern = ["local_set", "local_get", "i32_const", "i32_add", "i32_extend16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "set_get_extend16_s_const_ge_s"
+pattern = ["local_set", "local_get", "i32_extend16_s", "i32_const", "i32_ge_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10200, savings=40800 dispatches
+[[fused]]
+op = "xor_const_and_const_shr_u"
+pattern = ["i32_xor", "i32_const", "i32_and", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3600, savings=7200 dispatches
+[[fused]]
+op = "get_add_load16_s"
+pattern = ["local_get", "i32_add", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8336, savings=16672 dispatches
+[[fused]]
+op = "sub_set_get"
+pattern = ["i32_sub", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=13082, savings=39246 dispatches
+[[fused]]
+op = "get_load_tee_eqz"
+pattern = ["local_get", "i32_load", "local_tee", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=4628, savings=9256 dispatches
+[[fused]]
+op = "get_get_xor"
+pattern = ["local_get", "local_get", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=12600, savings=37800 dispatches
+[[fused]]
+op = "tee_add_load16_s_get"
+pattern = ["local_tee", "i32_add", "i32_load16_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=36000, savings=36000 dispatches
+[[fused]]
+op = "lt_s_get"
+pattern = ["i32_lt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=11886, savings=35658 dispatches
+[[fused]]
+op = "const_set_get_set"
+pattern = ["i32_const", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=877, savings=1754 dispatches
+[[fused]]
+op = "add_tee_const"
+pattern = ["i32_add", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=8468, savings=33872 dispatches
+[[fused]]
+op = "set_get_load_set_get"
+pattern = ["local_set", "local_get", "i32_load", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8442, savings=33768 dispatches
+[[fused]]
+op = "sub_const_and_const_lt_u"
+pattern = ["i32_sub", "i32_const", "i32_and", "i32_const", "i32_lt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=429, savings=1287 dispatches
+[[fused]]
+op = "const_or_tee_add"
+pattern = ["i32_const", "i32_or", "local_tee", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=8402, savings=33608 dispatches
+[[fused]]
+op = "const_set_get_const_add"
+pattern = ["i32_const", "local_set", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=8401, savings=33604 dispatches
+[[fused]]
+op = "store_const_set_get_const"
+pattern = ["i32_store", "i32_const", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=8400, savings=33600 dispatches
+[[fused]]
+op = "store_get_const_sub_const"
+pattern = ["i32_store", "local_get", "i32_const", "i32_sub", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=11138, savings=33414 dispatches
+[[fused]]
+op = "load16_u_tee_const_and"
+pattern = ["i32_load16_u", "local_tee", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8305, savings=33220 dispatches
+[[fused]]
+op = "set_const_set_get_get"
+pattern = ["local_set", "i32_const", "local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=8267, savings=33068 dispatches
+[[fused]]
+op = "load_set_get_set_get"
+pattern = ["i32_load", "local_set", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8267, savings=33068 dispatches
+[[fused]]
+op = "get_load_set_get_set"
+pattern = ["local_get", "i32_load", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=16200, savings=32400 dispatches
+[[fused]]
+op = "load16_s_get_mul"
+pattern = ["i32_load16_s", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=16200, savings=32400 dispatches
+[[fused]]
+op = "load16_u_get_sub"
+pattern = ["i32_load16_u", "local_get", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=16200, savings=32400 dispatches
+[[fused]]
+op = "load16_u_get_add"
+pattern = ["i32_load16_u", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8098, savings=32392 dispatches
+[[fused]]
+op = "const_sub_set_get_load"
+pattern = ["i32_const", "i32_sub", "local_set", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8080, savings=32320 dispatches
+[[fused]]
+op = "sub_set_get_load_set"
+pattern = ["i32_sub", "local_set", "local_get", "i32_load", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=15996, savings=31992 dispatches
+[[fused]]
+op = "store8_get_get"
+pattern = ["i32_store8", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=7928, savings=31712 dispatches
+[[fused]]
+op = "get_set_get_tee_load"
+pattern = ["local_get", "local_set", "local_get", "local_tee", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10552, savings=31656 dispatches
+[[fused]]
+op = "get_load_tee_get"
+pattern = ["local_get", "i32_load", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=7900, savings=31600 dispatches
+[[fused]]
+op = "tee_load_set_get_eqz"
+pattern = ["local_tee", "i32_load", "local_set", "local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=7900, savings=31600 dispatches
+[[fused]]
+op = "set_get_set_get_tee"
+pattern = ["local_set", "local_get", "local_set", "local_get", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10300, savings=30900 dispatches
+[[fused]]
+op = "get_extend16_s_const_ge_s"
+pattern = ["local_get", "i32_extend16_s", "i32_const", "i32_ge_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10228, savings=30684 dispatches
+[[fused]]
+op = "add_set_get_load"
+pattern = ["i32_add", "local_set", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10200, savings=30600 dispatches
+[[fused]]
+op = "extend16_s_tee_get_lt_s"
+pattern = ["i32_extend16_s", "local_tee", "local_get", "i32_lt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=29303, savings=29303 dispatches
+[[fused]]
+op = "add_const"
+pattern = ["i32_add", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=7289, savings=29156 dispatches
+[[fused]]
+op = "set_const_set_get_const"
+pattern = ["local_set", "i32_const", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=7288, savings=29152 dispatches
+[[fused]]
+op = "const_set_get_const_ge_u"
+pattern = ["i32_const", "local_set", "local_get", "i32_const", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=29022, savings=29022 dispatches
+[[fused]]
+op = "const_ge_u"
+pattern = ["i32_const", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=7236, savings=28944 dispatches
+[[fused]]
+op = "set_const_set_const_get"
+pattern = ["local_set", "i32_const", "local_set", "i32_const", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=7205, savings=28820 dispatches
+[[fused]]
+op = "const_set_get_get_const"
+pattern = ["i32_const", "local_set", "local_get", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "const_set_get_set_const"
+pattern = ["i32_const", "local_set", "local_get", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "const_set_const_get_get"
+pattern = ["i32_const", "local_set", "i32_const", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "const_shl_tee_add_tee"
+pattern = ["i32_const", "i32_shl", "local_tee", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "const_shl_add_load_tee"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_load", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=28800, savings=28800 dispatches
+[[fused]]
+op = "gt_s_get"
+pattern = ["i32_gt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "tee_add_tee_get_load16_u"
+pattern = ["local_tee", "i32_add", "local_tee", "local_get", "i32_load16_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "get_set_const_set_const"
+pattern = ["local_get", "local_set", "i32_const", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "get_const_shl_add_load"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=7200, savings=28800 dispatches
+[[fused]]
+op = "get_add_load16_s_mul_get"
+pattern = ["local_get", "i32_add", "i32_load16_s", "i32_mul", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=6821, savings=27284 dispatches
+[[fused]]
+op = "const_add_store_get_get"
+pattern = ["i32_const", "i32_add", "i32_store", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=27183, savings=27183 dispatches
+[[fused]]
+op = "const_gt_s"
+pattern = ["i32_const", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10931, savings=10931 dispatches
+[[fused]]
+op = "store8_get"
+pattern = ["i32_store8", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=13083, savings=26166 dispatches
+[[fused]]
+op = "load_tee_eqz"
+pattern = ["i32_load", "local_tee", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=12713, savings=25426 dispatches
+[[fused]]
+op = "tee_const_and"
+pattern = ["local_tee", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8442, savings=25326 dispatches
+[[fused]]
+op = "const_and_const_lt_u"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_lt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=6089, savings=24356 dispatches
+[[fused]]
+op = "get_get_add_tee_const"
+pattern = ["local_get", "local_get", "i32_add", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=24208, savings=24208 dispatches
+[[fused]]
+op = "and_set"
+pattern = ["i32_and", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=7928, savings=23784 dispatches
+[[fused]]
+op = "set_get_tee_load"
+pattern = ["local_set", "local_get", "local_tee", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=7900, savings=23700 dispatches
+[[fused]]
+op = "load_set_get_eqz"
+pattern = ["i32_load", "local_set", "local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=11784, savings=23568 dispatches
+[[fused]]
+op = "get_get_ne"
+pattern = ["local_get", "local_get", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=5600, savings=22400 dispatches
+[[fused]]
+op = "const_set_get_get_load"
+pattern = ["i32_const", "local_set", "local_get", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=5569, savings=22276 dispatches
+[[fused]]
+op = "tee_load16_u_tee_const_and"
+pattern = ["local_tee", "i32_load16_u", "local_tee", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=5569, savings=22276 dispatches
+[[fused]]
+op = "get_load16_u_tee_const_and"
+pattern = ["local_get", "i32_load16_u", "local_tee", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=11098, savings=22196 dispatches
+[[fused]]
+op = "get_get_load8_u"
+pattern = ["local_get", "local_get", "i32_load8_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=7398, savings=22194 dispatches
+[[fused]]
+op = "set_get_const_ge_u"
+pattern = ["local_set", "local_get", "i32_const", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=5516, savings=22064 dispatches
+[[fused]]
+op = "store_get_const_add_set"
+pattern = ["i32_store", "local_get", "i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=800, savings=1600 dispatches
+[[fused]]
+op = "set_get_extend16_s"
+pattern = ["local_set", "local_get", "i32_extend16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=5430, savings=21720 dispatches
+[[fused]]
+op = "get_get_get_add_tee"
+pattern = ["local_get", "local_get", "local_get", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=7236, savings=21708 dispatches
+[[fused]]
+op = "set_get_set_const"
+pattern = ["local_set", "local_get", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=7200, savings=21600 dispatches
+[[fused]]
+op = "add_set_get_eqz"
+pattern = ["i32_add", "local_set", "local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=5400, savings=21600 dispatches
+[[fused]]
+op = "get_mul_store_get_const"
+pattern = ["local_get", "i32_mul", "i32_store", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=5400, savings=21600 dispatches
+[[fused]]
+op = "get_sub_store16_get_const"
+pattern = ["local_get", "i32_sub", "i32_store16", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=5400, savings=21600 dispatches
+[[fused]]
+op = "get_add_store16_get_const"
+pattern = ["local_get", "i32_add", "i32_store16", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=5400, savings=21600 dispatches
+[[fused]]
+op = "get_add_tee_const_shl"
+pattern = ["local_get", "i32_add", "local_tee", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=21531, savings=21531 dispatches
+[[fused]]
+op = "get_load16_s"
+pattern = ["local_get", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=10716, savings=21432 dispatches
+[[fused]]
+op = "get_load16_s_get"
+pattern = ["local_get", "i32_load16_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=10512, savings=21024 dispatches
+[[fused]]
+op = "tee_get_load8_u"
+pattern = ["local_tee", "local_get", "i32_load8_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=10512, savings=21024 dispatches
+[[fused]]
+op = "get_load16_s_le_s"
+pattern = ["local_get", "i32_load16_s", "i32_le_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10300, savings=20600 dispatches
+[[fused]]
+op = "extend16_s_const_ge_s"
+pattern = ["i32_extend16_s", "i32_const", "i32_ge_s"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=2295, savings=4590 dispatches
+[[fused]]
+op = "set_get_tee"
+pattern = ["local_set", "local_get", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=10200, savings=20400 dispatches
+[[fused]]
+op = "tee_get_lt_s"
+pattern = ["local_tee", "local_get", "i32_lt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=5000, savings=20000 dispatches
+[[fused]]
+op = "get_load8_u_tee_const_ne"
+pattern = ["local_get", "i32_load8_u", "local_tee", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=5000, savings=20000 dispatches
+[[fused]]
+op = "get_add_tee_get_lt_u"
+pattern = ["local_get", "i32_add", "local_tee", "local_get", "i32_lt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=4656, savings=18624 dispatches
+[[fused]]
+op = "const_set_get_set_get"
+pattern = ["i32_const", "local_set", "local_get", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=9279, savings=18558 dispatches
+[[fused]]
+op = "load8_u_const_and"
+pattern = ["i32_load8_u", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=4604, savings=18416 dispatches
+[[fused]]
+op = "store8_get_get_add_tee"
+pattern = ["i32_store8", "local_get", "local_get", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=4600, savings=18400 dispatches
+[[fused]]
+op = "get_get_xor_store8_get"
+pattern = ["local_get", "local_get", "i32_xor", "i32_store8", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=4600, savings=18400 dispatches
+[[fused]]
+op = "get_get_get_xor_store8"
+pattern = ["local_get", "local_get", "local_get", "i32_xor", "i32_store8"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=4600, savings=18400 dispatches
+[[fused]]
+op = "get_xor_store8_get_get"
+pattern = ["local_get", "i32_xor", "i32_store8", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=689, savings=2067 dispatches
+[[fused]]
+op = "get_add_tee_const"
+pattern = ["local_get", "i32_add", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=4563, savings=18252 dispatches
+[[fused]]
+op = "get_tee_const_add_set"
+pattern = ["local_get", "local_tee", "i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = "none"
+
+# Auto-discovered: count=4559, savings=18236 dispatches
+[[fused]]
+op = "tee_const_add_set_const"
+pattern = ["local_tee", "i32_const", "i32_add", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=4500, savings=18000 dispatches
+[[fused]]
+op = "get_set_get_const_gt_s"
+pattern = ["local_get", "local_set", "local_get", "i32_const", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=8728, savings=17456 dispatches
+[[fused]]
+op = "get_const_le_s"
+pattern = ["local_get", "i32_const", "i32_le_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=5818, savings=17454 dispatches
+[[fused]]
+op = "set_get_get_load"
+pattern = ["local_set", "local_get", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=5700, savings=17100 dispatches
+[[fused]]
+op = "load16_s_get_const_and"
+pattern = ["i32_load16_s", "local_get", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=8442, savings=16884 dispatches
+[[fused]]
+op = "and_const_lt_u"
+pattern = ["i32_and", "i32_const", "i32_lt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=4029, savings=16116 dispatches
+[[fused]]
+op = "get_const_or_tee_add"
+pattern = ["local_get", "i32_const", "i32_or", "local_tee", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3950, savings=15800 dispatches
+[[fused]]
+op = "set_get_set_get_eqz"
+pattern = ["local_set", "local_get", "local_set", "local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=5061, savings=15183 dispatches
+[[fused]]
+op = "add_tee_get_lt_u"
+pattern = ["i32_add", "local_tee", "local_get", "i32_lt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=5000, savings=15000 dispatches
+[[fused]]
+op = "load8_u_tee_const_ne"
+pattern = ["i32_load8_u", "local_tee", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=7416, savings=14832 dispatches
+[[fused]]
+op = "get_const_ge_u"
+pattern = ["local_get", "i32_const", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=4836, savings=14508 dispatches
+[[fused]]
+op = "store_get_const_ne"
+pattern = ["i32_store", "local_get", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3604, savings=14416 dispatches
+[[fused]]
+op = "tee_const_shl_add_set"
+pattern = ["local_tee", "i32_const", "i32_shl", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+# Auto-discovered: count=3602, savings=14408 dispatches
+[[fused]]
+op = "get_const_shl_tee_const"
+pattern = ["local_get", "i32_const", "i32_shl", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=3601, savings=14404 dispatches
+[[fused]]
+op = "get_mul_tee_const_shl"
+pattern = ["local_get", "i32_mul", "local_tee", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3601, savings=14404 dispatches
+[[fused]]
+op = "get_get_mul_tee_const"
+pattern = ["local_get", "local_get", "i32_mul", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "const_shl_tee_const_or"
+pattern = ["i32_const", "i32_shl", "local_tee", "i32_const", "i32_or"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "const_shl_add_tee_get"
+pattern = ["i32_const", "i32_shl", "i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "load16_s_mul_get_get_add"
+pattern = ["i32_load16_s", "i32_mul", "local_get", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "shl_tee_const_or_tee"
+pattern = ["i32_shl", "local_tee", "i32_const", "i32_or", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "mul_get_get_add_load16_s"
+pattern = ["i32_mul", "local_get", "local_get", "i32_add", "i32_load16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "tee_const_or_tee_add"
+pattern = ["local_tee", "i32_const", "i32_or", "local_tee", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "get_const_shl_add_tee"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "get_get_add_load16_s_get"
+pattern = ["local_get", "local_get", "i32_add", "i32_load16_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=3600, savings=14400 dispatches
+[[fused]]
+op = "get_get_get_mul_tee"
+pattern = ["local_get", "local_get", "local_get", "i32_mul", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=4500, savings=13500 dispatches
+[[fused]]
+op = "set_get_const_gt_s"
+pattern = ["local_set", "local_get", "i32_const", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3200, savings=12800 dispatches
+[[fused]]
+op = "const_shr_u_get_const_and"
+pattern = ["i32_const", "i32_shr_u", "local_get", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=3200, savings=12800 dispatches
+[[fused]]
+op = "get_const_shr_u_get_const"
+pattern = ["local_get", "i32_const", "i32_shr_u", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+# Auto-discovered: count=3127, savings=12508 dispatches
+[[fused]]
+op = "set_const_set_get_load"
+pattern = ["local_set", "i32_const", "local_set", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3102, savings=12408 dispatches
+[[fused]]
+op = "get_const_sub_set_const"
+pattern = ["local_get", "i32_const", "i32_sub", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=3102, savings=12408 dispatches
+[[fused]]
+op = "sub_set_const_set_get"
+pattern = ["i32_sub", "local_set", "i32_const", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=1057, savings=1057 dispatches
+[[fused]]
+op = "load16_u_tee"
+pattern = ["i32_load16_u", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=1412, savings=2824 dispatches
+[[fused]]
+op = "get_tee_const"
+pattern = ["local_get", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=1000, savings=1000 dispatches
+[[fused]]
+op = "get_extend16_s"
+pattern = ["local_get", "i32_extend16_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=5597, savings=11194 dispatches
+[[fused]]
+op = "get_get_ge_u"
+pattern = ["local_get", "local_get", "i32_ge_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=3601, savings=10803 dispatches
+[[fused]]
+op = "mul_tee_const_shl"
+pattern = ["i32_mul", "local_tee", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=3600, savings=10800 dispatches
+[[fused]]
+op = "get_add_load16_s_get"
+pattern = ["local_get", "i32_add", "i32_load16_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=10512, savings=10512 dispatches
+[[fused]]
+op = "load16_s_le_s"
+pattern = ["i32_load16_s", "i32_le_s"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=10352, savings=10352 dispatches
+[[fused]]
+op = "const_ge_s"
+pattern = ["i32_const", "i32_ge_s"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3428, savings=10284 dispatches
+[[fused]]
+op = "const_and_set_get"
+pattern = ["i32_const", "i32_and", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=2563, savings=10252 dispatches
+[[fused]]
+op = "get_load_set_get_const"
+pattern = ["local_get", "i32_load", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=2560, savings=10240 dispatches
+[[fused]]
+op = "load_set_get_const_sub"
+pattern = ["i32_load", "local_set", "local_get", "i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=5074, savings=10148 dispatches
+[[fused]]
+op = "tee_get_lt_u"
+pattern = ["local_tee", "local_get", "i32_lt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=5058, savings=10116 dispatches
+[[fused]]
+op = "tee_const_ne"
+pattern = ["local_tee", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3200, savings=9600 dispatches
+[[fused]]
+op = "shr_u_get_const_and"
+pattern = ["i32_shr_u", "local_get", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+# Auto-discovered: count=3127, savings=9381 dispatches
+[[fused]]
+op = "const_set_get_load"
+pattern = ["i32_const", "local_set", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=2328, savings=9312 dispatches
+[[fused]]
+op = "const_and_set_get_const"
+pattern = ["i32_const", "i32_and", "local_set", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=3102, savings=9306 dispatches
+[[fused]]
+op = "const_sub_set_const"
+pattern = ["i32_const", "i32_sub", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=3044, savings=9132 dispatches
+[[fused]]
+op = "set_get_load_get"
+pattern = ["local_set", "local_get", "i32_load", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+# Auto-discovered: count=2278, savings=9112 dispatches
+[[fused]]
+op = "get_const_and_set_get"
+pattern = ["local_get", "i32_const", "i32_and", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=8832, savings=8832 dispatches
+[[fused]]
+op = "const_le_s"
+pattern = ["i32_const", "i32_le_s"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=8703, savings=8703 dispatches
+[[fused]]
+op = "const_lt_u"
+pattern = ["i32_const", "i32_lt_u"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=2000, savings=8000 dispatches
+[[fused]]
+op = "and_set_get_const_and"
+pattern = ["i32_and", "local_set", "local_get", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+# Auto-discovered: count=1922, savings=7688 dispatches
+[[fused]]
+op = "get_store_get_const_add"
+pattern = ["local_get", "i32_store", "local_get", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+# Auto-discovered: count=1888, savings=7552 dispatches
+[[fused]]
+op = "get_const_and_set_const"
+pattern = ["local_get", "i32_const", "i32_and", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=3771, savings=7542 dispatches
+[[fused]]
+op = "get_load_get"
+pattern = ["local_get", "i32_load", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+# Auto-discovered: count=1809, savings=7236 dispatches
+[[fused]]
+op = "get_get_mul_set_const"
+pattern = ["local_get", "local_get", "i32_mul", "local_set", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+# Auto-discovered: count=1801, savings=7204 dispatches
+[[fused]]
+op = "get_get_get_const_shl"
+pattern = ["local_get", "local_get", "local_get", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 3 }
