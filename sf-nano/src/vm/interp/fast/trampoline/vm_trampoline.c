@@ -26,24 +26,6 @@
 // Debug Instrumentation
 // =============================================================================
 
-// Global dispatch counter for performance measurement (debug builds only)
-static uint64_t g_dispatch_count = 0;
-
-static void print_dispatch_count(void) {
-    fprintf(stderr, "Total dispatches: %llu\n", (unsigned long long)g_dispatch_count);
-}
-
-__attribute__((constructor))
-static void register_dispatch_printer(void) {
-    atexit(print_dispatch_count);
-}
-
-#ifdef NDEBUG
-#define COUNT_DISPATCH() do { } while (0)
-#else
-#define COUNT_DISPATCH() g_dispatch_count++
-#endif
-
 // Trace hook - enabled via FAST_TRACE_ENABLED
 // Note: fast_trace_instruction receives PARAMS (including nh) but ignores nh.
 #if defined(FAST_TRACE_ENABLED)
