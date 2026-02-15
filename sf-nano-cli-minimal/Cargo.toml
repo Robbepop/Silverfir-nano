@@ -1,0 +1,22 @@
+[package]
+name = "sf-nano-cli-minimal"
+version = "0.1.0"
+edition = "2021"
+authors = ["Bill Ming <mbbill@gmail.com>"]
+description = "Minimal no_std WebAssembly runner using sf-nano-core (no WASI, no fusion)"
+license = "MIT/Apache-2.0"
+
+[[bin]]
+name = "sf-nano-cli-minimal"
+path = "src/main.rs"
+
+[dependencies]
+sf-nano-core = { path = "../sf-nano-core", default-features = false }
+libc = { version = "0.2", default-features = false }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "z"
+panic = "abort"
+strip = true

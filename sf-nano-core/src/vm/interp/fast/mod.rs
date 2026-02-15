@@ -13,9 +13,14 @@
 pub const TOS_REGISTER_COUNT: usize = 4;
 
 /// Check whether instruction fusion is currently disabled.
-/// In sf-nano, fusion is always enabled.
+#[cfg(feature = "fusion")]
 pub fn is_fusion_disabled() -> bool {
     false
+}
+
+#[cfg(not(feature = "fusion"))]
+pub fn is_fusion_disabled() -> bool {
+    true
 }
 
 pub mod builder;

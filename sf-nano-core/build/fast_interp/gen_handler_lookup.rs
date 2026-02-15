@@ -40,12 +40,19 @@ pub fn generate(handlers: &HandlersFile, out_dir: &PathBuf) {
     }
 
     // Generate arrays for fused handlers with TOS variants
-    w.line("// Fused instruction handler variants");
+    w.line("#[cfg(feature = \"fusion\")]");
+    w.line("mod fused_lookup {");
+    w.indent();
+    w.line("use super::*;");
     for fused in &handlers.fused {
         if fused.needs_variants() {
             generate_handler_array(&mut w, &fused.op, &variants);
         }
     }
+    w.dedent();
+    w.line("}");
+    w.line("#[cfg(feature = \"fusion\")]");
+    w.line("pub use fused_lookup::*;");
 
     let out_path = out_dir.join("fast_handler_lookup.rs");
     fs::write(&out_path, w.finish()).expect("Failed to write fast_handler_lookup.rs");

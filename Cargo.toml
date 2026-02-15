@@ -5,6 +5,9 @@ members = [
     "sf-nano-spectest",
     "sf-nano-wasitest",
 ]
+exclude = [
+    "sf-nano-cli-minimal",
+]
 resolver = "2"
 
 [profile.release]

@@ -90,10 +90,12 @@ pub fn generate(handlers: &HandlersFile, out_dir: &PathBuf) {
     }
 
     // Generate wrappers for fused handlers
-    output.push_str("\n// Fused instruction handlers\n");
+    output.push_str("\n#ifdef FUSION_ENABLED\n");
+    output.push_str("// Fused instruction handlers\n");
     for fused in &handlers.fused {
         emit_wrappers_for_name(&mut output, &fused.op, fused);
     }
+    output.push_str("#endif // FUSION_ENABLED\n");
 
     let out_path = out_dir.join("fast_c_wrappers.inc");
     fs::write(&out_path, output).expect("Failed to write fast_c_wrappers.inc");

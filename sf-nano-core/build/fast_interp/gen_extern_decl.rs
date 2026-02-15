@@ -45,12 +45,18 @@ pub fn generate(handlers: &HandlersFile, out_dir: &PathBuf) {
         emit_decls(&mut w, handler);
     }
 
-    // Generate declarations for fused handlers
-    w.line("// Fused instruction handlers");
+    w.dedent();
+    w.line("}");
+
+    // Generate declarations for fused handlers (gated by fusion feature)
+    w.blank();
+    w.line("#[cfg(feature = \"fusion\")]");
+    w.line("#[allow(improper_ctypes)]");
+    w.line("extern \"C\" {");
+    w.indent();
     for fused in &handlers.fused {
         emit_decls(&mut w, fused);
     }
-
     w.dedent();
     w.line("}");
 

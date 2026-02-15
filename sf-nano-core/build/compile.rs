@@ -50,6 +50,10 @@ pub fn compile_fast_trampoline(out_dir: &str) {
         build.define("NDEBUG", None);
     }
 
+    if env::var("CARGO_FEATURE_FUSION").is_ok() {
+        build.define("FUSION_ENABLED", None);
+    }
+
     if env::var("CARGO_CFG_TARGET_ENV").as_deref() == Ok("msvc") {
         build
             .compiler("clang-cl")

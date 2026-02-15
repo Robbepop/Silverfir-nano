@@ -217,7 +217,9 @@ void run_trampoline(PARAMS)
 #include "../handlers_c/memory.c"
 #include "../handlers_c/control.c"
 #include "../handlers_c/call.c"
+#ifdef FUSION_ENABLED
 #include "fast_interp/fast_fused_handlers.inc"
+#endif
 
 // =============================================================================
 // Generated Wrappers

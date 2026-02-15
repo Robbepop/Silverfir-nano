@@ -14,7 +14,9 @@ mod emitter;
 mod finalizer;
 // Auto-generated from handlers.toml [[fused]] entries.
 // See `build/fast_interp/gen_fusion.rs` for the generator.
+#[cfg(feature = "fusion")]
 include!(concat!(env!("OUT_DIR"), "/fast_interp/fast_fusion.rs"));
+#[cfg(feature = "fusion")]
 include!(concat!(env!("OUT_DIR"), "/fast_interp/fast_fusion_emit.rs"));
 mod stack;
 mod temp_inst;

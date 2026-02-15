@@ -5,7 +5,9 @@ use super::super::TOS_REGISTER_COUNT;
 
 use super::context::CompileContext;
 use super::emitter::CodeEmitter;
+#[cfg(feature = "fusion")]
 use super::{FusedOp, OpFuser};
+#[cfg(feature = "fusion")]
 use super::emit_fused;
 use super::stack::{BlockKind, StackTracker};
 use super::temp_inst::{BrTableEntry, Handler};
@@ -146,12 +148,8 @@ impl<'a> OpcodeHandler for DispatchHandler<'a> {
         &mut self,
         stream: &mut OpStream<'x, 'y, 'z>,
     ) -> Result<(), WasmError> {
-        if super::super::is_fusion_disabled() {
-            // Bypass fusion: emit one handler per Wasm opcode.
-            while let Some(decoded) = stream.next()? {
-                dispatch_opcode(decoded.wasm_op, &decoded.imm, self.ctx, self.stack, self.emitter);
-            }
-        } else {
+        #[cfg(feature = "fusion")]
+        if !super::super::is_fusion_disabled() {
             let mut fuser = OpFuser::new(stream);
             while let Some(op) = fuser.next()? {
                 match op {
@@ -161,6 +159,12 @@ impl<'a> OpcodeHandler for DispatchHandler<'a> {
                     fused => emit_fused(fused, self.stack, self.emitter),
                 }
             }
+            return Ok(());
+        }
+
+        // No fusion: emit one handler per Wasm opcode.
+        while let Some(decoded) = stream.next()? {
+            dispatch_opcode(decoded.wasm_op, &decoded.imm, self.ctx, self.stack, self.emitter);
         }
         Ok(())
     }
