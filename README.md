@@ -27,7 +27,7 @@ Silverfir-nano uses a carefully engineered interpreter architecture that elimina
 | Build | Size | Features |
 |-------|------|----------|
 | `sf-nano-cli-minimal` (release) | **~200 KB** | `no_std`, no WASI, no fusion |
-| `sf-nano-cli` (release) | ~1.1 MB | Full: WASI + fusion |
+| `sf-nano-cli` (release) | 1.06 MB | Full: WASI + fusion + std (needed for wasi)|
 
 The minimal build includes the complete WebAssembly 2.0 interpreter with **zero external runtime dependencies**.
 
