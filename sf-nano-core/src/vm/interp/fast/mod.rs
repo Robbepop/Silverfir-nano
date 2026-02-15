@@ -39,3 +39,10 @@ pub mod handler_lookup {
 pub mod instruction;
 pub mod precompile;
 pub mod runtime;
+
+#[cfg(feature = "profile")]
+pub mod profiler;
+#[cfg(feature = "profile")]
+pub mod pattern_trie;
+#[cfg(feature = "profile")]
+pub mod fusion_discovery;

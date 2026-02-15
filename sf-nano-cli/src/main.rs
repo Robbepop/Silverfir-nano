@@ -1,3 +1,6 @@
+#[cfg(feature = "profile")]
+mod discover_fusion;
+
 use sf_nano_core::wasi::{set_wasi_ctx, wasi_imports, WasiContextBuilder};
 use sf_nano_core::Instance;
 
@@ -9,7 +12,16 @@ fn main() {
 
     if args.len() < 2 {
         eprintln!("Usage: sf-nano-cli <wasm-file> [args...]");
+        #[cfg(feature = "profile")]
+        eprintln!("       sf-nano-cli discover-fusion [options] <wasm-file>");
         process::exit(1);
+    }
+
+    // Check for subcommands
+    #[cfg(feature = "profile")]
+    if args[1] == "discover-fusion" {
+        discover_fusion::run_from_args(&args[2..]);
+        return;
     }
 
     let path = PathBuf::from(&args[1]);

@@ -29,7 +29,12 @@
 // Trace hook - enabled via FAST_TRACE_ENABLED
 // Note: fast_trace_instruction receives PARAMS (including nh) but ignores nh.
 #if defined(FAST_TRACE_ENABLED)
-extern void fast_trace_instruction(const char* name, PARAMS);
+void fast_trace_instruction(const char* name, PARAMS) {
+    (void)ctx; (void)pc; (void)fp;
+    (void)t0; (void)t1; (void)t2; (void)t3;
+    (void)nh;
+    fprintf(stderr, "%s\n", name);
+}
 #define FAST_TRACE_HOOK(op_name) \
     do { fast_trace_instruction(#op_name, ARGS); } while (0)
 #else
@@ -38,11 +43,11 @@ extern void fast_trace_instruction(const char* name, PARAMS);
 
 // Profile hook - enabled via FAST_PROFILE_ENABLED
 #if defined(FAST_PROFILE_ENABLED)
-extern void fast_profile_record(void* handler_ptr);
-#define FAST_PROFILE_HOOK() \
-    do { fast_profile_record((void*)pc->handler); } while (0)
+extern void fast_profile_record(const char* name);
+#define FAST_PROFILE_HOOK(op_name) \
+    do { fast_profile_record(#op_name); } while (0)
 #else
-#define FAST_PROFILE_HOOK() do { } while (0)
+#define FAST_PROFILE_HOOK(op_name) do { } while (0)
 #endif
 
 // =============================================================================

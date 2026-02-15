@@ -119,7 +119,7 @@ fn generate_variant_wrapper_unified(out: &mut String, name: &str, c_impl: bool, 
         r#"{impl_decl}PRESERVE_NONE
 void op_{name}_{variant}(PARAMS) {{
     FAST_TRACE_HOOK({name}_{variant});
-    FAST_PROFILE_HOOK();
+    FAST_PROFILE_HOOK({name});
     struct Instruction* np = impl_{name}(IMPL_ARGS_BASE, {register_args});
 {dispatch}
 }}
@@ -148,7 +148,7 @@ fn generate_single_wrapper(out: &mut String, name: &str, c_impl: bool, nonlinear
         r#"{impl_decl}PRESERVE_NONE
 void op_{name}(PARAMS) {{
     FAST_TRACE_HOOK({name});
-    FAST_PROFILE_HOOK();
+    FAST_PROFILE_HOOK({name});
     struct Instruction* np = impl_{name}(IMPL_ARGS_BASE);
 {dispatch}
 }}
@@ -179,7 +179,7 @@ fn generate_all_tos_wrapper(out: &mut String, name: &str, c_impl: bool, nonlinea
         r#"{impl_decl}PRESERVE_NONE
 void op_{name}(PARAMS) {{
     FAST_TRACE_HOOK({name});
-    FAST_PROFILE_HOOK();
+    FAST_PROFILE_HOOK({name});
     struct Instruction* np = impl_{name}(IMPL_ARGS_BASE, {impl_args});
 {dispatch}
 }}

@@ -16,6 +16,8 @@ default = ["fusion"]
 validate = []
 wasi = []
 fusion = []
+trace = []
+profile = []
 
 [build-dependencies]
 cc = "1.0"

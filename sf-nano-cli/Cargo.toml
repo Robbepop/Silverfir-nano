@@ -10,5 +10,9 @@ license = "MIT/Apache-2.0"
 name = "sf-nano-cli"
 path = "src/main.rs"
 
+[features]
+default = []
+profile = ["sf-nano-core/profile"]
+
 [dependencies]
 sf-nano-core = { path = "../sf-nano-core", features = ["wasi"] }
