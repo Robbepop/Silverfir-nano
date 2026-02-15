@@ -1,13 +1,29 @@
 # Instruction Fusion
 
-Silverfir-nano's fusion system automatically discovers and generates optimized fused instructions
-from real workloads using profile-guided analysis.
+Silverfir-nano ships with a built-in fusion set (enabled by default), and most users do not
+need to run custom per-app fusion.
+
+The built-in set was derived from many different workloads and compiler output patterns
+(not one specific app binary), and in typical real programs it already captures about
+~90% of the benefit.
+
+Custom fusion is still available as a size/perf tuning tool for niche workloads.
+
+## Do You Need Custom Fusion?
+
+Short answer: usually no.
+
+- Use the default fusion-enabled build for general use
+- Expect custom per-app fusion to provide smaller incremental gains in most cases
+- The headline benchmark numbers are from fusion-enabled builds, not the ultra-minimal `~200KB` profile
+- The `~200KB` size-first profile (`default-features = false`) is typically around `~40%` slower, but still fast (roughly wasm3-class)
 
 ## Overview
 
 Instruction fusion combines 2–5 consecutive WebAssembly opcodes into a single handler,
 eliminating dispatch overhead, TOS register shuffles, and branch mispredictions.
-The system is fully automatic: profile a workload, discover optimal patterns, rebuild.
+For custom tuning, the system is fully automatic: profile a workload, discover optimal
+patterns, rebuild.
 
 ## Workflow
 
@@ -20,7 +36,9 @@ enabled             greedy algorithm      auto-generated
                     write TOML
 ```
 
-### Step 1: Profile
+### Step 1: Profile (optional, only for custom fusion)
+
+Most users can skip this step and use the built-in fusion set.
 
 Build with the `trace` feature and run a representative workload. The profiler captures
 N-instruction sliding windows (configurable, up to 8-grams) and records handler sequence
@@ -34,7 +52,7 @@ frequencies using a lock-free recording path.
 sf-nano-cli workload.wasm
 ```
 
-### Step 2: Discover
+### Step 2: Discover (optional, only for custom fusion)
 
 The discovery tool analyzes profiled sequences through a multi-stage pipeline:
 
@@ -71,9 +89,15 @@ cargo build --release
 
 | Configuration | Binary Size | Dispatch Overhead |
 |--------------|-------------|-------------------|
-| No fusion (`default-features = false`) | ~200 KB | Baseline |
+| No fusion (`default-features = false`) | ~200 KB | Baseline (size-first, typically ~40% slower) |
 | Fusion enabled (default) | ~1.1 MB | Significantly reduced |
-| Custom fusion (profiled for your workload) | Varies | Optimal for target |
+| Custom fusion (profiled for your workload) | Varies | Usually incremental gains beyond default |
+
+Notes:
+- Fusion has diminishing returns: a full fusion set is about `~500KB`, but adding only `~100KB`
+  can already recover roughly `~80%` of full-fusion performance.
+- The `~1.1MB` full binary also includes `std` due to WASI support; if you do not need WASI,
+  you can save several hundred KB.
 
 ## Example: Top Patterns from Spec Tests
 
