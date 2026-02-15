@@ -12,7 +12,7 @@ A blazing-fast, ultra-compact WebAssembly 2.0 interpreter built from the ground 
 
 ## Performance
 
-### CoreMark Benchmark
+### CoreMark
 
 Test machine:
 - MacBook Air (`Mac16,12`)
@@ -21,15 +21,6 @@ Test machine:
 
 ![CoreMark runtime comparison on Apple M4](benchmarks/coremark_m4.svg)
 Silverfir-nano uses a carefully engineered interpreter architecture that eliminates overhead at every level:
-
-| Technique | Impact |
-|-----------|--------|
-| `preserve_none` calling convention | Maximizes register usage across handler boundaries |
-| TOS (Top-of-Stack) registers | Keeps 4 hot values in CPU registers, eliminating memory round-trips |
-| Tail-call dispatch with next-handler preloading | Zero-overhead dispatch; branch predictor sees direct calls |
-| Cross-language LTO | Rust + C handlers optimized as a single compilation unit |
-| Fixed 32-byte instruction encoding | Cache-friendly, branchless decode |
-| Instruction fusion | Merges 2–5 consecutive Wasm opcodes into single handlers |
 
 ## Binary Size
 
