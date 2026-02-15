@@ -13,7 +13,6 @@ Test machine:
 - macOS 26.2 (build 25C56)
 
 ![CoreMark runtime comparison on Apple M4](benchmarks/coremark_m4.svg)
-Silverfir-nano uses a carefully engineered interpreter architecture that eliminates overhead at every level:
 
 ## Highlights
 
