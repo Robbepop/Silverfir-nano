@@ -4,14 +4,22 @@ A blazing-fast, ultra-compact WebAssembly 2.0 interpreter built from the ground 
 
 ## Highlights
 
-- **Extreme performance** — likely the fastest pure interpreter in the world *(benchmarks coming soon)*
-- **Ultra-compact** — the `no_std` core is only ~200KB stripped, with zero runtime dependencies
+- **Extreme performance** — likely the fastest pure interpreter in the world, *see benchmarks below*
+- **Ultra-compact** — the `no_std` core is only **~200KB** stripped, with *zero runtime dependencies*
 - **`no_std`** — the core library requires only `alloc`; runs anywhere from embedded to bare-metal
 - **Full WebAssembly 2.0** — multi-value, reference types, bulk memory operations, and more
 - **Configurable fusion** — profile-guided instruction fusion for workload-specific optimization
 
 ## Performance
 
+### CoreMark Benchmark
+
+Test machine:
+- MacBook Air (`Mac16,12`)
+- Apple M4, 10 CPU cores, 16 GB memory
+- macOS 26.2 (build 25C56)
+
+![CoreMark runtime comparison on Apple M4](benchmarks/coremark_m4.svg)
 Silverfir-nano uses a carefully engineered interpreter architecture that eliminates overhead at every level:
 
 | Technique | Impact |
@@ -22,8 +30,6 @@ Silverfir-nano uses a carefully engineered interpreter architecture that elimina
 | Cross-language LTO | Rust + C handlers optimized as a single compilation unit |
 | Fixed 32-byte instruction encoding | Cache-friendly, branchless decode |
 | Instruction fusion | Merges 2–5 consecutive Wasm opcodes into single handlers |
-
-> Benchmark data will be added here.
 
 ## Binary Size
 
@@ -63,17 +69,6 @@ Full support for the WebAssembly 2.0 specification:
 - ✅ Mutable globals import/export
 
 Tested against the official [WebAssembly spec testsuite](https://github.com/WebAssembly/spec/tree/main/test).
-
-## Project Structure
-
-```
-sf-nano-core/          Core interpreter library (no_std)
-sf-nano-cli/           Full CLI runner (WASI + fusion)
-sf-nano-cli-minimal/   Minimal no_std CLI runner (~200KB)
-sf-nano-spectest/      WebAssembly spec test runner
-sf-nano-wasitest/      WASI test runner
-benchmarks/            Benchmark Wasm binaries
-```
 
 ## Building
 
