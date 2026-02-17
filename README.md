@@ -14,6 +14,10 @@ Test machine:
 
 ![CoreMark runtime comparison on Apple M4](benchmarks/coremark_m4.svg)
 
+### Lua Fibonacci
+
+![Lua Fibonacci benchmark](benchmarks/lua_fib.svg)
+
 ## Highlights
 
 - **Extreme performance** — ~67% of single-pass JIT and ~43% of full-power Cranelift JIT on Apple M4 CoreMark

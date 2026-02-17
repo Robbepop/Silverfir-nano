@@ -1,4 +1,12 @@
 //! CLI command for automatic fusion candidate discovery.
+//!
+//! Profiles one or more WASM workloads, builds a pattern trie capturing all
+//! N-gram instruction sequences, and selects optimal fusion candidates using
+//! a greedy algorithm with prefix overlap adjustment.
+//!
+//! Supports multi-workload merging: when multiple `--workload` flags are given,
+//! instruction statistics are frequency-averaged across workloads to produce
+//! fusion patterns that generalize across diverse programs.
 
 use sf_nano_core::vm::interp::fast::fusion_discovery::{self, DiscoveryConfig};
 use sf_nano_core::vm::interp::fast::pattern_trie::PatternTrie;
@@ -13,12 +21,16 @@ use std::{fs, process};
 /// Default output path for discovered fusion patterns.
 const DEFAULT_FUSED_TOML: &str = "handlers_fused_discovered.toml";
 
-pub struct DiscoverFusionArgs {
+pub struct Workload {
     pub path: PathBuf,
     pub prog_args: Vec<String>,
+}
+
+pub struct DiscoverFusionArgs {
+    pub workloads: Vec<Workload>,
     pub max_window: usize,
     pub top: usize,
-    pub min_savings: u64,
+    pub min_savings_pct: f64,
     pub output: Option<PathBuf>,
     pub show_trie: bool,
 }
@@ -26,25 +38,90 @@ pub struct DiscoverFusionArgs {
 impl Default for DiscoverFusionArgs {
     fn default() -> Self {
         Self {
-            path: PathBuf::new(),
-            prog_args: Vec::new(),
+            workloads: Vec::new(),
             max_window: 4,
             top: 32,
-            min_savings: 1000,
+            min_savings_pct: 0.005,
             output: None,
             show_trie: false,
         }
     }
 }
 
+/// Global options that can appear anywhere before/between workloads.
+const GLOBAL_OPTIONS: &[&str] = &[
+    "--window", "-w", "--top", "-n", "--min-savings", "--output", "-o", "--show-trie",
+];
+
+fn is_global_option(s: &str) -> bool {
+    GLOBAL_OPTIONS.contains(&s)
+}
+
+fn print_usage() {
+    eprintln!("Discover optimal instruction fusion patterns by profiling WASM workloads.");
+    eprintln!();
+    eprintln!("USAGE:");
+    eprintln!("  sf-nano-cli discover-fusion [OPTIONS] <wasm-file> [-- args...]");
+    eprintln!("  sf-nano-cli discover-fusion [OPTIONS] --workload <wasm> [args...] ...");
+    eprintln!();
+    eprintln!("The first form profiles a single WASM module. The second form profiles");
+    eprintln!("multiple workloads and merges their instruction statistics using frequency");
+    eprintln!("averaging, producing fusion patterns that work well across diverse programs.");
+    eprintln!();
+    eprintln!("OPTIONS:");
+    eprintln!("  -w, --window <N>                N-gram window size for profiling [default: 4]");
+    eprintln!("  -n, --top <N>                   Maximum number of fusion candidates [default: 32]");
+    eprintln!("      --min-savings <PCT>           Minimum savings as %% of total instructions [default: 0.005]");
+    eprintln!("  -o, --output <PATH>              Output TOML file path [default: handlers_fused_discovered.toml]");
+    eprintln!("      --show-trie                  Print the pattern trie before discovery");
+    eprintln!("      --workload <WASM> [ARGS...]  Add a workload to profile (repeatable)");
+    eprintln!("  -h, --help                       Print this help message");
+    eprintln!();
+    eprintln!("EXAMPLES:");
+    eprintln!("  # Single workload (coremark):");
+    eprintln!("  sf-nano-cli discover-fusion --top 500 --window 5 coremark.wasm");
+    eprintln!();
+    eprintln!("  # Multiple workloads (merged):");
+    eprintln!("  sf-nano-cli discover-fusion --top 500 --window 5 \\");
+    eprintln!("    --workload coremark.wasm \\");
+    eprintln!("    --workload lua.wasm fib.lua");
+    eprintln!();
+    eprintln!("  # Custom output path:");
+    eprintln!("  sf-nano-cli discover-fusion -o sf-nano-core/src/vm/interp/fast/handlers_fused.toml \\");
+    eprintln!("    --workload coremark.wasm");
+    eprintln!();
+    eprintln!("MULTI-WORKLOAD MERGING:");
+    eprintln!("  When --workload is specified multiple times, each workload is profiled");
+    eprintln!("  independently. The resulting instruction statistics are then merged by:");
+    eprintln!("    1. Normalizing each workload's counts to frequencies (count / total)");
+    eprintln!("    2. Averaging frequencies across all workloads");
+    eprintln!("    3. Scaling back to absolute counts using the average total");
+    eprintln!("  This ensures patterns common across workloads are weighted appropriately.");
+    eprintln!();
+    eprintln!("After generating the TOML, copy it to the handlers_fused.toml path and rebuild:");
+    eprintln!("  cp handlers_fused_discovered.toml sf-nano-core/src/vm/interp/fast/handlers_fused.toml");
+    eprintln!("  cargo build --release");
+}
+
 /// Parse discover-fusion args from command line.
-/// Format: discover-fusion [options] <wasm-file> [-- args...]
+///
+/// Supports two syntaxes:
+///   Legacy:  discover-fusion [options] <wasm-file> [-- args...]
+///   Multi:   discover-fusion [options] --workload <wasm> [args...] [--workload <wasm> [args...] ...]
 pub fn parse_args(args: &[String]) -> DiscoverFusionArgs {
     let mut result = DiscoverFusionArgs::default();
     let mut i = 0;
 
+    // First pass: collect global options and workloads
+    let mut bare_path: Option<PathBuf> = None;
+    let mut bare_args: Vec<String> = Vec::new();
+
     while i < args.len() {
         match args[i].as_str() {
+            "--help" | "-h" => {
+                print_usage();
+                process::exit(0);
+            }
             "--window" | "-w" => {
                 i += 1;
                 if i < args.len() {
@@ -60,7 +137,7 @@ pub fn parse_args(args: &[String]) -> DiscoverFusionArgs {
             "--min-savings" => {
                 i += 1;
                 if i < args.len() {
-                    result.min_savings = args[i].parse().unwrap_or(1000);
+                    result.min_savings_pct = args[i].parse().unwrap_or(0.01);
                 }
             }
             "--output" | "-o" => {
@@ -72,16 +149,35 @@ pub fn parse_args(args: &[String]) -> DiscoverFusionArgs {
             "--show-trie" => {
                 result.show_trie = true;
             }
+            "--workload" => {
+                // Collect workload: next arg is module path, rest until next
+                // --workload or global option are program args
+                i += 1;
+                if i >= args.len() {
+                    eprintln!("Error: --workload requires a wasm file path");
+                    process::exit(1);
+                }
+                let path = PathBuf::from(&args[i]);
+                i += 1;
+                let mut prog_args = Vec::new();
+                while i < args.len() && args[i] != "--workload" && !is_global_option(&args[i]) {
+                    prog_args.push(args[i].clone());
+                    i += 1;
+                }
+                result.workloads.push(Workload { path, prog_args });
+                continue; // don't increment i again
+            }
             "--" => {
-                result.prog_args = args[i + 1..].to_vec();
+                // Legacy: rest are program args for the bare path
+                bare_args = args[i + 1..].to_vec();
                 break;
             }
             _ => {
-                if result.path.as_os_str().is_empty() {
-                    result.path = PathBuf::from(&args[i]);
-                } else {
-                    // Remaining args are program args
-                    result.prog_args = args[i..].to_vec();
+                if bare_path.is_none() && result.workloads.is_empty() {
+                    bare_path = Some(PathBuf::from(&args[i]));
+                } else if bare_path.is_some() && result.workloads.is_empty() {
+                    // Remaining args are program args (legacy mode)
+                    bare_args = args[i..].to_vec();
                     break;
                 }
             }
@@ -89,16 +185,20 @@ pub fn parse_args(args: &[String]) -> DiscoverFusionArgs {
         i += 1;
     }
 
-    if result.path.as_os_str().is_empty() {
-        eprintln!("Usage: sf-nano-cli discover-fusion [options] <wasm-file> [-- args...]");
-        eprintln!();
-        eprintln!("Options:");
-        eprintln!("  -w, --window <N>       Window size for N-gram capture (default: 4)");
-        eprintln!("  -n, --top <N>          Maximum fusion candidates (default: 32)");
-        eprintln!("  --min-savings <N>      Minimum dispatch savings threshold (default: 1000)");
-        eprintln!("  -o, --output <path>    Output path for handlers_fused.toml");
-        eprintln!("  --show-trie            Print the pattern trie");
-        process::exit(1);
+    // If we have a bare path and no --workload entries, use legacy single-workload mode
+    if let Some(path) = bare_path {
+        if result.workloads.is_empty() {
+            result.workloads.push(Workload {
+                path,
+                prog_args: bare_args,
+            });
+        }
+    }
+
+    // Handle --help / -h anywhere in args
+    if args.iter().any(|a| a == "--help" || a == "-h") || result.workloads.is_empty() {
+        print_usage();
+        process::exit(if result.workloads.is_empty() { 1 } else { 0 });
     }
 
     result
@@ -109,33 +209,38 @@ pub fn run_from_args(args: &[String]) {
     run(cmd);
 }
 
-pub fn run(cmd: DiscoverFusionArgs) {
-    // Enable profiling before loading module
-    profiler::enable(cmd.max_window);
+/// Run a single workload and return its profiling stats.
+fn run_workload(workload: &Workload, window_size: usize) -> profiler::FastProfileStats {
+    // Disable fusion so the profiler sees the raw (unfused) instruction stream.
+    // This lets us discover the globally optimal fusion set from scratch.
+    sf_nano_core::vm::interp::fast::set_fusion_disabled(true);
+
+    profiler::enable(window_size);
     eprintln!(
-        "Profiling (fusion disabled): {} (window size: {})",
-        cmd.path.display(),
-        cmd.max_window
+        "Profiling: {} (window size: {})",
+        workload.path.display(),
+        window_size
     );
 
     // Read WASM binary
-    let data = fs::read(&cmd.path).unwrap_or_else(|err| {
-        eprintln!("Error reading '{}': {}", cmd.path.display(), err);
+    let data = fs::read(&workload.path).unwrap_or_else(|err| {
+        eprintln!("Error reading '{}': {}", workload.path.display(), err);
         process::exit(1);
     });
 
-    let module_name = cmd.path
+    let module_name = workload
+        .path
         .file_name()
         .and_then(|n| n.to_str())
         .unwrap_or("module");
 
     // Build WASI context
     let mut wasi_args = vec![module_name.to_string()];
-    wasi_args.extend(cmd.prog_args.clone());
+    wasi_args.extend(workload.prog_args.clone());
 
     let ctx = WasiContextBuilder::new()
         .args(&wasi_args)
-        .preopen_dir("/", ".")
+        .preopen_dir(".", ".")
         .inherit_env()
         .build();
     set_wasi_ctx(ctx);
@@ -148,26 +253,47 @@ pub fn run(cmd: DiscoverFusionArgs) {
     });
 
     let result = instance.invoke("_start", &[]);
-    let exit_code = match result {
-        Ok(_) => None,
+    match result {
+        Ok(_) => {}
         Err(ref err) if err.to_string().contains("not found") => {
-            match instance.invoke("main", &[]) {
-                Ok(_) => None,
-                Err(ref err) => err.exit_code(),
-            }
+            let _ = instance.invoke("main", &[]);
         }
-        Err(ref err) => err.exit_code(),
-    };
+        Err(_) => {}
+    }
 
     // Collect stats
-    let stats = profiler::take_stats();
+    profiler::take_stats()
+}
+
+pub fn run(cmd: DiscoverFusionArgs) {
+    let multi = cmd.workloads.len() > 1;
+
+    // Run each workload and collect stats
+    let mut all_stats = Vec::new();
+    for (i, workload) in cmd.workloads.iter().enumerate() {
+        if multi {
+            eprintln!();
+            eprintln!("=== Workload {}/{} ===", i + 1, cmd.workloads.len());
+        }
+        let stats = run_workload(workload, cmd.max_window);
+        eprintln!(
+            "  {} instructions profiled",
+            stats.total_instructions
+        );
+        all_stats.push(stats);
+    }
+
+    // Merge stats (frequency-averaged if multiple workloads)
+    let stats = profiler::merge_stats(all_stats);
 
     if stats.total_instructions == 0 {
         eprintln!("No instructions were profiled.");
-        if let Some(code) = exit_code {
-            process::exit(code);
-        }
         return;
+    }
+
+    if multi {
+        eprintln!();
+        eprintln!("Merged (frequency-averaged): {} virtual instructions", stats.total_instructions);
     }
 
     // Build pattern trie
@@ -188,7 +314,8 @@ pub fn run(cmd: DiscoverFusionArgs) {
     eprintln!();
 
     if cmd.show_trie {
-        trie.print_tree(cmd.max_window, cmd.min_savings / (cmd.max_window as u64));
+        let min_savings_abs = (cmd.min_savings_pct / 100.0 * trie.total_instructions as f64) as u64;
+        trie.print_tree(cmd.max_window, min_savings_abs / (cmd.max_window as u64));
         eprintln!();
     }
 
@@ -200,7 +327,7 @@ pub fn run(cmd: DiscoverFusionArgs) {
     // Run discovery
     let config = DiscoveryConfig {
         max_candidates: cmd.top,
-        min_savings: cmd.min_savings,
+        min_savings_pct: cmd.min_savings_pct,
         reserved_names,
     };
 
@@ -208,9 +335,6 @@ pub fn run(cmd: DiscoverFusionArgs) {
 
     if candidates.is_empty() {
         eprintln!("No new fusion candidates found above threshold.");
-        if let Some(code) = exit_code {
-            process::exit(code);
-        }
         return;
     }
 
@@ -258,10 +382,6 @@ pub fn run(cmd: DiscoverFusionArgs) {
     });
     eprintln!("Written {} fused patterns to: {}", candidates.len(), output_path.display());
     eprintln!("Rebuild with: cargo build --release");
-
-    if let Some(code) = exit_code {
-        process::exit(code);
-    }
 }
 
 /// Load [[handler]] op names from handlers.toml to avoid name collisions.

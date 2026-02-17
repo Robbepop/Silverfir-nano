@@ -11,9 +11,19 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {
-        eprintln!("Usage: sf-nano-cli <wasm-file> [args...]");
+        eprintln!("Silverfir-nano — WebAssembly interpreter");
+        eprintln!();
+        eprintln!("USAGE:");
+        eprintln!("  sf-nano-cli <wasm-file> [args...]");
         #[cfg(feature = "profile")]
-        eprintln!("       sf-nano-cli discover-fusion [options] <wasm-file>");
+        {
+            eprintln!("  sf-nano-cli discover-fusion [OPTIONS] <wasm-file>");
+            eprintln!("  sf-nano-cli discover-fusion --help");
+        }
+        eprintln!();
+        eprintln!("Run a WebAssembly module with WASI support.");
+        #[cfg(feature = "profile")]
+        eprintln!("Use 'discover-fusion' subcommand to profile and discover fusion patterns.");
         process::exit(1);
     }
 

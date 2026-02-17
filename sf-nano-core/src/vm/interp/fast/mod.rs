@@ -12,10 +12,20 @@
 /// Number of TOS (Top-of-Stack) registers in the fast interpreter.
 pub const TOS_REGISTER_COUNT: usize = 4;
 
+/// Runtime override to disable fusion (used by discover-fusion profiling).
+#[cfg(feature = "fusion")]
+static FUSION_DISABLED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Disable fusion at runtime (e.g., for profiling the raw instruction stream).
+#[cfg(feature = "fusion")]
+pub fn set_fusion_disabled(disabled: bool) {
+    FUSION_DISABLED.store(disabled, std::sync::atomic::Ordering::Relaxed);
+}
+
 /// Check whether instruction fusion is currently disabled.
 #[cfg(feature = "fusion")]
 pub fn is_fusion_disabled() -> bool {
-    false
+    FUSION_DISABLED.load(std::sync::atomic::Ordering::Relaxed)
 }
 
 #[cfg(not(feature = "fusion"))]

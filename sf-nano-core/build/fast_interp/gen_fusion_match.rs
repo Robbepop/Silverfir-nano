@@ -21,7 +21,7 @@ pub fn generate_empty() -> String {
     code.push_str("    pub fn new(stream: &'s mut OpStream<'d, 'a, 'b>) -> Self {\n");
     code.push_str("        Self { stream }\n");
     code.push_str("    }\n\n");
-    code.push_str("    pub fn next(&mut self) -> Result<Option<FusedOp>, crate::wasmerror::WasmError> {\n");
+    code.push_str("    pub fn next(&mut self) -> Result<Option<FusedOp>, crate::WasmError> {\n");
     code.push_str("        match self.stream.next()? {\n");
     code.push_str("            Some(decoded) => Ok(Some(FusedOp::Single {\n");
     code.push_str("                wasm_op: decoded.wasm_op,\n");

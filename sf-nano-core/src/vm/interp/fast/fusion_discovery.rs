@@ -155,8 +155,27 @@ fn op_encoding_bits(op: &str) -> u32 {
 }
 
 pub fn encoding_fits(pattern: &[&str]) -> bool {
-    let total: u32 = pattern.iter().map(|op| op_encoding_bits(op)).sum();
-    total <= 192
+    // Simulate the slot-packing algorithm from gen_encoding.rs: fields are packed
+    // into 3 x 64-bit immediate slots (imm0, imm1, imm2) without spanning slot
+    // boundaries. A field that doesn't fit in the remaining space of the current
+    // slot gets bumped to the next one.
+    let mut current_slot = 0u32;
+    let mut current_bit = 0u32;
+    for op in pattern {
+        let bits = op_encoding_bits(op);
+        if bits == 0 {
+            continue;
+        }
+        if current_bit + bits > 64 {
+            current_slot += 1;
+            current_bit = 0;
+        }
+        if current_slot > 2 {
+            return false;
+        }
+        current_bit += bits;
+    }
+    true
 }
 
 pub fn tos_supported(pattern: &[&str]) -> bool {
@@ -309,7 +328,8 @@ pub struct FusionCandidate {
 
 pub struct DiscoveryConfig {
     pub max_candidates: usize,
-    pub min_savings: u64,
+    /// Minimum savings as a percentage of total instructions (e.g., 0.01 = 0.01%).
+    pub min_savings_pct: f64,
     pub reserved_names: HashSet<String>,
 }
 
@@ -339,6 +359,9 @@ fn is_pattern_fusible(pattern: &[&str]) -> bool {
 pub fn discover(trie: &PatternTrie, config: &DiscoveryConfig) -> Vec<FusionCandidate> {
     let raw_candidates = trie.collect_candidates(2, 1);
 
+    // Convert percentage threshold to absolute savings count
+    let min_savings = (config.min_savings_pct / 100.0 * trie.total_instructions as f64) as u64;
+
     let mut scored: Vec<(Vec<String>, u64, u64)> = Vec::new();
     for c in &raw_candidates {
         let pattern_refs: Vec<&str> = c.pattern.iter().map(|s| s.as_str()).collect();
@@ -354,7 +377,7 @@ pub fn discover(trie: &PatternTrie, config: &DiscoveryConfig) -> Vec<FusionCandi
         }
 
         let savings = c.count * (c.pattern.len() as u64 - 1);
-        if savings < config.min_savings {
+        if savings < min_savings {
             continue;
         }
 
@@ -376,7 +399,7 @@ pub fn discover(trie: &PatternTrie, config: &DiscoveryConfig) -> Vec<FusionCandi
         let effective_count = raw_count.saturating_sub(already_consumed);
         let effective_savings = effective_count * (pattern.len() as u64 - 1);
 
-        if effective_savings < config.min_savings {
+        if effective_savings < min_savings {
             continue;
         }
 

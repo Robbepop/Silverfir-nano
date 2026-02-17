@@ -36,43 +36,117 @@ enabled             greedy algorithm      auto-generated
                     write TOML
 ```
 
-### Step 1: Profile (optional, only for custom fusion)
+## Quick Start
 
-Most users can skip this step and use the built-in fusion set.
-
-Build with the `trace` feature and run a representative workload. The profiler captures
-N-instruction sliding windows (configurable, up to 8-grams) and records handler sequence
-frequencies using a lock-free recording path.
+Build with profiling enabled and run the discovery tool:
 
 ```bash
-# Build with profiling enabled
-# (profiler hooks into every handler dispatch via FAST_PROFILE_ENABLED)
+# Build with profiling support
+cargo build --features profile
 
-# Run target workload — the profiler captures instruction sequence statistics
-sf-nano-cli workload.wasm
+# Single workload — discover top 500 patterns from coremark
+cargo run --features profile --bin sf-nano-cli -- \
+  discover-fusion --top 500 --window 5 ./benchmarks/coremark/coremark.wasm
+
+# Output: handlers_fused_discovered.toml (in CWD)
 ```
 
-### Step 2: Discover (optional, only for custom fusion)
+To install the discovered patterns:
 
-The discovery tool analyzes profiled sequences through a multi-stage pipeline:
+```bash
+cp handlers_fused_discovered.toml sf-nano-core/src/vm/interp/fast/handlers_fused.toml
+cargo build --release
+```
 
-1. **Normalize** — aggregates all TOS variants (D1–D4) of each opcode together
-2. **Build pattern trie** — constructs an N-gram trie with counts for all prefix lengths
-3. **Filter** — removes patterns with control flow in the middle, more than one memory op,
+## discover-fusion CLI Reference
+
+```
+USAGE:
+  sf-nano-cli discover-fusion [OPTIONS] <wasm-file> [-- args...]
+  sf-nano-cli discover-fusion [OPTIONS] --workload <wasm> [args...] ...
+```
+
+### Options
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-w, --window <N>` | 4 | N-gram window size for profiling (2–8) |
+| `-n, --top <N>` | 32 | Maximum number of fusion candidates to output |
+| `--min-savings <N>` | 1000 | Minimum dispatch savings to include a candidate |
+| `-o, --output <PATH>` | `handlers_fused_discovered.toml` | Output TOML file path |
+| `--show-trie` | off | Print the pattern trie before discovery |
+| `--workload <WASM> [ARGS...]` | — | Add a workload to profile (repeatable) |
+| `-h, --help` | — | Print help message |
+
+### Single Workload
+
+Profile one WASM module. All arguments after the `.wasm` path (or after `--`) are
+passed to the WASM program:
+
+```bash
+sf-nano-cli discover-fusion --top 500 --window 5 coremark.wasm
+```
+
+### Multi-Workload Merging
+
+Profile multiple workloads and merge their statistics to discover patterns that
+generalize well across diverse programs:
+
+```bash
+sf-nano-cli discover-fusion --top 500 --window 5 \
+  --workload ./benchmarks/coremark/coremark.wasm \
+  --workload ./benchmarks/lua/lua.wasm benchmarks/lua/fib.lua
+```
+
+Each `--workload` flag starts a new workload. Arguments after the `.wasm` path
+(up to the next `--workload` or global option) are passed to that WASM program.
+
+**How merging works:**
+
+1. Each workload is profiled independently, capturing N-gram instruction sequences
+2. Raw counts are normalized to frequencies (count ÷ total instructions)
+3. Frequencies are averaged across all workloads
+4. Averaged frequencies are scaled back to absolute counts using the mean total
+
+This ensures:
+- Patterns common to all workloads are ranked highest
+- Workload-specific patterns are proportionally down-weighted
+- Workloads of different sizes contribute equally (frequency normalization)
+
+**Example output:**
+
+```
+=== Workload 1/2 ===
+Profiling: coremark.wasm (window size: 5)
+  22569788 instructions profiled
+
+=== Workload 2/2 ===
+Profiling: lua.wasm (window size: 5)
+  12997238 instructions profiled
+
+Merged (frequency-averaged): 17783513 virtual instructions
+```
+
+## Discovery Pipeline
+
+The discovery algorithm processes profiled traces through these stages:
+
+1. **Build pattern trie** — constructs an N-gram trie with counts for all prefix lengths
+2. **Filter** — removes patterns with control flow in the middle, more than one memory op,
    or encoding budgets exceeding 192 bits (3 × 64-bit immediate slots)
-4. **Validate TOS** — ensures the fused stack effect matches a supported pattern
-5. **Greedy select** — picks highest-savings patterns first, adjusting counts for prefix overlaps
-6. **Generate TOML** — writes `handlers_fused.toml` with encoding fields, TOS patterns, and names
+3. **Validate TOS** — ensures the fused stack effect matches a supported pattern
+4. **Greedy select** — picks highest-savings patterns first, adjusting counts for prefix overlaps
+5. **Generate TOML** — writes `[[fused]]` entries with encoding fields, TOS patterns, and names
 
-The discovery algorithm automatically:
+The algorithm automatically:
 - Computes stack effects by simulating push/pop through the sequence
 - Generates encoding field layouts (which immediates to pack, bit widths, source indices)
 - Names fused instructions by abbreviating constituent ops (e.g., `local_get + i32_const + i32_add` → `get_const_add`)
 - Handles name collisions with existing handlers
 
-### Step 3: Build
+## Build Integration
 
-Rebuild the project. The build system reads `handlers_fused.toml` and generates:
+The build system reads `handlers_fused.toml` and generates:
 
 | Output | Contents |
 |--------|----------|
@@ -80,10 +154,6 @@ Rebuild the project. The build system reads `handlers_fused.toml` and generates:
 | `fast_fusion_emit.rs` | `emit_fused()` dispatch, spill/fill helpers |
 | `fast_fused_handlers.inc` | C handler implementations |
 | `fast_c_wrappers.inc` | C `op_*` wrapper functions (fused section) |
-
-```bash
-cargo build --release
-```
 
 ## Performance vs Size Trade-off
 
@@ -99,13 +169,14 @@ Notes:
 - The `~1.1MB` full binary also includes `std` due to WASI support; if you do not need WASI,
   you can save several hundred KB.
 
-## Example: Top Patterns from Spec Tests
+## Example: Top Patterns from Coremark
 
 ```
-get_const        [local_get → i32_const]           2.9M dispatch savings
-get_get          [local_get → local_get]            2.0M dispatch savings
-set_get          [local_set → local_get]            1.8M dispatch savings
-get_const_add    [local_get → i32_const → i32_add]  1.8M dispatch savings
+get_const             [local_get → i32_const]                              1.8M savings (7.8%)
+get_get               [local_get → local_get]                              1.2M savings (5.2%)
+set_get               [local_set → local_get]                              1.1M savings (4.8%)
+get_const_add         [local_get → i32_const → i32_add]                    1.1M savings (4.8%)
+get_const_add_set_get [local_get → i32_const → i32_add → local_set → local_get]  1.0M savings (4.4%)
 ```
 
 ## Disabling Fusion

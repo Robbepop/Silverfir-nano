@@ -298,3 +298,47 @@ impl FastProfileStats {
         results
     }
 }
+
+/// Merge multiple workload stats by frequency averaging.
+///
+/// Each workload's counts are normalized to frequencies (count / total),
+/// then averaged across workloads, then scaled back to integer counts
+/// using the average total_instructions as the reference.
+pub fn merge_stats(all_stats: std::vec::Vec<FastProfileStats>) -> FastProfileStats {
+    if all_stats.len() == 1 {
+        return all_stats.into_iter().next().unwrap();
+    }
+
+    let n = all_stats.len() as f64;
+    let avg_total: u64 =
+        (all_stats.iter().map(|s| s.total_instructions).sum::<u64>() as f64 / n) as u64;
+    let max_window = all_stats.iter().map(|s| s.window_size).max().unwrap_or(2);
+
+    // Accumulate frequency sums per sequence key
+    let mut freq_sums: HashMap<SequenceKey, f64> = HashMap::new();
+    for stats in &all_stats {
+        let total = stats.total_instructions as f64;
+        if total == 0.0 {
+            continue;
+        }
+        for (key, &count) in &stats.sequences {
+            *freq_sums.entry(key.clone()).or_insert(0.0) += count as f64 / total;
+        }
+    }
+
+    // Average frequencies and scale to reference total
+    let mut merged = HashMap::new();
+    for (key, freq_sum) in freq_sums {
+        let avg_freq = freq_sum / n;
+        let count = (avg_freq * avg_total as f64) as u64;
+        if count > 0 {
+            merged.insert(key, count);
+        }
+    }
+
+    FastProfileStats {
+        total_instructions: avg_total,
+        window_size: max_window,
+        sequences: merged,
+    }
+}
