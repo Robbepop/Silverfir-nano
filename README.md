@@ -5,12 +5,12 @@ On Apple M4 CoreMark, Silverfir-nano reaches roughly **67%** of a single-pass JI
 
 ## Performance
 
-### CoreMark
-
 Test machine:
 - MacBook Air (`Mac16,12`)
 - Apple M4, 10 CPU cores, 16 GB memory
 - macOS 26.2 (build 25C56)
+
+### CoreMark
 
 ![CoreMark runtime comparison on Apple M4](benchmarks/coremark_m4.svg)
 
