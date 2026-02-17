@@ -3,7 +3,7 @@
 
 extern crate alloc;
 
-#[cfg(feature = "wasi")]
+#[cfg(any(feature = "wasi", feature = "std"))]
 extern crate std;
 
 // No-op log macros (compile to nothing)

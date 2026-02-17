@@ -18,6 +18,9 @@ use crate::error::WasmError;
 
 use alloc::vec::Vec;
 
+#[cfg(feature = "tos-stats")]
+use std::eprintln;
+
 /// Marker base for operand stack during compilation.
 /// Used to create placeholder values that are fixed up in finalizer.
 const OPERAND_BASE: usize = 16384;
@@ -154,9 +157,25 @@ impl<'a> OpcodeHandler for DispatchHandler<'a> {
             while let Some(op) = fuser.next()? {
                 match op {
                     FusedOp::Single { wasm_op, imm } => {
+                        #[cfg(feature = "tos-stats")]
+                        {
+                            let h = self.stack.height();
+                            let tc = self.stack.tos_count();
+                            let dv = self.stack.depth_variant();
+                            eprintln!("TOS h={} tos={} D{} | {:?}", h, tc, dv, wasm_op);
+                        }
                         dispatch_opcode(wasm_op, &imm, self.ctx, self.stack, self.emitter);
                     }
-                    fused => emit_fused(fused, self.stack, self.emitter),
+                    fused => {
+                        #[cfg(feature = "tos-stats")]
+                        {
+                            let h = self.stack.height();
+                            let tc = self.stack.tos_count();
+                            let dv = self.stack.depth_variant();
+                            eprintln!("TOS h={} tos={} D{} | fused:{:?}", h, tc, dv, fused);
+                        }
+                        emit_fused(fused, self.stack, self.emitter);
+                    }
                 }
             }
             return Ok(());
@@ -164,6 +183,13 @@ impl<'a> OpcodeHandler for DispatchHandler<'a> {
 
         // No fusion: emit one handler per Wasm opcode.
         while let Some(decoded) = stream.next()? {
+            #[cfg(feature = "tos-stats")]
+            {
+                let h = self.stack.height();
+                let tc = self.stack.tos_count();
+                let dv = self.stack.depth_variant();
+                eprintln!("TOS h={} tos={} D{} | {:?}", h, tc, dv, decoded.wasm_op);
+            }
             dispatch_opcode(decoded.wasm_op, &decoded.imm, self.ctx, self.stack, self.emitter);
         }
         Ok(())
@@ -190,6 +216,12 @@ pub fn decode_and_dispatch<'a>(
     stack: &'a mut StackTracker,
     emitter: &'a mut CodeEmitter,
 ) -> Result<(), WasmError> {
+    #[cfg(feature = "tos-stats")]
+    {
+        static FUNC_COUNTER: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(0);
+        let idx = FUNC_COUNTER.fetch_add(1, core::sync::atomic::Ordering::Relaxed);
+        eprintln!("=== FUNC {} ===", idx);
+    }
     let mut decoder = Decoder::new(code);
     let mut handler = DispatchHandler { ctx, stack, emitter };
     decoder.add_handler(&mut handler);

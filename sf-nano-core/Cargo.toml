@@ -18,6 +18,8 @@ wasi = []
 fusion = []
 spectest = []
 profile = []
+tos-stats = ["std"]
+std = []
 
 [build-dependencies]
 cc = "1.0"
