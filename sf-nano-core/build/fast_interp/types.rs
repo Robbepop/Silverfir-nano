@@ -198,7 +198,7 @@ pub trait HandlerVariantSource {
     fn c_impl(&self) -> bool;
 
     /// Get the dispatch mode.
-    fn dispatch(&self) -> &Option<DispatchMode>;
+    fn dispatch(&self) -> Option<DispatchMode>;
 
     /// Whether this handler needs D1-DN variant generation (PopPush pattern).
     fn needs_variants(&self) -> bool {
@@ -219,8 +219,8 @@ impl HandlerVariantSource for HandlerDef {
         self.c_impl
     }
 
-    fn dispatch(&self) -> &Option<DispatchMode> {
-        &self.dispatch
+    fn dispatch(&self) -> Option<DispatchMode> {
+        self.dispatch
     }
 }
 
@@ -237,8 +237,16 @@ impl HandlerVariantSource for FusedHandler {
         self.c_impl
     }
 
-    fn dispatch(&self) -> &Option<DispatchMode> {
-        &self.dispatch
+    fn dispatch(&self) -> Option<DispatchMode> {
+        // Fused patterns ending with br_if always need nonlinear dispatch:
+        // the taken branch target is never the next sequential instruction.
+        if self.dispatch.is_some() {
+            self.dispatch
+        } else if self.pattern.iter().any(|op| op == "br_if") {
+            Some(DispatchMode::Nonlinear)
+        } else {
+            None
+        }
     }
 }
 

@@ -318,6 +318,7 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 0 }
 variants = ["D1", "D2", "D3", "D4"]
+dispatch = "nonlinear"
 
 [[handler]]
 op = "br_table"

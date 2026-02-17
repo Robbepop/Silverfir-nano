@@ -14,7 +14,7 @@ use super::tos_config::tos_variant_names;
 use super::types::{DispatchMode, HandlersFile, HandlerVariantSource, TosPattern, TosPatternString};
 
 /// Check if a handler uses nonlinear dispatch (always reloads from np->handler).
-fn is_nonlinear(dispatch: &Option<DispatchMode>) -> bool {
+fn is_nonlinear(dispatch: Option<DispatchMode>) -> bool {
     matches!(dispatch, Some(DispatchMode::Nonlinear))
 }
 
