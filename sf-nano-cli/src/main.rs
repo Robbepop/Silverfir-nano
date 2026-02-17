@@ -44,7 +44,7 @@ fn main() {
 
     let ctx = WasiContextBuilder::new()
         .args(&wasi_args)
-        .preopen_dir("/", ".")
+        .preopen_dir(".", ".")
         .inherit_env()
         .build();
     set_wasi_ctx(ctx);
