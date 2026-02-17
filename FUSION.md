@@ -94,8 +94,8 @@ generalize well across diverse programs:
 
 ```bash
 sf-nano-cli discover-fusion --top 500 --window 5 \
-  --workload ./benchmarks/coremark/coremark.wasm \
-  --workload ./benchmarks/lua/lua.wasm benchmarks/lua/fib.lua
+  --workload ./app1.wasm \
+  --workload ./app2.wasm
 ```
 
 Each `--workload` flag starts a new workload. Arguments after the `.wasm` path
@@ -112,20 +112,6 @@ This ensures:
 - Patterns common to all workloads are ranked highest
 - Workload-specific patterns are proportionally down-weighted
 - Workloads of different sizes contribute equally (frequency normalization)
-
-**Example output:**
-
-```
-=== Workload 1/2 ===
-Profiling: coremark.wasm (window size: 5)
-  22569788 instructions profiled
-
-=== Workload 2/2 ===
-Profiling: lua.wasm (window size: 5)
-  12997238 instructions profiled
-
-Merged (frequency-averaged): 17783513 virtual instructions
-```
 
 ## Discovery Pipeline
 
