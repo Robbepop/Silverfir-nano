@@ -1,1 +1,0 @@
-cargo run --release --bin sf-cli -- --dir benchmarks/shootout benchmarks/shootout/lua.wasm -- benchmarks/shootout/fib.lua
