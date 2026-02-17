@@ -12,11 +12,11 @@ categories = ["wasm", "no-std"]
 paste = "1.0"
 
 [features]
-default = ["fusion"]
+default = []
 validate = []
 wasi = []
 fusion = []
-trace = []
+spectest = []
 profile = []
 
 [build-dependencies]
