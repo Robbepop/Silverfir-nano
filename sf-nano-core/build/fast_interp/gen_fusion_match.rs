@@ -1,7 +1,7 @@
 // Fusion pattern matching code generator.
 // Produces fast_fusion.rs: FusedOp enum, OpFuser struct, try_match_N, try_fuse_*.
 
-use super::op_classify::{immediate_variant, pattern_op_to_opcode, CategoryMap};
+use super::op_classify::{get_pop_push, has_branch, immediate_variant, is_tos_none, pattern_op_to_opcode, CategoryMap};
 use super::types::{bits_to_rust_type, to_pascal_case, FieldKind, FusedHandler};
 
 /// Generate empty stub when no fused entries exist.
@@ -21,7 +21,7 @@ pub fn generate_empty() -> String {
     code.push_str("    pub fn new(stream: &'s mut OpStream<'d, 'a, 'b>) -> Self {\n");
     code.push_str("        Self { stream }\n");
     code.push_str("    }\n\n");
-    code.push_str("    pub fn next(&mut self) -> Result<Option<FusedOp>, crate::WasmError> {\n");
+    code.push_str("    pub fn next(&mut self, _stack: &StackTracker) -> Result<Option<FusedOp>, crate::WasmError> {\n");
     code.push_str("        match self.stream.next()? {\n");
     code.push_str("            Some(decoded) => Ok(Some(FusedOp::Single {\n");
     code.push_str("                wasm_op: decoded.wasm_op,\n");
@@ -92,7 +92,7 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
 
     // --- next() method ---
     code.push_str("    /// Get the next operation (fused or single).\n");
-    code.push_str("    pub fn next(&mut self) -> Result<Option<FusedOp>, WasmError> {\n");
+    code.push_str("    pub fn next(&mut self, stack: &StackTracker) -> Result<Option<FusedOp>, WasmError> {\n");
     code.push_str("        if self.stream.peek()?.is_none() {\n");
     code.push_str("            return Ok(None);\n");
     code.push_str("        }\n\n");
@@ -112,10 +112,17 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     for (len, group) in &by_length {
         code.push_str(&format!("        // {}-way patterns\n", len));
         for fused in group {
-            code.push_str(&format!(
-                "        if let Some(fused) = self.try_fuse_{}()? {{\n",
-                fused.op
-            ));
+            if has_branch(fused) {
+                code.push_str(&format!(
+                    "        if let Some(fused) = self.try_fuse_{}(stack)? {{\n",
+                    fused.op
+                ));
+            } else {
+                code.push_str(&format!(
+                    "        if let Some(fused) = self.try_fuse_{}()? {{\n",
+                    fused.op
+                ));
+            }
             code.push_str("            return Ok(Some(fused));\n");
             code.push_str("        }\n");
         }
@@ -191,15 +198,23 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
     let variant = to_pascal_case(&fused.op);
     let n = fused.pattern.len();
     let fields = fused.get_fields();
+    let is_br = has_branch(fused);
 
     code.push_str(&format!(
         "    /// Pattern: {}\n",
         fused.pattern.join(" -> ")
     ));
-    code.push_str(&format!(
-        "    fn try_fuse_{}(&mut self) -> Result<Option<FusedOp>, WasmError> {{\n",
-        fused.op
-    ));
+    if is_br {
+        code.push_str(&format!(
+            "    fn try_fuse_{}(&mut self, stack: &StackTracker) -> Result<Option<FusedOp>, WasmError> {{\n",
+            fused.op
+        ));
+    } else {
+        code.push_str(&format!(
+            "    fn try_fuse_{}(&mut self) -> Result<Option<FusedOp>, WasmError> {{\n",
+            fused.op
+        ));
+    }
     code.push_str("        use Opcode::*;\n");
 
     // Build the opcode array
@@ -284,6 +299,25 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
                 _ => panic!("Unhandled immediate variant: {}", imm_variant),
             }
         }
+    }
+
+    // For br_if patterns, check simplicity before consuming
+    if is_br {
+        let tos_none = is_tos_none(fused);
+        let (pop, push) = get_pop_push(fused);
+        let height_expr = if tos_none {
+            // TOS None means (0, 0) net effect from the non-br_if ops
+            "stack.height() + 1".to_string()
+        } else {
+            format!("stack.height() + {} - {} + 1", push, pop)
+        };
+        code.push_str(&format!(
+            "        let height_at_brif = {};\n",
+            height_expr
+        ));
+        code.push_str("        if !stack.is_br_if_simple_at(target_label, height_at_brif) {\n");
+        code.push_str("            return Ok(None);\n");
+        code.push_str("        }\n");
     }
 
     // All checks passed — consume the matched instructions and build the variant

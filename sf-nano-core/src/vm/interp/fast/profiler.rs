@@ -181,8 +181,17 @@ pub unsafe extern "C" fn fast_profile_record(name: *const core::ffi::c_char) {
     record_impl(interned);
 }
 
+/// Normalize handler names so profiler data matches the discovery pipeline.
+fn normalize_handler_name(name: &'static str) -> &'static str {
+    match name {
+        "br_if_simple" => "br_if",
+        _ => name,
+    }
+}
+
 fn record_impl(name: &'static str) {
     TOTAL_INSTRUCTIONS.fetch_add(1, Ordering::Relaxed);
+    let name = normalize_handler_name(name);
 
     WINDOW.with(|w| {
         if let Some(key) = w.borrow_mut().push(name) {

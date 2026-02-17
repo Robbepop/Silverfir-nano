@@ -183,7 +183,7 @@ pub fn tos_supported(pattern: &[&str]) -> bool {
         TosPattern::None => true,
         TosPattern::PopPush(pop, push) => matches!(
             (pop, push),
-            (0, 1) | (0, 2) | (0, 3) | (1, 1) | (1, 2) | (2, 0) | (2, 1) | (2, 2)
+            (0, 1) | (0, 2) | (0, 3) | (1, 0) | (1, 1) | (1, 2) | (2, 0) | (2, 1) | (2, 2)
         ),
     }
 }
@@ -435,10 +435,6 @@ pub fn discover(trie: &PatternTrie, config: &DiscoveryConfig) -> Vec<FusionCandi
 pub fn format_toml_entry(candidate: &FusionCandidate) -> String {
     let mut out = String::new();
 
-    out.push_str(&std::format!(
-        "# Auto-discovered: count={}, savings={} dispatches\n",
-        candidate.effective_count, candidate.savings
-    ));
     out.push_str("[[fused]]\n");
     out.push_str(&std::format!("op = \"{}\"\n", candidate.name));
 

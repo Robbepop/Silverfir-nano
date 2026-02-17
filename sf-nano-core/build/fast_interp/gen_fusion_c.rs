@@ -17,6 +17,7 @@ fn impl_params_name(fused: &FusedHandler) -> &'static str {
         (0, 1) => "IMPL_PARAMS_POP0_PUSH1",
         (0, 2) => "IMPL_PARAMS_POP0_PUSH2",
         (0, 3) => "IMPL_PARAMS_POP0_PUSH3",
+        (1, 0) => "IMPL_PARAMS_POP1_PUSH0",
         (1, 1) => "IMPL_PARAMS_POP1_PUSH1",
         (1, 2) => "IMPL_PARAMS_POP1_PUSH2",
         (2, 0) => "IMPL_PARAMS_POP2_PUSH0",

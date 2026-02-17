@@ -83,6 +83,37 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     code.push_str("}\n\n");
 
     code.push_str("#[inline]\n");
+    code.push_str("fn emit_spill_all_for_branch(stack: &mut StackTracker, emitter: &mut CodeEmitter) {\n");
+    code.push_str("    if stack.is_unreachable() {\n");
+    code.push_str("        return;\n");
+    code.push_str("    }\n");
+    code.push_str("    let tos_count = stack.tos_count();\n");
+    code.push_str("    if tos_count > 0 {\n");
+    code.push_str("        let height = stack.height();\n");
+    code.push_str("        let slot = (stack.operand_base() + height - 1) as u16;\n");
+    code.push_str("        let variant = ((height - 1) % TOS_REGISTER_COUNT) as u8;\n");
+    code.push_str("        stack.record_spill(tos_count);\n");
+    code.push_str("        emitter.emit_spill(slot, tos_count as u8, variant);\n");
+    code.push_str("    }\n");
+    code.push_str("}\n\n");
+
+    code.push_str("#[inline]\n");
+    code.push_str("fn emit_spill_all_except_top_for_branch(stack: &mut StackTracker, emitter: &mut CodeEmitter, keep_top: usize) {\n");
+    code.push_str("    if stack.is_unreachable() {\n");
+    code.push_str("        return;\n");
+    code.push_str("    }\n");
+    code.push_str("    let tos_count = stack.tos_count();\n");
+    code.push_str("    let to_spill = tos_count.saturating_sub(keep_top);\n");
+    code.push_str("    if to_spill > 0 {\n");
+    code.push_str("        let spill_depth = stack.spill_depth();\n");
+    code.push_str("        let slot = (stack.operand_base() + spill_depth + to_spill - 1) as u16;\n");
+    code.push_str("        let variant = ((spill_depth + to_spill - 1) % TOS_REGISTER_COUNT) as u8;\n");
+    code.push_str("        stack.record_spill(to_spill);\n");
+    code.push_str("        emitter.emit_spill(slot, to_spill as u8, variant);\n");
+    code.push_str("    }\n");
+    code.push_str("}\n\n");
+
+    code.push_str("#[inline]\n");
     code.push_str("fn variant_index(output_depth: usize) -> usize {\n");
     code.push_str("    (output_depth + TOS_REGISTER_COUNT - 1) % TOS_REGISTER_COUNT\n");
     code.push_str("}\n\n");
@@ -153,6 +184,11 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             .map(|f| f.name.clone())
             .collect();
 
+        // For branch patterns, spill all TOS values to memory before the handler
+        if has_br {
+            code.push_str("            emit_spill_all_for_branch(stack, emitter);\n");
+        }
+
         // Emit instruction — for "none" patterns, the emitter method doesn't take a handler
         code.push_str(&format!(
             "            let idx = emitter.emit_fused_{}({});\n",
@@ -182,10 +218,18 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
                 pop
             ));
         }
+
+        if has_br {
+            // For branch patterns: spill all except the operands the handler reads from TOS
+            code.push_str("            let tos_before_spill = stack.tos_count();\n");
+            code.push_str(&format!(
+                "            emit_spill_all_except_top_for_branch(stack, emitter, {});\n",
+                pop
+            ));
+        }
+
         if push > pop {
             // Net push — need spill for extra pushes
-            // But if pop > 0, we might need fill first THEN spill
-            // The original code does fill then spill in some cases (tee_xor_get)
             let net_push = (push - pop) as usize;
             code.push_str(&format!(
                 "            emit_spills_for_net_push(stack, emitter, {});\n",
@@ -236,6 +280,14 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             for _ in 0..net {
                 code.push_str("            stack.push();\n");
             }
+        }
+
+        // For branch patterns: restore TOS tracking after pop
+        if has_br {
+            code.push_str(&format!(
+                "            stack.record_fill(tos_before_spill.saturating_sub({}));\n",
+                pop
+            ));
         }
 
         // Handle branch target

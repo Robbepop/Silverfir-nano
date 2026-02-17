@@ -3,7 +3,6 @@
 # =============================================================================
 # Regenerate: sf-nano-cli discover-fusion <wasm-file>
 
-# Auto-discovered: count=1360186, savings=1360186 dispatches
 [[fused]]
 op = "get_const"
 pattern = ["local_get", "i32_const"]
@@ -14,7 +13,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=268315, savings=1073260 dispatches
 [[fused]]
 op = "get_const_add_set_get"
 pattern = ["local_get", "i32_const", "i32_add", "local_set", "local_get"]
@@ -27,7 +25,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=1067930, savings=1067930 dispatches
 [[fused]]
 op = "set_get"
 pattern = ["local_set", "local_get"]
@@ -38,7 +35,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=70458, savings=211374 dispatches
 [[fused]]
 op = "get_const_add_set"
 pattern = ["local_get", "i32_const", "i32_add", "local_set"]
@@ -50,7 +46,6 @@ encoding.fields = [
 ]
 tos_pattern = "none"
 
-# Auto-discovered: count=335995, savings=1007985 dispatches
 [[fused]]
 op = "const_add_set_get"
 pattern = ["i32_const", "i32_add", "local_set", "local_get"]
@@ -62,7 +57,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=136841, savings=273682 dispatches
 [[fused]]
 op = "get_const_add"
 pattern = ["local_get", "i32_const", "i32_add"]
@@ -73,7 +67,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=938015, savings=938015 dispatches
 [[fused]]
 op = "get_get"
 pattern = ["local_get", "local_get"]
@@ -84,7 +77,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=293832, savings=881496 dispatches
 [[fused]]
 op = "const_shr_u_const_and"
 pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and"]
@@ -95,7 +87,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=430098, savings=860196 dispatches
 [[fused]]
 op = "add_set_get"
 pattern = ["i32_add", "local_set", "local_get"]
@@ -106,7 +97,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=485928, savings=485928 dispatches
 [[fused]]
 op = "const_add"
 pattern = ["i32_const", "i32_add"]
@@ -116,7 +106,28 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=199589, savings=798356 dispatches
+[[fused]]
+op = "const_add_set"
+pattern = ["i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "set_get_const_add_set"
+pattern = ["local_set", "local_get", "i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_const_shr_u_const_and"
 pattern = ["local_get", "i32_const", "i32_shr_u", "i32_const", "i32_and"]
@@ -128,7 +139,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=253266, savings=759798 dispatches
 [[fused]]
 op = "set_get_const_add"
 pattern = ["local_set", "local_get", "i32_const", "i32_add"]
@@ -140,7 +150,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=110876, savings=221752 dispatches
 [[fused]]
 op = "set_get_const"
 pattern = ["local_set", "local_get", "i32_const"]
@@ -152,7 +161,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=351138, savings=702276 dispatches
 [[fused]]
 op = "get_get_const"
 pattern = ["local_get", "local_get", "i32_const"]
@@ -164,7 +172,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=29950, savings=89850 dispatches
 [[fused]]
 op = "get_const_shr_u_const"
 pattern = ["local_get", "i32_const", "i32_shr_u", "i32_const"]
@@ -176,7 +183,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=171595, savings=686380 dispatches
 [[fused]]
 op = "add_set_get_const_add"
 pattern = ["i32_add", "local_set", "local_get", "i32_const", "i32_add"]
@@ -188,7 +194,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=46261, savings=138783 dispatches
 [[fused]]
 op = "add_set_get_const"
 pattern = ["i32_add", "local_set", "local_get", "i32_const"]
@@ -200,7 +205,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=29949, savings=59898 dispatches
 [[fused]]
 op = "const_shr_u_const"
 pattern = ["i32_const", "i32_shr_u", "i32_const"]
@@ -211,7 +215,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=161214, savings=644856 dispatches
 [[fused]]
 op = "const_add_set_get_const"
 pattern = ["i32_const", "i32_add", "local_set", "local_get", "i32_const"]
@@ -224,7 +227,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=622521, savings=622521 dispatches
 [[fused]]
 op = "const_and"
 pattern = ["i32_const", "i32_and"]
@@ -234,7 +236,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=293974, savings=587948 dispatches
 [[fused]]
 op = "shr_u_const_and"
 pattern = ["i32_shr_u", "i32_const", "i32_and"]
@@ -244,7 +245,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=54932, savings=109864 dispatches
 [[fused]]
 op = "get_const_shr_u"
 pattern = ["local_get", "i32_const", "i32_shr_u"]
@@ -255,7 +255,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=183739, savings=551217 dispatches
 [[fused]]
 op = "get_get_const_shr_u"
 pattern = ["local_get", "local_get", "i32_const", "i32_shr_u"]
@@ -267,7 +266,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=134796, savings=539184 dispatches
 [[fused]]
 op = "get_get_const_shr_u_const"
 pattern = ["local_get", "local_get", "i32_const", "i32_shr_u", "i32_const"]
@@ -280,7 +278,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=527010, savings=527010 dispatches
 [[fused]]
 op = "get_load"
 pattern = ["local_get", "i32_load"]
@@ -291,7 +288,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=259451, savings=518902 dispatches
 [[fused]]
 op = "const_shl_add"
 pattern = ["i32_const", "i32_shl", "i32_add"]
@@ -301,7 +297,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=259180, savings=518360 dispatches
 [[fused]]
 op = "get_set_get"
 pattern = ["local_get", "local_set", "local_get"]
@@ -313,7 +308,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=151612, savings=454836 dispatches
 [[fused]]
 op = "get_get_store_get"
 pattern = ["local_get", "local_get", "i32_store", "local_get"]
@@ -326,7 +320,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=216968, savings=433936 dispatches
 [[fused]]
 op = "const_add_tee"
 pattern = ["i32_const", "i32_add", "local_tee"]
@@ -337,7 +330,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=106041, savings=424164 dispatches
 [[fused]]
 op = "get_get_const_shl_add"
 pattern = ["local_get", "local_get", "i32_const", "i32_shl", "i32_add"]
@@ -349,7 +341,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=138798, savings=416394 dispatches
 [[fused]]
 op = "const_add_tee_const"
 pattern = ["i32_const", "i32_add", "local_tee", "i32_const"]
@@ -361,7 +352,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=68137, savings=68137 dispatches
 [[fused]]
 op = "const_shr_u"
 pattern = ["i32_const", "i32_shr_u"]
@@ -371,19 +361,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=195571, savings=391142 dispatches
-[[fused]]
-op = "load_set_get"
-pattern = ["i32_load", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=130362, savings=391086 dispatches
 [[fused]]
 op = "get_set_get_const"
 pattern = ["local_get", "local_set", "local_get", "i32_const"]
@@ -396,18 +373,28 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=97392, savings=389568 dispatches
 [[fused]]
-op = "const_shr_u_const_and_add"
-pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_add"]
+op = "load_set_get"
+pattern = ["i32_load", "local_set", "local_get"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=97379, savings=389516 dispatches
+[[fused]]
+op = "add_tee_const_le_u_brif"
+pattern = ["i32_add", "local_tee", "i32_const", "i32_le_u", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
 [[fused]]
 op = "const_add_tee_const_le_u"
 pattern = ["i32_const", "i32_add", "local_tee", "i32_const", "i32_le_u"]
@@ -419,7 +406,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=187011, savings=374022 dispatches
+[[fused]]
+op = "const_shr_u_const_and_add"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "get_const_and"
 pattern = ["local_get", "i32_const", "i32_and"]
@@ -430,7 +426,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=122548, savings=367644 dispatches
 [[fused]]
 op = "set_get_set_get"
 pattern = ["local_set", "local_get", "local_set", "local_get"]
@@ -443,7 +438,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=121117, savings=363351 dispatches
 [[fused]]
 op = "get_load_set_get"
 pattern = ["local_get", "i32_load", "local_set", "local_get"]
@@ -456,7 +450,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=89737, savings=358948 dispatches
 [[fused]]
 op = "const_shr_u_const_and_tee"
 pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "local_tee"]
@@ -468,7 +461,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=94534, savings=94534 dispatches
 [[fused]]
 op = "const_shl"
 pattern = ["i32_const", "i32_shl"]
@@ -478,18 +470,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=347745, savings=347745 dispatches
-[[fused]]
-op = "tee_const"
-pattern = ["local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=9831, savings=29493 dispatches
 [[fused]]
 op = "get_get_const_shl"
 pattern = ["local_get", "local_get", "i32_const", "i32_shl"]
@@ -501,7 +481,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=86302, savings=345208 dispatches
+[[fused]]
+op = "tee_const"
+pattern = ["local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
 [[fused]]
 op = "tee_const_shr_u_const_and"
 pattern = ["local_tee", "i32_const", "i32_shr_u", "i32_const", "i32_and"]
@@ -513,21 +502,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=84331, savings=337324 dispatches
-[[fused]]
-op = "get_load_set_get_set"
-pattern = ["local_get", "i32_load", "local_set", "local_get", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = "none"
-
-# Auto-discovered: count=84331, savings=337324 dispatches
 [[fused]]
 op = "load_set_get_set_get"
 pattern = ["i32_load", "local_set", "local_get", "local_set", "local_get"]
@@ -541,7 +515,19 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=168050, savings=336100 dispatches
+[[fused]]
+op = "get_load_set_get_set"
+pattern = ["local_get", "i32_load", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "const_and_const"
 pattern = ["i32_const", "i32_and", "i32_const"]
@@ -552,7 +538,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=82516, savings=330064 dispatches
+[[fused]]
+op = "const_set_get_eqz_brif"
+pattern = ["i32_const", "local_set", "local_get", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "const_add_load_const_add"
 pattern = ["i32_const", "i32_add", "i32_load", "i32_const", "i32_add"]
@@ -564,7 +561,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=82411, savings=329644 dispatches
 [[fused]]
 op = "load_const_add_tee_const"
 pattern = ["i32_load", "i32_const", "i32_add", "local_tee", "i32_const"]
@@ -577,7 +573,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=82368, savings=329472 dispatches
 [[fused]]
 op = "const_shl_const_add_load"
 pattern = ["i32_const", "i32_shl", "i32_const", "i32_add", "i32_load"]
@@ -589,54 +584,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=82365, savings=329460 dispatches
-[[fused]]
-op = "and_const_shl_const_add"
-pattern = ["i32_and", "i32_const", "i32_shl", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=82365, savings=329460 dispatches
-[[fused]]
-op = "const_and_const_shl_const"
-pattern = ["i32_const", "i32_and", "i32_const", "i32_shl", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=82365, savings=329460 dispatches
-[[fused]]
-op = "get_const_and_const_shl"
-pattern = ["local_get", "i32_const", "i32_and", "i32_const", "i32_shl"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=82365, savings=329460 dispatches
-[[fused]]
-op = "add_load_const_add_tee"
-pattern = ["i32_add", "i32_load", "i32_const", "i32_add", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "local_idx", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=82365, savings=329460 dispatches
 [[fused]]
 op = "shl_const_add_load_const"
 pattern = ["i32_shl", "i32_const", "i32_add", "i32_load", "i32_const"]
@@ -648,7 +595,49 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=29949, savings=29949 dispatches
+[[fused]]
+op = "get_const_and_const_shl"
+pattern = ["local_get", "i32_const", "i32_and", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "and_const_shl_const_add"
+pattern = ["i32_and", "i32_const", "i32_shl", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "add_load_const_add_tee"
+pattern = ["i32_add", "i32_load", "i32_const", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "const_and_const_shl_const"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_shl", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
 [[fused]]
 op = "shr_u_const"
 pattern = ["i32_shr_u", "i32_const"]
@@ -658,7 +647,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=323597, savings=323597 dispatches
 [[fused]]
 op = "add_tee"
 pattern = ["i32_add", "local_tee"]
@@ -668,7 +656,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=106295, savings=318885 dispatches
 [[fused]]
 op = "get_const_shl_add"
 pattern = ["local_get", "i32_const", "i32_shl", "i32_add"]
@@ -679,7 +666,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=5680, savings=11360 dispatches
 [[fused]]
 op = "get_get_store"
 pattern = ["local_get", "local_get", "i32_store"]
@@ -691,7 +677,6 @@ encoding.fields = [
 ]
 tos_pattern = "none"
 
-# Auto-discovered: count=78340, savings=313360 dispatches
 [[fused]]
 op = "set_get_set_get_const"
 pattern = ["local_set", "local_get", "local_set", "local_get", "i32_const"]
@@ -705,7 +690,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=156442, savings=312884 dispatches
 [[fused]]
 op = "set_get_get"
 pattern = ["local_set", "local_get", "local_get"]
@@ -717,7 +701,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=77001, savings=308004 dispatches
 [[fused]]
 op = "get_set_get_const_add"
 pattern = ["local_get", "local_set", "local_get", "i32_const", "i32_add"]
@@ -730,7 +713,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=153336, savings=306672 dispatches
 [[fused]]
 op = "get_store_get"
 pattern = ["local_get", "i32_store", "local_get"]
@@ -742,7 +724,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=152611, savings=305222 dispatches
 [[fused]]
 op = "get_load_tee"
 pattern = ["local_get", "i32_load", "local_tee"]
@@ -754,7 +735,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=17594, savings=52782 dispatches
 [[fused]]
 op = "get_const_and_const"
 pattern = ["local_get", "i32_const", "i32_and", "i32_const"]
@@ -766,7 +746,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=74205, savings=296820 dispatches
 [[fused]]
 op = "get_tee_load_set_get"
 pattern = ["local_get", "local_tee", "i32_load", "local_set", "local_get"]
@@ -780,7 +759,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=73917, savings=295668 dispatches
 [[fused]]
 op = "get_const_add_tee_get"
 pattern = ["local_get", "i32_const", "i32_add", "local_tee", "local_get"]
@@ -793,18 +771,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=97379, savings=292137 dispatches
 [[fused]]
-op = "add_tee_const_le_u"
-pattern = ["i32_add", "local_tee", "i32_const", "i32_le_u"]
+op = "tee_const_le_u_brif"
+pattern = ["local_tee", "i32_const", "i32_le_u", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=72681, savings=290724 dispatches
 [[fused]]
 op = "set_get_get_store_get"
 pattern = ["local_set", "local_get", "local_get", "i32_store", "local_get"]
@@ -818,7 +795,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=72437, savings=289748 dispatches
 [[fused]]
 op = "get_store_get_set_get"
 pattern = ["local_get", "i32_store", "local_get", "local_set", "local_get"]
@@ -832,7 +808,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=72437, savings=289748 dispatches
 [[fused]]
 op = "get_get_store_get_set"
 pattern = ["local_get", "local_get", "i32_store", "local_get", "local_set"]
@@ -846,7 +821,19 @@ encoding.fields = [
 ]
 tos_pattern = "none"
 
-# Auto-discovered: count=72368, savings=289472 dispatches
+[[fused]]
+op = "store_get_set_get_brif"
+pattern = ["i32_store", "local_get", "local_set", "local_get", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
 [[fused]]
 op = "tee_load_set_get_get"
 pattern = ["local_tee", "i32_load", "local_set", "local_get", "local_get"]
@@ -860,7 +847,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=71912, savings=287648 dispatches
 [[fused]]
 op = "get_mul_const_shl_add"
 pattern = ["local_get", "i32_mul", "i32_const", "i32_shl", "i32_add"]
@@ -871,7 +857,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=43413, savings=86826 dispatches
 [[fused]]
 op = "add_tee_const"
 pattern = ["i32_add", "local_tee", "i32_const"]
@@ -882,7 +867,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=70032, savings=280128 dispatches
 [[fused]]
 op = "const_add_set_get_load"
 pattern = ["i32_const", "i32_add", "local_set", "local_get", "i32_load"]
@@ -895,7 +879,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=139900, savings=279800 dispatches
 [[fused]]
 op = "set_get_load"
 pattern = ["local_set", "local_get", "i32_load"]
@@ -907,7 +890,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=276745, savings=276745 dispatches
 [[fused]]
 op = "load_tee"
 pattern = ["i32_load", "local_tee"]
@@ -918,7 +900,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=67351, savings=269404 dispatches
 [[fused]]
 op = "shr_u_const_and_tee_const"
 pattern = ["i32_shr_u", "i32_const", "i32_and", "local_tee", "i32_const"]
@@ -930,7 +911,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=22383, savings=67149 dispatches
 [[fused]]
 op = "shr_u_const_and_tee"
 pattern = ["i32_shr_u", "i32_const", "i32_and", "local_tee"]
@@ -941,7 +921,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=125628, savings=251256 dispatches
 [[fused]]
 op = "add_tee_get"
 pattern = ["i32_add", "local_tee", "local_get"]
@@ -952,7 +931,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=41924, savings=83848 dispatches
 [[fused]]
 op = "load_const_add"
 pattern = ["i32_load", "i32_const", "i32_add"]
@@ -963,7 +941,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=468, savings=1404 dispatches
+[[fused]]
+op = "set_get_eqz_brif"
+pattern = ["local_set", "local_get", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "const_shl_const_add"
 pattern = ["i32_const", "i32_shl", "i32_const", "i32_add"]
@@ -974,7 +962,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=82612, savings=247836 dispatches
 [[fused]]
 op = "const_and_tee_const"
 pattern = ["i32_const", "i32_and", "local_tee", "i32_const"]
@@ -986,19 +973,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=82547, savings=247641 dispatches
-[[fused]]
-op = "const_set_get_eqz"
-pattern = ["i32_const", "local_set", "local_get", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=6598, savings=19794 dispatches
 [[fused]]
 op = "get_const_add_tee"
 pattern = ["local_get", "i32_const", "i32_add", "local_tee"]
@@ -1010,7 +984,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=239609, savings=239609 dispatches
 [[fused]]
 op = "store_get"
 pattern = ["i32_store", "local_get"]
@@ -1021,7 +994,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=11517, savings=23034 dispatches
 [[fused]]
 op = "get_const_shl"
 pattern = ["local_get", "i32_const", "i32_shl"]
@@ -1032,7 +1004,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=31328, savings=62656 dispatches
 [[fused]]
 op = "const_set_get"
 pattern = ["i32_const", "local_set", "local_get"]
@@ -1044,7 +1015,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=1962, savings=5886 dispatches
 [[fused]]
 op = "tee_load_set_get"
 pattern = ["local_tee", "i32_load", "local_set", "local_get"]
@@ -1057,7 +1027,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=74009, savings=222027 dispatches
 [[fused]]
 op = "const_add_tee_get"
 pattern = ["i32_const", "i32_add", "local_tee", "local_get"]
@@ -1069,7 +1038,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=73235, savings=219705 dispatches
 [[fused]]
 op = "load_set_get_get"
 pattern = ["i32_load", "local_set", "local_get", "local_get"]
@@ -1082,7 +1050,29 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=54700, savings=218800 dispatches
+[[fused]]
+op = "get_set_get_brif"
+pattern = ["local_get", "local_set", "local_get", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
+
+[[fused]]
+op = "add_tee_get_ne_brif"
+pattern = ["i32_add", "local_tee", "local_get", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
 [[fused]]
 op = "const_add_tee_get_ne"
 pattern = ["i32_const", "i32_add", "local_tee", "local_get", "i32_ne"]
@@ -1094,7 +1084,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=72762, savings=218286 dispatches
 [[fused]]
 op = "const_shl_add_load16_s"
 pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_s"]
@@ -1105,20 +1094,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=72557, savings=217671 dispatches
-[[fused]]
-op = "store_get_set_get"
-pattern = ["i32_store", "local_get", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=23453, savings=46906 dispatches
 [[fused]]
 op = "const_and_tee"
 pattern = ["i32_const", "i32_and", "local_tee"]
@@ -1129,7 +1104,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=70264, savings=210792 dispatches
 [[fused]]
 op = "set_const_set_get"
 pattern = ["local_set", "i32_const", "local_set", "local_get"]
@@ -1142,7 +1116,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=70054, savings=210162 dispatches
 [[fused]]
 op = "add_set_get_load"
 pattern = ["i32_add", "local_set", "local_get", "i32_load"]
@@ -1154,7 +1127,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=52508, savings=210032 dispatches
 [[fused]]
 op = "add_set_get_load_set"
 pattern = ["i32_add", "local_set", "local_get", "i32_load", "local_set"]
@@ -1167,7 +1139,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=52434, savings=209736 dispatches
 [[fused]]
 op = "set_get_get_const_shr_u"
 pattern = ["local_set", "local_get", "local_get", "i32_const", "i32_shr_u"]
@@ -1180,7 +1151,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=52410, savings=209640 dispatches
 [[fused]]
 op = "set_const_set_get_eqz"
 pattern = ["local_set", "i32_const", "local_set", "local_get", "i32_eqz"]
@@ -1193,7 +1163,41 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=51733, savings=206932 dispatches
+[[fused]]
+op = "set_get_load_set"
+pattern = ["local_set", "local_get", "i32_load", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "tee_load_set"
+pattern = ["local_tee", "i32_load", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "get_load_tee_brif"
+pattern = ["local_get", "i32_load", "local_tee", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "const_add_set_get_load8_u"
 pattern = ["i32_const", "i32_add", "local_set", "local_get", "i32_load8_u"]
@@ -1206,7 +1210,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=68932, savings=206796 dispatches
 [[fused]]
 op = "const_shl_add_load16_u"
 pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_u"]
@@ -1217,7 +1220,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=51632, savings=206528 dispatches
+[[fused]]
+op = "set_get_const_ne_brif"
+pattern = ["local_set", "local_get", "i32_const", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_set_get_const_ne"
 pattern = ["local_get", "local_set", "local_get", "i32_const", "i32_ne"]
@@ -1230,7 +1244,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=51631, savings=206524 dispatches
 [[fused]]
 op = "add_set_get_load8_u_tee"
 pattern = ["i32_add", "local_set", "local_get", "i32_load8_u", "local_tee"]
@@ -1243,7 +1256,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=67400, savings=202200 dispatches
+[[fused]]
+op = "get_const_ne_brif"
+pattern = ["local_get", "i32_const", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "const_and_add_tee"
 pattern = ["i32_const", "i32_and", "i32_add", "local_tee"]
@@ -1254,7 +1277,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=100551, savings=201102 dispatches
 [[fused]]
 op = "get_get_get"
 pattern = ["local_get", "local_get", "local_get"]
@@ -1266,7 +1288,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=16050, savings=32100 dispatches
 [[fused]]
 op = "const_add_load"
 pattern = ["i32_const", "i32_add", "i32_load"]
@@ -1277,17 +1298,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=30052, savings=60104 dispatches
-[[fused]]
-op = "const_and_add"
-pattern = ["i32_const", "i32_and", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=194827, savings=194827 dispatches
 [[fused]]
 op = "tee_get"
 pattern = ["local_tee", "local_get"]
@@ -1298,18 +1308,35 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=97378, savings=194756 dispatches
 [[fused]]
-op = "tee_const_le_u"
-pattern = ["local_tee", "i32_const", "i32_le_u"]
+op = "const_and_add"
+pattern = ["i32_const", "i32_and", "i32_add"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "const_val", bits = 32, from = 0 },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=48628, savings=194512 dispatches
+[[fused]]
+op = "const_le_u_brif"
+pattern = ["i32_const", "i32_le_u", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "const_set"
+pattern = ["i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "set_get_const_add_tee"
 pattern = ["local_set", "local_get", "i32_const", "i32_add", "local_tee"]
@@ -1322,18 +1349,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=80379, savings=80379 dispatches
-[[fused]]
-op = "const_set"
-pattern = ["i32_const", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = "none"
-
-# Auto-discovered: count=47412, savings=189648 dispatches
 [[fused]]
 op = "set_get_load_set_get"
 pattern = ["local_set", "local_get", "i32_load", "local_set", "local_get"]
@@ -1347,7 +1362,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=46954, savings=187816 dispatches
+[[fused]]
+op = "get_eqz_brif"
+pattern = ["local_get", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "get_get_store_get_get"
 pattern = ["local_get", "local_get", "i32_store", "local_get", "local_get"]
@@ -1361,7 +1385,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=46357, savings=185428 dispatches
 [[fused]]
 op = "get_const_sub_const_and"
 pattern = ["local_get", "i32_const", "i32_sub", "i32_const", "i32_and"]
@@ -1373,7 +1396,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=46351, savings=185404 dispatches
 [[fused]]
 op = "const_sub_const_and_const"
 pattern = ["i32_const", "i32_sub", "i32_const", "i32_and", "i32_const"]
@@ -1385,7 +1407,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=92461, savings=184922 dispatches
 [[fused]]
 op = "set_get_eqz"
 pattern = ["local_set", "local_get", "i32_eqz"]
@@ -1396,7 +1417,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=45434, savings=181736 dispatches
 [[fused]]
 op = "const_add_set_get_get"
 pattern = ["i32_const", "i32_add", "local_set", "local_get", "local_get"]
@@ -1409,7 +1429,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=44888, savings=179552 dispatches
 [[fused]]
 op = "and_tee_const_xor_get"
 pattern = ["i32_and", "local_tee", "i32_const", "i32_xor", "local_get"]
@@ -1421,7 +1440,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=44888, savings=179552 dispatches
 [[fused]]
 op = "const_and_tee_const_xor"
 pattern = ["i32_const", "i32_and", "local_tee", "i32_const", "i32_xor"]
@@ -1433,7 +1451,26 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=87353, savings=87353 dispatches
+[[fused]]
+op = "eqz_brif"
+pattern = ["i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "load_tee_brif"
+pattern = ["i32_load", "local_tee", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "and_const"
 pattern = ["i32_and", "i32_const"]
@@ -1443,7 +1480,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=56263, savings=168789 dispatches
 [[fused]]
 op = "add_set_get_get"
 pattern = ["i32_add", "local_set", "local_get", "local_get"]
@@ -1455,7 +1491,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=41955, savings=167820 dispatches
 [[fused]]
 op = "const_shr_u_const_and_get"
 pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "local_get"]
@@ -1467,7 +1502,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=93010, savings=93010 dispatches
 [[fused]]
 op = "tee_load"
 pattern = ["local_tee", "i32_load"]
@@ -1478,7 +1512,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=83527, savings=167054 dispatches
 [[fused]]
 op = "store_get_get"
 pattern = ["i32_store", "local_get", "local_get"]
@@ -1490,31 +1523,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=41435, savings=165740 dispatches
-[[fused]]
-op = "const_shr_u_get_xor_const"
-pattern = ["i32_const", "i32_shr_u", "local_get", "i32_xor", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=41435, savings=165740 dispatches
-[[fused]]
-op = "get_const_shr_u_get_xor"
-pattern = ["local_get", "i32_const", "i32_shr_u", "local_get", "i32_xor"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=41435, savings=165740 dispatches
 [[fused]]
 op = "get_get_const_shr_u_get"
 pattern = ["local_get", "local_get", "i32_const", "i32_shr_u", "local_get"]
@@ -1527,7 +1535,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=41435, savings=165740 dispatches
+[[fused]]
+op = "get_const_shr_u_get_xor"
+pattern = ["local_get", "i32_const", "i32_shr_u", "local_get", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
 [[fused]]
 op = "shr_u_get_xor_const_and"
 pattern = ["i32_shr_u", "local_get", "i32_xor", "i32_const", "i32_and"]
@@ -1538,38 +1556,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=468, savings=936 dispatches
 [[fused]]
-op = "shl_const_add"
-pattern = ["i32_shl", "i32_const", "i32_add"]
+op = "const_shr_u_get_xor_const"
+pattern = ["i32_const", "i32_shr_u", "local_get", "i32_xor", "i32_const"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=456, savings=912 dispatches
-[[fused]]
-op = "and_const_shl"
-pattern = ["i32_and", "i32_const", "i32_shl"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=37730, savings=75460 dispatches
-[[fused]]
-op = "and_tee_const"
-pattern = ["i32_and", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=41275, savings=165100 dispatches
 [[fused]]
 op = "get_get_mul_const_shl"
 pattern = ["local_get", "local_get", "i32_mul", "i32_const", "i32_shl"]
@@ -1581,7 +1578,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=41275, savings=165100 dispatches
 [[fused]]
 op = "get_get_get_mul_const"
 pattern = ["local_get", "local_get", "local_get", "i32_mul", "i32_const"]
@@ -1594,18 +1590,36 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=54717, savings=164151 dispatches
 [[fused]]
-op = "add_tee_get_ne"
-pattern = ["i32_add", "local_tee", "local_get", "i32_ne"]
+op = "shl_const_add"
+pattern = ["i32_shl", "i32_const", "i32_add"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 1 },
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=52731, savings=158193 dispatches
+[[fused]]
+op = "and_tee_const"
+pattern = ["i32_and", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "tee_get_ne_brif"
+pattern = ["local_tee", "local_get", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "set_get_load8_u_tee"
 pattern = ["local_set", "local_get", "i32_load8_u", "local_tee"]
@@ -1618,7 +1632,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=39241, savings=156964 dispatches
 [[fused]]
 op = "sub_const_and_const_gt_u"
 pattern = ["i32_sub", "i32_const", "i32_and", "i32_const", "i32_gt_u"]
@@ -1629,7 +1642,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=78282, savings=156564 dispatches
 [[fused]]
 op = "get_const_eq"
 pattern = ["local_get", "i32_const", "i32_eq"]
@@ -1640,7 +1652,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=407, savings=1221 dispatches
 [[fused]]
 op = "add_set_get_load8_u"
 pattern = ["i32_add", "local_set", "local_get", "i32_load8_u"]
@@ -1652,19 +1663,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=51641, savings=154923 dispatches
-[[fused]]
-op = "set_get_const_ne"
-pattern = ["local_set", "local_get", "i32_const", "i32_ne"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=38571, savings=154284 dispatches
 [[fused]]
 op = "const_add_tee_const_gt_u"
 pattern = ["i32_const", "i32_add", "local_tee", "i32_const", "i32_gt_u"]
@@ -1676,7 +1674,27 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=38296, savings=153184 dispatches
+[[fused]]
+op = "add_tee_const_gt_u_brif"
+pattern = ["i32_add", "local_tee", "i32_const", "i32_gt_u", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
+op = "const_ne_brif"
+pattern = ["i32_const", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "const_shl_add_load16_s_get"
 pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_s", "local_get"]
@@ -1688,7 +1706,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=50925, savings=152775 dispatches
 [[fused]]
 op = "set_get_load_tee"
 pattern = ["local_set", "local_get", "i32_load", "local_tee"]
@@ -1701,7 +1718,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=37763, savings=151052 dispatches
 [[fused]]
 op = "load8_u_const_add_tee_const"
 pattern = ["i32_load8_u", "i32_const", "i32_add", "local_tee", "i32_const"]
@@ -1714,7 +1730,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=37462, savings=149848 dispatches
 [[fused]]
 op = "load_set_const_set_get"
 pattern = ["i32_load", "local_set", "i32_const", "local_set", "local_get"]
@@ -1728,7 +1743,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=37435, savings=149740 dispatches
 [[fused]]
 op = "const_and_add_tee_load8_u"
 pattern = ["i32_const", "i32_and", "i32_add", "local_tee", "i32_load8_u"]
@@ -1740,7 +1754,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=37434, savings=149736 dispatches
+[[fused]]
+op = "add_tee_load8_u_const_add"
+pattern = ["i32_add", "local_tee", "i32_load8_u", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "tee_load8_u_const_add_tee"
 pattern = ["local_tee", "i32_load8_u", "i32_const", "i32_add", "local_tee"]
@@ -1753,19 +1777,27 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=37434, savings=149736 dispatches
 [[fused]]
-op = "add_tee_load8_u_const_add"
-pattern = ["i32_add", "local_tee", "i32_load8_u", "i32_const", "i32_add"]
+op = "const_and_eq_brif"
+pattern = ["i32_const", "i32_and", "i32_eq", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=48695, savings=146085 dispatches
+[[fused]]
+op = "set_get_brif"
+pattern = ["local_set", "local_get", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "tee_const_xor_get"
 pattern = ["local_tee", "i32_const", "i32_xor", "local_get"]
@@ -1777,7 +1809,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=71913, savings=143826 dispatches
 [[fused]]
 op = "mul_const_shl"
 pattern = ["i32_mul", "i32_const", "i32_shl"]
@@ -1787,18 +1818,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=143538, savings=143538 dispatches
-[[fused]]
-op = "get_load8_u"
-pattern = ["local_get", "i32_load8_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=47807, savings=143421 dispatches
 [[fused]]
 op = "get_store_get_get"
 pattern = ["local_get", "i32_store", "local_get", "local_get"]
@@ -1811,7 +1830,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=70399, savings=140798 dispatches
+[[fused]]
+op = "get_load8_u"
+pattern = ["local_get", "i32_load8_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
 [[fused]]
 op = "get_load8_u_tee"
 pattern = ["local_get", "i32_load8_u", "local_tee"]
@@ -1823,7 +1851,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=7108, savings=21324 dispatches
 [[fused]]
 op = "sub_const_and_const"
 pattern = ["i32_sub", "i32_const", "i32_and", "i32_const"]
@@ -1834,19 +1861,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=34466, savings=137864 dispatches
 [[fused]]
-op = "mul_tee_const_shr_u_const"
-pattern = ["i32_mul", "local_tee", "i32_const", "i32_shr_u", "i32_const"]
+op = "get_const_and_eq_brif"
+pattern = ["local_get", "i32_const", "i32_and", "i32_eq", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val_2", bits = 32, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 2 }
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=34466, savings=137864 dispatches
 [[fused]]
 op = "load16_u_mul_tee_const_shr_u"
 pattern = ["i32_load16_u", "i32_mul", "local_tee", "i32_const", "i32_shr_u"]
@@ -1858,7 +1883,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=34466, savings=137864 dispatches
+[[fused]]
+op = "mul_tee_const_shr_u_const"
+pattern = ["i32_mul", "local_tee", "i32_const", "i32_shr_u", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "const_shl_add_load16_u_get"
 pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_u", "local_get"]
@@ -1870,18 +1905,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=34466, savings=137864 dispatches
-[[fused]]
-op = "const_shr_u_const_and_mul"
-pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=34466, savings=137864 dispatches
 [[fused]]
 op = "const_and_get_const_shr_u"
 pattern = ["i32_const", "i32_and", "local_get", "i32_const", "i32_shr_u"]
@@ -1893,7 +1916,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=34218, savings=136872 dispatches
+[[fused]]
+op = "const_shr_u_const_and_mul"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "load16_u_get_const_and_eq"
 pattern = ["i32_load16_u", "local_get", "i32_const", "i32_and", "i32_eq"]
@@ -1905,18 +1937,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=68276, savings=136552 dispatches
 [[fused]]
-op = "get_const_ne"
-pattern = ["local_get", "i32_const", "i32_ne"]
+op = "ne_brif"
+pattern = ["i32_ne", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 1, kind = "target" },
 ]
-tos_pattern = { pop = 0, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=44939, savings=134817 dispatches
 [[fused]]
 op = "get_xor_const_and"
 pattern = ["local_get", "i32_xor", "i32_const", "i32_and"]
@@ -1927,7 +1956,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=8868, savings=8868 dispatches
 [[fused]]
 op = "load_const"
 pattern = ["i32_load", "i32_const"]
@@ -1938,7 +1966,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=32989, savings=131956 dispatches
+[[fused]]
+op = "get_const_and_xor_eqz"
+pattern = ["local_get", "i32_const", "i32_and", "i32_xor", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "load8_u_get_const_and_xor"
 pattern = ["i32_load8_u", "local_get", "i32_const", "i32_and", "i32_xor"]
@@ -1950,18 +1987,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=32989, savings=131956 dispatches
 [[fused]]
-op = "get_const_and_xor_eqz"
-pattern = ["local_get", "i32_const", "i32_and", "i32_xor", "i32_eqz"]
+op = "const_and_xor_eqz_brif"
+pattern = ["i32_const", "i32_and", "i32_xor", "i32_eqz", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=32561, savings=130244 dispatches
 [[fused]]
 op = "const_shl_add_set_get"
 pattern = ["i32_const", "i32_shl", "i32_add", "local_set", "local_get"]
@@ -1973,7 +2008,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=9853, savings=29559 dispatches
 [[fused]]
 op = "const_shl_add_set"
 pattern = ["i32_const", "i32_shl", "i32_add", "local_set"]
@@ -1984,7 +2018,28 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=31657, savings=126628 dispatches
+[[fused]]
+op = "get_const_shr_u_get"
+pattern = ["local_get", "i32_const", "i32_shr_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+[[fused]]
+op = "get_get_get_mul"
+pattern = ["local_get", "local_get", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
 [[fused]]
 op = "get_get_const_or_tee"
 pattern = ["local_get", "local_get", "i32_const", "i32_or", "local_tee"]
@@ -1997,31 +2052,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=756, savings=2268 dispatches
-[[fused]]
-op = "get_const_shr_u_get"
-pattern = ["local_get", "i32_const", "i32_shr_u", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-# Auto-discovered: count=864, savings=2592 dispatches
-[[fused]]
-op = "get_get_get_mul"
-pattern = ["local_get", "local_get", "local_get", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-# Auto-discovered: count=41953, savings=125859 dispatches
 [[fused]]
 op = "shr_u_const_and_get"
 pattern = ["i32_shr_u", "i32_const", "i32_and", "local_get"]
@@ -2032,7 +2062,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=41666, savings=124998 dispatches
 [[fused]]
 op = "get_load_const_add"
 pattern = ["local_get", "i32_load", "i32_const", "i32_add"]
@@ -2044,7 +2073,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=62188, savings=124376 dispatches
 [[fused]]
 op = "get_get_load"
 pattern = ["local_get", "local_get", "i32_load"]
@@ -2056,18 +2084,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=15370, savings=30740 dispatches
-[[fused]]
-op = "get_const_sub"
-pattern = ["local_get", "i32_const", "i32_sub"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=30803, savings=123212 dispatches
 [[fused]]
 op = "tee_const_shl_add_set"
 pattern = ["local_tee", "i32_const", "i32_shl", "i32_add", "local_set"]
@@ -2079,7 +2095,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=61604, savings=123208 dispatches
 [[fused]]
 op = "tee_load_tee"
 pattern = ["local_tee", "i32_load", "local_tee"]
@@ -2091,7 +2106,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=30772, savings=123088 dispatches
+[[fused]]
+op = "get_const_sub"
+pattern = ["local_get", "i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
 [[fused]]
 op = "add_set_get_const_and"
 pattern = ["i32_add", "local_set", "local_get", "i32_const", "i32_and"]
@@ -2103,7 +2127,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=30641, savings=122564 dispatches
 [[fused]]
 op = "tee_get_mul_const_shl"
 pattern = ["local_tee", "local_get", "i32_mul", "i32_const", "i32_shl"]
@@ -2115,19 +2138,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=30637, savings=122548 dispatches
-[[fused]]
-op = "const_or_tee_get_mul"
-pattern = ["i32_const", "i32_or", "local_tee", "local_get", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=30637, savings=122548 dispatches
 [[fused]]
 op = "get_const_or_tee_get"
 pattern = ["local_get", "i32_const", "i32_or", "local_tee", "local_get"]
@@ -2140,7 +2150,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=30637, savings=122548 dispatches
 [[fused]]
 op = "or_tee_get_mul_const"
 pattern = ["i32_or", "local_tee", "local_get", "i32_mul", "i32_const"]
@@ -2152,7 +2161,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=30579, savings=122316 dispatches
+[[fused]]
+op = "const_or_tee_get_mul"
+pattern = ["i32_const", "i32_or", "local_tee", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "get_get_store_get_const"
 pattern = ["local_get", "local_get", "i32_store", "local_get", "i32_const"]
@@ -2166,7 +2185,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=30011, savings=120044 dispatches
 [[fused]]
 op = "set_get_set_get_load"
 pattern = ["local_set", "local_get", "local_set", "local_get", "i32_load"]
@@ -2180,7 +2198,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=29950, savings=119800 dispatches
 [[fused]]
 op = "get_const_shr_u_const_add"
 pattern = ["local_get", "i32_const", "i32_shr_u", "i32_const", "i32_add"]
@@ -2192,7 +2209,19 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=29950, savings=119800 dispatches
+[[fused]]
+op = "tee_load_set_const_set"
+pattern = ["local_tee", "i32_load", "local_set", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "set_get_const_and_const"
 pattern = ["local_set", "local_get", "i32_const", "i32_and", "i32_const"]
@@ -2205,7 +2234,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=29949, savings=119796 dispatches
 [[fused]]
 op = "shr_u_const_add_set_get"
 pattern = ["i32_shr_u", "i32_const", "i32_add", "local_set", "local_get"]
@@ -2217,7 +2245,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=39246, savings=117738 dispatches
+[[fused]]
+op = "const_shr_u_const_add_set"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "const_and_const_gt_u"
 pattern = ["i32_const", "i32_and", "i32_const", "i32_gt_u"]
@@ -2228,7 +2266,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=29100, savings=116400 dispatches
+[[fused]]
+op = "get_ne_brif"
+pattern = ["local_get", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_get_load_const_add"
 pattern = ["local_get", "local_get", "i32_load", "i32_const", "i32_add"]
@@ -2241,18 +2288,27 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=38570, savings=115710 dispatches
 [[fused]]
-op = "add_tee_const_gt_u"
-pattern = ["i32_add", "local_tee", "i32_const", "i32_gt_u"]
+op = "tee_brif"
+pattern = ["local_tee", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 1, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=31566, savings=31566 dispatches
+[[fused]]
+op = "tee_const_gt_u_brif"
+pattern = ["local_tee", "i32_const", "i32_gt_u", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "add_load"
 pattern = ["i32_add", "i32_load"]
@@ -2262,7 +2318,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=306, savings=918 dispatches
 [[fused]]
 op = "add_tee_load8_u_const"
 pattern = ["i32_add", "local_tee", "i32_load8_u", "i32_const"]
@@ -2274,7 +2329,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=55641, savings=111282 dispatches
 [[fused]]
 op = "const_xor_get"
 pattern = ["i32_const", "i32_xor", "local_get"]
@@ -2285,18 +2339,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=54748, savings=109496 dispatches
-[[fused]]
-op = "tee_get_ne"
-pattern = ["local_tee", "local_get", "i32_ne"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=1020, savings=2040 dispatches
 [[fused]]
 op = "set_get_load8_u"
 pattern = ["local_set", "local_get", "i32_load8_u"]
@@ -2308,7 +2350,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=23458, savings=23458 dispatches
 [[fused]]
 op = "and_tee"
 pattern = ["i32_and", "local_tee"]
@@ -2318,7 +2359,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=52659, savings=105318 dispatches
 [[fused]]
 op = "const_add_store"
 pattern = ["i32_const", "i32_add", "i32_store"]
@@ -2329,7 +2369,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=17961, savings=35922 dispatches
 [[fused]]
 op = "const_and_get"
 pattern = ["i32_const", "i32_and", "local_get"]
@@ -2340,7 +2379,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=3834, savings=11502 dispatches
 [[fused]]
 op = "tee_const_shl_add"
 pattern = ["local_tee", "i32_const", "i32_shl", "i32_add"]
@@ -2351,28 +2389,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=34536, savings=103608 dispatches
-[[fused]]
-op = "get_const_and_eq"
-pattern = ["local_get", "i32_const", "i32_and", "i32_eq"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=103470, savings=103470 dispatches
-[[fused]]
-op = "get_eqz"
-pattern = ["local_get", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=34466, savings=103398 dispatches
 [[fused]]
 op = "and_get_const_shr_u"
 pattern = ["i32_and", "local_get", "i32_const", "i32_shr_u"]
@@ -2383,7 +2399,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=50802, savings=101604 dispatches
+[[fused]]
+op = "get_eqz"
+pattern = ["local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
 [[fused]]
 op = "xor_const_and"
 pattern = ["i32_xor", "i32_const", "i32_and"]
@@ -2393,7 +2417,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=25020, savings=100080 dispatches
 [[fused]]
 op = "set_get_get_const_shl"
 pattern = ["local_set", "local_get", "local_get", "i32_const", "i32_shl"]
@@ -2406,7 +2429,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=7983, savings=15966 dispatches
 [[fused]]
 op = "get_load_const"
 pattern = ["local_get", "i32_load", "i32_const"]
@@ -2418,27 +2440,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=49524, savings=99048 dispatches
-[[fused]]
-op = "const_and_eq"
-pattern = ["i32_const", "i32_and", "i32_eq"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=32989, savings=98967 dispatches
-[[fused]]
-op = "const_and_xor_eqz"
-pattern = ["i32_const", "i32_and", "i32_xor", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=24493, savings=97972 dispatches
 [[fused]]
 op = "get_const_add_get_const"
 pattern = ["local_get", "i32_const", "i32_add", "local_get", "i32_const"]
@@ -2451,7 +2452,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=24492, savings=97968 dispatches
 [[fused]]
 op = "const_add_get_const_add"
 pattern = ["i32_const", "i32_add", "local_get", "i32_const", "i32_add"]
@@ -2463,17 +2463,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=97427, savings=97427 dispatches
 [[fused]]
-op = "const_le_u"
-pattern = ["i32_const", "i32_le_u"]
+op = "le_u_brif"
+pattern = ["i32_le_u", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 1, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=32174, savings=96522 dispatches
 [[fused]]
 op = "get_load8_u_const_and"
 pattern = ["local_get", "i32_load8_u", "i32_const", "i32_and"]
@@ -2485,7 +2483,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=470, savings=1410 dispatches
+[[fused]]
+op = "const_eq"
+pattern = ["i32_const", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "get_get_const_or"
 pattern = ["local_get", "local_get", "i32_const", "i32_or"]
@@ -2497,17 +2503,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=96026, savings=96026 dispatches
-[[fused]]
-op = "const_eq"
-pattern = ["i32_const", "i32_eq"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=1916, savings=5748 dispatches
 [[fused]]
 op = "set_get_const_and"
 pattern = ["local_set", "local_get", "i32_const", "i32_and"]
@@ -2519,7 +2514,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=1021, savings=3063 dispatches
 [[fused]]
 op = "get_const_or_tee"
 pattern = ["local_get", "i32_const", "i32_or", "local_tee"]
@@ -2531,7 +2525,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=31393, savings=94179 dispatches
 [[fused]]
 op = "get_store_get_const"
 pattern = ["local_get", "i32_store", "local_get", "i32_const"]
@@ -2544,7 +2537,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=23217, savings=92868 dispatches
 [[fused]]
 op = "get_const_shl_add_get"
 pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "local_get"]
@@ -2556,7 +2548,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=22977, savings=91908 dispatches
 [[fused]]
 op = "get_const_shl_add_load16_s"
 pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_load16_s"]
@@ -2568,7 +2559,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=30158, savings=90474 dispatches
 [[fused]]
 op = "get_set_get_load"
 pattern = ["local_get", "local_set", "local_get", "i32_load"]
@@ -2581,7 +2571,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=90281, savings=90281 dispatches
 [[fused]]
 op = "load8_u_tee"
 pattern = ["i32_load8_u", "local_tee"]
@@ -2592,7 +2581,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=45137, savings=90274 dispatches
 [[fused]]
 op = "store_get_const"
 pattern = ["i32_store", "local_get", "i32_const"]
@@ -2604,7 +2592,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=22510, savings=90040 dispatches
 [[fused]]
 op = "add_const_add_set_get"
 pattern = ["i32_add", "i32_const", "i32_add", "local_set", "local_get"]
@@ -2616,7 +2603,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=22473, savings=89892 dispatches
 [[fused]]
 op = "get_const_shl_add_const"
 pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_const"]
@@ -2628,7 +2614,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=22463, savings=89852 dispatches
 [[fused]]
 op = "const_and_tee_const_shl"
 pattern = ["i32_const", "i32_and", "local_tee", "i32_const", "i32_shl"]
@@ -2640,31 +2625,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=29950, savings=89850 dispatches
-[[fused]]
-op = "tee_load_set_const"
-pattern = ["local_tee", "i32_load", "local_set", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=29949, savings=89847 dispatches
-[[fused]]
-op = "const_shr_u_const_add"
-pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=29947, savings=89841 dispatches
 [[fused]]
 op = "get_load_get_extend_i32_s"
 pattern = ["local_get", "i64_load", "local_get", "i64_extend_i32_s"]
@@ -2676,7 +2636,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=88996, savings=88996 dispatches
 [[fused]]
 op = "add_get"
 pattern = ["i32_add", "local_get"]
@@ -2686,7 +2645,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=28515, savings=85545 dispatches
 [[fused]]
 op = "add_set_const_set"
 pattern = ["i32_add", "local_set", "i32_const", "local_set"]
@@ -2698,7 +2656,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=1326, savings=2652 dispatches
 [[fused]]
 op = "get_get_mul"
 pattern = ["local_get", "local_get", "i32_mul"]
@@ -2709,7 +2666,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=906, savings=1812 dispatches
 [[fused]]
 op = "const_shr_u_get"
 pattern = ["i32_const", "i32_shr_u", "local_get"]
@@ -2720,7 +2676,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=42124, savings=84248 dispatches
 [[fused]]
 op = "add_load16_s_get"
 pattern = ["i32_add", "i32_load16_s", "local_get"]
@@ -2731,7 +2686,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=20382, savings=81528 dispatches
 [[fused]]
 op = "add_set_const_set_get"
 pattern = ["i32_add", "local_set", "i32_const", "local_set", "local_get"]
@@ -2744,7 +2698,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=27043, savings=81129 dispatches
 [[fused]]
 op = "const_shl_add_get"
 pattern = ["i32_const", "i32_shl", "i32_add", "local_get"]
@@ -2755,7 +2708,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=38295, savings=38295 dispatches
 [[fused]]
 op = "add_load16_s"
 pattern = ["i32_add", "i32_load16_s"]
@@ -2765,7 +2717,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=79059, savings=79059 dispatches
+[[fused]]
+op = "const_gt_u_brif"
+pattern = ["i32_const", "i32_gt_u", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "const_gt_u"
 pattern = ["i32_const", "i32_gt_u"]
@@ -2775,17 +2736,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=78618, savings=78618 dispatches
-[[fused]]
-op = "const_ne"
-pattern = ["i32_const", "i32_ne"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=39246, savings=78492 dispatches
 [[fused]]
 op = "and_const_gt_u"
 pattern = ["i32_and", "i32_const", "i32_gt_u"]
@@ -2795,7 +2745,25 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=1422, savings=4266 dispatches
+[[fused]]
+op = "const_ne"
+pattern = ["i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "get_brif"
+pattern = ["local_get", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "get_const_add_get"
 pattern = ["local_get", "i32_const", "i32_add", "local_get"]
@@ -2807,28 +2775,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=77499, savings=77499 dispatches
-[[fused]]
-op = "get_add"
-pattern = ["local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=38732, savings=77464 dispatches
-[[fused]]
-op = "tee_const_gt_u"
-pattern = ["local_tee", "i32_const", "i32_gt_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=25792, savings=77376 dispatches
 [[fused]]
 op = "const_add_store_get"
 pattern = ["i32_const", "i32_add", "i32_store", "local_get"]
@@ -2840,7 +2786,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=5208, savings=5208 dispatches
 [[fused]]
 op = "get_mul"
 pattern = ["local_get", "i32_mul"]
@@ -2850,7 +2795,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=42466, savings=42466 dispatches
 [[fused]]
 op = "load16_u_get"
 pattern = ["i32_load16_u", "local_get"]
@@ -2861,7 +2805,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=30214, savings=30214 dispatches
+[[fused]]
+op = "get_add"
+pattern = ["local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "sub_const"
 pattern = ["i32_sub", "i32_const"]
@@ -2871,7 +2823,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=789, savings=1578 dispatches
 [[fused]]
 op = "tee_load8_u_const"
 pattern = ["local_tee", "i32_load8_u", "i32_const"]
@@ -2883,7 +2834,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=1595, savings=1595 dispatches
 [[fused]]
 op = "get_tee"
 pattern = ["local_get", "local_tee"]
@@ -2894,7 +2844,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=15143, savings=30286 dispatches
 [[fused]]
 op = "add_const_add"
 pattern = ["i32_add", "i32_const", "i32_add"]
@@ -2904,7 +2853,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=7488, savings=14976 dispatches
 [[fused]]
 op = "get_load_get"
 pattern = ["local_get", "i64_load", "local_get"]
@@ -2916,7 +2864,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=36923, savings=36923 dispatches
+[[fused]]
+op = "const_add_set_const_set"
+pattern = ["i32_const", "i32_add", "local_set", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "load8_u_const"
 pattern = ["i32_load8_u", "i32_const"]
@@ -2927,7 +2886,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=24489, savings=73467 dispatches
 [[fused]]
 op = "add_get_const_add"
 pattern = ["i32_add", "local_get", "i32_const", "i32_add"]
@@ -2938,7 +2896,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=35624, savings=71248 dispatches
 [[fused]]
 op = "store16_get_get"
 pattern = ["i32_store16", "local_get", "local_get"]
@@ -2950,7 +2907,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=17744, savings=70976 dispatches
+[[fused]]
+op = "mul_tee_const"
+pattern = ["i32_mul", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "set_get_load_tee_get"
 pattern = ["local_set", "local_get", "i32_load", "local_tee", "local_get"]
@@ -2964,7 +2930,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=35323, savings=70646 dispatches
 [[fused]]
 op = "load8_u_const_and"
 pattern = ["i32_load8_u", "i32_const", "i32_and"]
@@ -2975,18 +2940,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=851, savings=1702 dispatches
 [[fused]]
-op = "mul_tee_const"
-pattern = ["i32_mul", "local_tee", "i32_const"]
+op = "tee_const_shl"
+pattern = ["local_tee", "i32_const", "i32_shl"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
 ]
-tos_pattern = { pop = 2, push = 2 }
+tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=17602, savings=70408 dispatches
 [[fused]]
 op = "get_const_add_set_const"
 pattern = ["local_get", "i32_const", "i32_add", "local_set", "i32_const"]
@@ -2999,18 +2962,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=532, savings=1064 dispatches
-[[fused]]
-op = "tee_const_shl"
-pattern = ["local_tee", "i32_const", "i32_shl"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=17503, savings=70012 dispatches
 [[fused]]
 op = "get_const_and_const_eq"
 pattern = ["local_get", "i32_const", "i32_and", "i32_const", "i32_eq"]
@@ -3022,7 +2973,19 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=34984, savings=69968 dispatches
+[[fused]]
+op = "set_const_set_const_set"
+pattern = ["local_set", "i32_const", "local_set", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_get_load8_u"
 pattern = ["local_get", "local_get", "i32_load8_u"]
@@ -3034,17 +2997,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=34466, savings=68932 dispatches
-[[fused]]
-op = "const_and_mul"
-pattern = ["i32_const", "i32_and", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=68932, savings=68932 dispatches
 [[fused]]
 op = "add_load16_u"
 pattern = ["i32_add", "i32_load16_u"]
@@ -3054,7 +3006,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=34466, savings=68932 dispatches
 [[fused]]
 op = "add_load16_u_get"
 pattern = ["i32_add", "i32_load16_u", "local_get"]
@@ -3065,7 +3016,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=22471, savings=67413 dispatches
+[[fused]]
+op = "const_and_mul"
+pattern = ["i32_const", "i32_and", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "const_shl_add_const"
 pattern = ["i32_const", "i32_shl", "i32_add", "i32_const"]
@@ -3076,7 +3035,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=22463, savings=67389 dispatches
 [[fused]]
 op = "and_tee_const_shl"
 pattern = ["i32_and", "local_tee", "i32_const", "i32_shl"]
@@ -3087,7 +3045,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=22459, savings=67377 dispatches
 [[fused]]
 op = "get_get_load_get"
 pattern = ["local_get", "local_get", "i64_load", "local_get"]
@@ -3100,7 +3057,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=1443, savings=2886 dispatches
 [[fused]]
 op = "get_load8_u_const"
 pattern = ["local_get", "i32_load8_u", "i32_const"]
@@ -3112,7 +3068,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=2876, savings=5752 dispatches
 [[fused]]
 op = "const_or_tee"
 pattern = ["i32_const", "i32_or", "local_tee"]
@@ -3123,7 +3078,26 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=27381, savings=27381 dispatches
+[[fused]]
+op = "xor_eqz_brif"
+pattern = ["i32_xor", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
+op = "load8_u_const_and_eqz_brif"
+pattern = ["i32_load8_u", "i32_const", "i32_and", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "tee_load8_u"
 pattern = ["local_tee", "i32_load8_u"]
@@ -3134,18 +3108,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=717, savings=1434 dispatches
-[[fused]]
-op = "get_const_or"
-pattern = ["local_get", "i32_const", "i32_or"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=16169, savings=64676 dispatches
 [[fused]]
 op = "load16_s_mul_get_add_get"
 pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add", "local_get"]
@@ -3157,17 +3119,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=17147, savings=17147 dispatches
 [[fused]]
-op = "const_sub"
-pattern = ["i32_const", "i32_sub"]
+op = "get_const_or"
+pattern = ["local_get", "i32_const", "i32_or"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=15854, savings=63416 dispatches
 [[fused]]
 op = "get_load8_u_const_and_eqz"
 pattern = ["local_get", "i32_load8_u", "i32_const", "i32_and", "i32_eqz"]
@@ -3179,7 +3140,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=15619, savings=62476 dispatches
+[[fused]]
+op = "const_sub"
+pattern = ["i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "store8_get_const_add_set"
 pattern = ["i32_store8", "local_get", "i32_const", "i32_add", "local_set"]
@@ -3192,7 +3161,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=15420, savings=61680 dispatches
 [[fused]]
 op = "get_get_get_const_shl"
 pattern = ["local_get", "local_get", "local_get", "i32_const", "i32_shl"]
@@ -3205,19 +3173,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=30685, savings=61370 dispatches
-[[fused]]
-op = "store_get_get_2"
-pattern = ["i64_store", "local_get", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=15319, savings=61276 dispatches
 [[fused]]
 op = "get_get_get_get_mul"
 pattern = ["local_get", "local_get", "local_get", "local_get", "i32_mul"]
@@ -3230,7 +3185,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=15305, savings=61220 dispatches
+[[fused]]
+op = "store_get_get_2"
+pattern = ["i64_store", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "const_shr_u_const_and_const"
 pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_const"]
@@ -3242,7 +3207,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=30489, savings=60978 dispatches
 [[fused]]
 op = "tee_get_load"
 pattern = ["local_tee", "local_get", "i32_load"]
@@ -3254,7 +3218,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=15161, savings=60644 dispatches
+[[fused]]
+op = "get_get_gt_s"
+pattern = ["local_get", "local_get", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
 [[fused]]
 op = "get_set_get_load_tee"
 pattern = ["local_get", "local_set", "local_get", "i32_load", "local_tee"]
@@ -3268,18 +3241,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=30303, savings=60606 dispatches
-[[fused]]
-op = "get_get_gt_s"
-pattern = ["local_get", "local_get", "i32_gt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=15107, savings=60428 dispatches
 [[fused]]
 op = "tee_const_add_tee_const"
 pattern = ["local_tee", "i32_const", "i32_add", "local_tee", "i32_const"]
@@ -3292,20 +3253,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=15091, savings=60364 dispatches
-[[fused]]
-op = "load8_u_const_and_tee_const"
-pattern = ["i32_load8_u", "i32_const", "i32_and", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "local_idx", bits = 16, from = 3 },
-    { name = "const_val_4", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=15091, savings=60364 dispatches
 [[fused]]
 op = "get_load8_u_const_and_tee"
 pattern = ["local_get", "i32_load8_u", "i32_const", "i32_and", "local_tee"]
@@ -3318,7 +3265,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=15070, savings=60280 dispatches
+[[fused]]
+op = "load8_u_const_and_tee_const"
+pattern = ["i32_load8_u", "i32_const", "i32_and", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
 [[fused]]
 op = "add_get_store8_get_const"
 pattern = ["i32_add", "local_get", "i32_store8", "local_get", "i32_const"]
@@ -3331,7 +3289,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=15063, savings=60252 dispatches
 [[fused]]
 op = "get_store8_get_const_add"
 pattern = ["local_get", "i32_store8", "local_get", "i32_const", "i32_add"]
@@ -3344,7 +3301,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=15037, savings=60148 dispatches
+[[fused]]
+op = "load16_s_mul_get_add"
+pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "const_and_add_const_add"
 pattern = ["i32_const", "i32_and", "i32_add", "i32_const", "i32_add"]
@@ -3355,7 +3321,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=15020, savings=60080 dispatches
 [[fused]]
 op = "const_and_tee_const_add"
 pattern = ["i32_const", "i32_and", "local_tee", "i32_const", "i32_add"]
@@ -3367,7 +3332,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=15018, savings=60072 dispatches
 [[fused]]
 op = "and_tee_const_add_tee"
 pattern = ["i32_and", "local_tee", "i32_const", "i32_add", "local_tee"]
@@ -3379,7 +3343,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=15001, savings=60004 dispatches
+[[fused]]
+op = "get_load_tee_sub_const"
+pattern = ["local_get", "i32_load", "local_tee", "i32_sub", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
 [[fused]]
 op = "get_const_store16_get_get"
 pattern = ["local_get", "i32_const", "i32_store16", "local_get", "local_get"]
@@ -3393,31 +3368,28 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=14999, savings=59996 dispatches
 [[fused]]
-op = "get_load_tee_sub_const"
-pattern = ["local_get", "i32_load", "local_tee", "i32_sub", "i32_const"]
+op = "const_and_tee_eqz_brif"
+pattern = ["i32_const", "i32_and", "local_tee", "i32_eqz", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "const_val", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=3829, savings=11487 dispatches
-[[fused]]
-op = "load16_s_mul_get_add"
-pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 0 },
     { name = "local_idx", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=14988, savings=59952 dispatches
+[[fused]]
+op = "const_and_add_tee_get"
+pattern = ["i32_const", "i32_and", "i32_add", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "tee_get_load_tee_sub"
 pattern = ["local_tee", "local_get", "i32_load", "local_tee", "i32_sub"]
@@ -3430,19 +3402,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=14988, savings=59952 dispatches
-[[fused]]
-op = "const_and_add_tee_get"
-pattern = ["i32_const", "i32_and", "i32_add", "local_tee", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=14987, savings=59948 dispatches
 [[fused]]
 op = "get_get_store16_get_get"
 pattern = ["local_get", "local_get", "i32_store16", "local_get", "local_get"]
@@ -3456,19 +3415,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=14986, savings=59944 dispatches
-[[fused]]
-op = "tee_sub_const_shr_s_get"
-pattern = ["local_tee", "i32_sub", "i32_const", "i32_shr_s", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=14986, savings=59944 dispatches
 [[fused]]
 op = "load_tee_sub_const_shr_s"
 pattern = ["i32_load", "local_tee", "i32_sub", "i32_const", "i32_shr_s"]
@@ -3480,7 +3426,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14985, savings=59940 dispatches
+[[fused]]
+op = "tee_sub_const_shr_s_get"
+pattern = ["local_tee", "i32_sub", "i32_const", "i32_shr_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "const_shl_add_const_add"
 pattern = ["i32_const", "i32_shl", "i32_add", "i32_const", "i32_add"]
@@ -3491,7 +3447,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=29968, savings=59936 dispatches
 [[fused]]
 op = "sub_const_shr_s"
 pattern = ["i32_sub", "i32_const", "i32_shr_s"]
@@ -3501,31 +3456,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14982, savings=59928 dispatches
-[[fused]]
-op = "get_get_sub_const_shr_s"
-pattern = ["local_get", "local_get", "i32_sub", "i32_const", "i32_shr_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=14977, savings=59908 dispatches
-[[fused]]
-op = "const_and_add_set_get"
-pattern = ["i32_const", "i32_and", "i32_add", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=14977, savings=59908 dispatches
 [[fused]]
 op = "get_const_shl_add_store"
 pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_store"]
@@ -3537,19 +3467,29 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=14976, savings=59904 dispatches
 [[fused]]
-op = "const_and_add_tee_load"
-pattern = ["i32_const", "i32_and", "i32_add", "local_tee", "i64_load"]
+op = "store_get_const_lt_s_brif"
+pattern = ["i32_store", "local_get", "i32_const", "i32_lt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
+op = "const_and_add_set_get"
+pattern = ["i32_const", "i32_and", "i32_add", "local_set", "local_get"]
 c_impl = true
 encoding.fields = [
     { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 3 },
-    { name = "offset", bits = 32, from = 4 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14976, savings=59904 dispatches
 [[fused]]
 op = "shr_u_const_and_tee_eqz"
 pattern = ["i32_shr_u", "i32_const", "i32_and", "local_tee", "i32_eqz"]
@@ -3560,19 +3500,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14976, savings=59904 dispatches
-[[fused]]
-op = "add_set_get_const_shr_u"
-pattern = ["i32_add", "local_set", "local_get", "i32_const", "i32_shr_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=14976, savings=59904 dispatches
 [[fused]]
 op = "set_get_const_shr_u_const"
 pattern = ["local_set", "local_get", "i32_const", "i32_shr_u", "i32_const"]
@@ -3585,7 +3512,39 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=14975, savings=59900 dispatches
+[[fused]]
+op = "add_set_get_const_shr_u"
+pattern = ["i32_add", "local_set", "local_get", "i32_const", "i32_shr_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "const_and_add_tee_load"
+pattern = ["i32_const", "i32_and", "i32_add", "local_tee", "i64_load"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "get_get_sub_const_shr_s"
+pattern = ["local_get", "local_get", "i32_sub", "i32_const", "i32_shr_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
 [[fused]]
 op = "store8_const_set_get_eqz"
 pattern = ["i32_store8", "i32_const", "local_set", "local_get", "i32_eqz"]
@@ -3598,21 +3557,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14975, savings=59900 dispatches
-[[fused]]
-op = "load8_u_set_get_set_get"
-pattern = ["i32_load8_u", "local_set", "local_get", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=14975, savings=59900 dispatches
 [[fused]]
 op = "sub_const_shr_s_get_load8_u"
 pattern = ["i32_sub", "i32_const", "i32_shr_s", "local_get", "i32_load8_u"]
@@ -3624,57 +3568,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=14975, savings=59900 dispatches
-[[fused]]
-op = "sub_const_shr_s_set_get"
-pattern = ["i32_sub", "i32_const", "i32_shr_s", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=14975, savings=59900 dispatches
-[[fused]]
-op = "shr_s_get_load8_u_tee_gt_s"
-pattern = ["i32_shr_s", "local_get", "i32_load8_u", "local_tee", "i32_gt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=14975, savings=59900 dispatches
-[[fused]]
-op = "const_shr_s_set_get_get"
-pattern = ["i32_const", "i32_shr_s", "local_set", "local_get", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=14975, savings=59900 dispatches
-[[fused]]
-op = "const_shr_s_get_load8_u_tee"
-pattern = ["i32_const", "i32_shr_s", "local_get", "i32_load8_u", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "offset", bits = 32, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=14975, savings=59900 dispatches
 [[fused]]
 op = "get_store_get_const_lt_s"
 pattern = ["local_get", "i32_store", "local_get", "i32_const", "i32_lt_s"]
@@ -3687,7 +3580,29 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=14975, savings=59900 dispatches
+[[fused]]
+op = "get_load8_u_tee_gt_s_brif"
+pattern = ["local_get", "i32_load8_u", "local_tee", "i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "get_sub_const_shr_s_set"
+pattern = ["local_get", "i32_sub", "i32_const", "i32_shr_s", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_set_get_load_set"
 pattern = ["local_get", "local_set", "local_get", "i32_load", "local_set"]
@@ -3701,10 +3616,9 @@ encoding.fields = [
 ]
 tos_pattern = "none"
 
-# Auto-discovered: count=14974, savings=59896 dispatches
 [[fused]]
-op = "and_const_add_set_get"
-pattern = ["i32_and", "i32_const", "i32_add", "local_set", "local_get"]
+op = "sub_const_shr_s_set_get"
+pattern = ["i32_sub", "i32_const", "i32_shr_s", "local_set", "local_get"]
 c_impl = true
 encoding.fields = [
     { name = "const_val", bits = 32, from = 1 },
@@ -3713,18 +3627,79 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14974, savings=59896 dispatches
 [[fused]]
-op = "const_shr_u_const_and_eq"
-pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_eq"]
+op = "load8_u_set_get_set_get"
+pattern = ["i32_load8_u", "local_set", "local_get", "local_set", "local_get"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "store_get_get_gt_s_brif"
+pattern = ["i32_store", "local_get", "local_get", "i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
+op = "const_shr_s_get_load8_u_tee"
+pattern = ["i32_const", "i32_shr_s", "local_get", "i32_load8_u", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
+op = "const_shr_s_set_get_get"
+pattern = ["i32_const", "i32_shr_s", "local_set", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
+op = "tee_load8_u_set_get_set"
+pattern = ["local_tee", "i32_load8_u", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "shr_s_get_load8_u_tee_gt_s"
+pattern = ["i32_shr_s", "local_get", "i32_load8_u", "local_tee", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14974, savings=59896 dispatches
 [[fused]]
 op = "get_extend_i32_s_lt_s_set_get"
 pattern = ["local_get", "i64_extend_i32_s", "i64_lt_s", "local_set", "local_get"]
@@ -3736,7 +3711,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=14974, savings=59896 dispatches
 [[fused]]
 op = "get_load_get_extend_i32_s_lt_s"
 pattern = ["local_get", "i64_load", "local_get", "i64_extend_i32_s", "i64_lt_s"]
@@ -3748,7 +3722,38 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=14974, savings=59896 dispatches
+[[fused]]
+op = "shr_u_const_and_const_add"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "load_get_extend_i32_s_lt_s_set"
+pattern = ["i64_load", "local_get", "i64_extend_i32_s", "i64_lt_s", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "and_const_add_set_get"
+pattern = ["i32_and", "i32_const", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "extend_i32_s_lt_s_set_get_set"
 pattern = ["i64_extend_i32_s", "i64_lt_s", "local_set", "local_get", "local_set"]
@@ -3760,18 +3765,27 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=14974, savings=59896 dispatches
 [[fused]]
-op = "shr_u_const_and_const_add"
-pattern = ["i32_shr_u", "i32_const", "i32_and", "i32_const", "i32_add"]
+op = "const_and_const_add_set"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_add", "local_set"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "const_shr_u_const_and_eq"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=29947, savings=59894 dispatches
 [[fused]]
 op = "load_get_extend_i32_s"
 pattern = ["i64_load", "local_get", "i64_extend_i32_s"]
@@ -3782,43 +3796,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=14973, savings=59892 dispatches
-[[fused]]
-op = "const_shl_add_get_store8"
-pattern = ["i32_const", "i32_shl", "i32_add", "local_get", "i32_store8"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 3 },
-    { name = "offset", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-# Auto-discovered: count=14973, savings=59892 dispatches
-[[fused]]
-op = "get_extend_i32_s_add_store_const"
-pattern = ["local_get", "i64_extend_i32_s", "i64_add", "i64_store", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 3 },
-    { name = "const_val", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=14973, savings=59892 dispatches
-[[fused]]
-op = "get_load_get_extend_i32_s_add"
-pattern = ["local_get", "i64_load", "local_get", "i64_extend_i32_s", "i64_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=14973, savings=59892 dispatches
 [[fused]]
 op = "get_get_load_get_extend_i32_s"
 pattern = ["local_get", "local_get", "i64_load", "local_get", "i64_extend_i32_s"]
@@ -3831,7 +3808,39 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=19916, savings=59748 dispatches
+[[fused]]
+op = "get_extend_i32_s_add_store_const"
+pattern = ["local_get", "i64_extend_i32_s", "i64_add", "i64_store", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "get_load_get_extend_i32_s_add"
+pattern = ["local_get", "i64_load", "local_get", "i64_extend_i32_s", "i64_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "const_shl_add_get_store8"
+pattern = ["i32_const", "i32_shl", "i32_add", "local_get", "i32_store8"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
 [[fused]]
 op = "const_set_const_set"
 pattern = ["i32_const", "local_set", "i32_const", "local_set"]
@@ -3844,7 +3853,6 @@ encoding.fields = [
 ]
 tos_pattern = "none"
 
-# Auto-discovered: count=3145, savings=3145 dispatches
 [[fused]]
 op = "const_xor"
 pattern = ["i32_const", "i32_xor"]
@@ -3854,17 +3862,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=58453, savings=58453 dispatches
-[[fused]]
-op = "get_ne"
-pattern = ["local_get", "i32_ne"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=19262, savings=57786 dispatches
 [[fused]]
 op = "set_const_set_const"
 pattern = ["local_set", "i32_const", "local_set", "i32_const"]
@@ -3877,19 +3874,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=18930, savings=56790 dispatches
 [[fused]]
-op = "const_add_set_const"
-pattern = ["i32_const", "i32_add", "local_set", "i32_const"]
+op = "const_and_eqz_brif"
+pattern = ["i32_const", "i32_and", "i32_eqz", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
-    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=55640, savings=55640 dispatches
 [[fused]]
 op = "xor_get"
 pattern = ["i32_xor", "local_get"]
@@ -3899,19 +3893,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=27811, savings=55622 dispatches
-[[fused]]
-op = "store8_get_get"
-pattern = ["i32_store8", "local_get", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=27625, savings=55250 dispatches
 [[fused]]
 op = "load_tee_get"
 pattern = ["i32_load", "local_tee", "local_get"]
@@ -3923,7 +3904,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=18252, savings=54756 dispatches
+[[fused]]
+op = "store8_get_get"
+pattern = ["i32_store8", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "get_load_tee_get"
 pattern = ["local_get", "i32_load", "local_tee", "local_get"]
@@ -3936,7 +3927,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=3047, savings=9141 dispatches
 [[fused]]
 op = "tee_get_load_tee"
 pattern = ["local_tee", "local_get", "i32_load", "local_tee"]
@@ -3949,7 +3939,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=15796, savings=15796 dispatches
 [[fused]]
 op = "add_const"
 pattern = ["i32_add", "i32_const"]
@@ -3959,7 +3948,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=2075, savings=4150 dispatches
 [[fused]]
 op = "const_add_get"
 pattern = ["i32_const", "i32_add", "local_get"]
@@ -3970,7 +3958,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=17513, savings=52539 dispatches
 [[fused]]
 op = "const_and_const_eq"
 pattern = ["i32_const", "i32_and", "i32_const", "i32_eq"]
@@ -3981,7 +3968,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=17976, savings=17976 dispatches
 [[fused]]
 op = "and_get"
 pattern = ["i32_and", "local_get"]
@@ -3991,18 +3977,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=16524, savings=49572 dispatches
 [[fused]]
-op = "load8_u_const_and_eqz"
-pattern = ["i32_load8_u", "i32_const", "i32_and", "i32_eqz"]
+op = "eq_brif"
+pattern = ["i32_eq", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 1, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=12295, savings=49180 dispatches
 [[fused]]
 op = "tee_get_load_const_add"
 pattern = ["local_tee", "local_get", "i32_load", "i32_const", "i32_add"]
@@ -4015,7 +3998,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=24275, savings=48550 dispatches
+[[fused]]
+op = "mul_get_add_get"
+pattern = ["i32_mul", "local_get", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "const_get_get"
 pattern = ["i32_const", "local_get", "local_get"]
@@ -4027,18 +4019,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=16169, savings=48507 dispatches
-[[fused]]
-op = "mul_get_add_get"
-pattern = ["i32_mul", "local_get", "i32_add", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=7663, savings=15326 dispatches
 [[fused]]
 op = "mul_get_add"
 pattern = ["i32_mul", "local_get", "i32_add"]
@@ -4048,7 +4028,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=4108, savings=4108 dispatches
+[[fused]]
+op = "get_xor"
+pattern = ["local_get", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "store8_get"
 pattern = ["i32_store8", "local_get"]
@@ -4059,17 +4047,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=2431, savings=2431 dispatches
 [[fused]]
-op = "get_xor"
-pattern = ["local_get", "i32_xor"]
+op = "get_const_lt_s_brif"
+pattern = ["local_get", "i32_const", "i32_lt_s", "br_if"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = "none"
 
-# Auto-discovered: count=342, savings=1026 dispatches
 [[fused]]
 op = "tee_const_add_tee"
 pattern = ["local_tee", "i32_const", "i32_add", "local_tee"]
@@ -4081,7 +4069,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=46016, savings=46016 dispatches
 [[fused]]
 op = "load16_s_get"
 pattern = ["i32_load16_s", "local_get"]
@@ -4092,7 +4079,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=15325, savings=45975 dispatches
 [[fused]]
 op = "const_and_const_add"
 pattern = ["i32_const", "i32_and", "i32_const", "i32_add"]
@@ -4103,43 +4089,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=318, savings=954 dispatches
-[[fused]]
-op = "get_const_store16_get"
-pattern = ["local_get", "i32_const", "i32_store16", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=330, savings=990 dispatches
-[[fused]]
-op = "shr_u_const_and_const"
-pattern = ["i32_shr_u", "i32_const", "i32_and", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=15272, savings=45816 dispatches
-[[fused]]
-op = "add_tee_get_load"
-pattern = ["i32_add", "local_tee", "local_get", "i32_load"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "offset", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=11441, savings=45764 dispatches
 [[fused]]
 op = "const_add_store_const_set"
 pattern = ["i32_const", "i32_add", "i32_store", "i32_const", "local_set"]
@@ -4152,18 +4101,39 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=15213, savings=45639 dispatches
 [[fused]]
-op = "const_and_tee_eqz"
-pattern = ["i32_const", "i32_and", "local_tee", "i32_eqz"]
+op = "get_const_store16_get"
+pattern = ["local_get", "i32_const", "i32_store16", "local_get"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=15077, savings=45231 dispatches
+[[fused]]
+op = "shr_u_const_and_const"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "add_tee_get_load"
+pattern = ["i32_add", "local_tee", "local_get", "i32_load"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "get_add_tee_get"
 pattern = ["local_get", "i32_add", "local_tee", "local_get"]
@@ -4175,7 +4145,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=14999, savings=44997 dispatches
+[[fused]]
+op = "get_load_eqz_brif"
+pattern = ["local_get", "i32_load", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "const_store16_get_get"
 pattern = ["i32_const", "i32_store16", "local_get", "local_get"]
@@ -4188,20 +4168,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=14994, savings=44982 dispatches
 [[fused]]
-op = "get_set_get_set"
-pattern = ["local_get", "local_set", "local_get", "local_set"]
+op = "and_tee_eqz_brif"
+pattern = ["i32_and", "local_tee", "i32_eqz", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = "none"
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=14989, savings=44967 dispatches
 [[fused]]
 op = "get_store16_get_get"
 pattern = ["local_get", "i32_store16", "local_get", "local_get"]
@@ -4214,20 +4190,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=14988, savings=44964 dispatches
-[[fused]]
-op = "tee_load8_u_set_get"
-pattern = ["local_tee", "i32_load8_u", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=14988, savings=44964 dispatches
 [[fused]]
 op = "add_const_add_load"
 pattern = ["i32_add", "i32_const", "i32_add", "i32_load"]
@@ -4238,42 +4200,28 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=14983, savings=44949 dispatches
 [[fused]]
-op = "get_sub_const_shr_s"
-pattern = ["local_get", "i32_sub", "i32_const", "i32_shr_s"]
+op = "get_get_gt_s_brif"
+pattern = ["local_get", "local_get", "i32_gt_s", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = "none"
 
-# Auto-discovered: count=14977, savings=44931 dispatches
 [[fused]]
-op = "store_get_const_lt_s"
-pattern = ["i32_store", "local_get", "i32_const", "i32_lt_s"]
+op = "load8_u_tee_gt_s_brif"
+pattern = ["i32_load8_u", "local_tee", "i32_gt_s", "br_if"]
 c_impl = true
 encoding.fields = [
     { name = "offset", bits = 32, from = 0 },
     { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=14975, savings=44925 dispatches
-[[fused]]
-op = "store_get_get_gt_s"
-pattern = ["i32_store", "local_get", "local_get", "i32_gt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=14975, savings=44925 dispatches
 [[fused]]
 op = "shr_s_set_get_get"
 pattern = ["i32_shr_s", "local_set", "local_get", "local_get"]
@@ -4285,30 +4233,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=14975, savings=44925 dispatches
 [[fused]]
-op = "get_load8_u_tee_gt_s"
-pattern = ["local_get", "i32_load8_u", "local_tee", "i32_gt_s"]
+op = "get_load16_s_tee_brif"
+pattern = ["local_get", "i32_load16_s", "local_tee", "br_if"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
     { name = "offset", bits = 32, from = 1 },
     { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = "none"
 
-# Auto-discovered: count=14974, savings=44922 dispatches
-[[fused]]
-op = "load_get_extend_i32_s_lt_s"
-pattern = ["i64_load", "local_get", "i64_extend_i32_s", "i64_lt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=14974, savings=44922 dispatches
 [[fused]]
 op = "lt_s_set_get_set"
 pattern = ["i64_lt_s", "local_set", "local_get", "local_set"]
@@ -4320,7 +4256,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=14973, savings=44919 dispatches
 [[fused]]
 op = "load_get_extend_i32_s_add"
 pattern = ["i64_load", "local_get", "i64_extend_i32_s", "i64_add"]
@@ -4331,7 +4266,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=11142, savings=44568 dispatches
+[[fused]]
+op = "get_set_get_set"
+pattern = ["local_get", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
+
 [[fused]]
 op = "const_set_const_set_get"
 pattern = ["i32_const", "local_set", "i32_const", "local_set", "local_get"]
@@ -4345,7 +4291,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=11088, savings=44352 dispatches
 [[fused]]
 op = "get_const_shr_u_tee_const"
 pattern = ["local_get", "i32_const", "i32_shr_u", "local_tee", "i32_const"]
@@ -4358,7 +4303,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=14488, savings=43464 dispatches
 [[fused]]
 op = "get_get_const_add"
 pattern = ["local_get", "local_get", "i32_const", "i32_add"]
@@ -4370,7 +4314,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=10816, savings=43264 dispatches
 [[fused]]
 op = "get_get_const_add_store"
 pattern = ["local_get", "local_get", "i32_const", "i32_add", "i32_store"]
@@ -4383,7 +4326,6 @@ encoding.fields = [
 ]
 tos_pattern = "none"
 
-# Auto-discovered: count=923, savings=923 dispatches
 [[fused]]
 op = "shr_u_get"
 pattern = ["i32_shr_u", "local_get"]
@@ -4393,7 +4335,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=2468, savings=7404 dispatches
 [[fused]]
 op = "const_add_store_const"
 pattern = ["i32_const", "i32_add", "i32_store", "i32_const"]
@@ -4405,7 +4346,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=851, savings=1702 dispatches
 [[fused]]
 op = "load16_s_mul_get"
 pattern = ["i32_load16_s", "i32_mul", "local_get"]
@@ -4416,7 +4356,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=9817, savings=39268 dispatches
+[[fused]]
+op = "gt_u_brif"
+pattern = ["i32_gt_u", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
 [[fused]]
 op = "get_get_const_shl_tee"
 pattern = ["local_get", "local_get", "i32_const", "i32_shl", "local_tee"]
@@ -4429,7 +4377,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=9790, savings=39160 dispatches
 [[fused]]
 op = "const_shl_add_set_const"
 pattern = ["i32_const", "i32_shl", "i32_add", "local_set", "i32_const"]
@@ -4441,7 +4388,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=8447, savings=8447 dispatches
 [[fused]]
 op = "store_get_2"
 pattern = ["i64_store", "local_get"]
@@ -4452,7 +4398,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=3156, savings=3156 dispatches
 [[fused]]
 op = "store16_get"
 pattern = ["i32_store16", "local_get"]
@@ -4463,17 +4408,24 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=19370, savings=38740 dispatches
 [[fused]]
-op = "const_and_eqz"
-pattern = ["i32_const", "i32_and", "i32_eqz"]
+op = "and_eqz_brif"
+pattern = ["i32_and", "i32_eqz", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=9592, savings=38368 dispatches
+[[fused]]
+op = "load16_s_mul"
+pattern = ["i32_load16_s", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "get_set_get_set_get"
 pattern = ["local_get", "local_set", "local_get", "local_set", "local_get"]
@@ -4487,17 +4439,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=17445, savings=17445 dispatches
-[[fused]]
-op = "load16_s_mul"
-pattern = ["i32_load16_s", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=37133, savings=37133 dispatches
 [[fused]]
 op = "get_gt_s"
 pattern = ["local_get", "i32_gt_s"]
@@ -4507,7 +4448,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=12111, savings=36333 dispatches
+[[fused]]
+op = "gt_s_brif"
+pattern = ["i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
 [[fused]]
 op = "tee_load8_u_tee_eqz"
 pattern = ["local_tee", "i32_load8_u", "local_tee", "i32_eqz"]
@@ -4519,7 +4468,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=8945, savings=35780 dispatches
 [[fused]]
 op = "get_const_shl_tee_add"
 pattern = ["local_get", "i32_const", "i32_shl", "local_tee", "i32_add"]
@@ -4531,7 +4479,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=2352, savings=4704 dispatches
 [[fused]]
 op = "tee_const_add"
 pattern = ["local_tee", "i32_const", "i32_add"]
@@ -4542,17 +4489,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=1621, savings=1621 dispatches
-[[fused]]
-op = "const_or"
-pattern = ["i32_const", "i32_or"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=8772, savings=35088 dispatches
 [[fused]]
 op = "const_set_const_set_const"
 pattern = ["i32_const", "local_set", "i32_const", "local_set", "i32_const"]
@@ -4566,18 +4502,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=17523, savings=35046 dispatches
-[[fused]]
-op = "get_get_add"
-pattern = ["local_get", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=17513, savings=35026 dispatches
 [[fused]]
 op = "and_const_eq"
 pattern = ["i32_and", "i32_const", "i32_eq"]
@@ -4587,7 +4511,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=8694, savings=34776 dispatches
+[[fused]]
+op = "const_or"
+pattern = ["i32_const", "i32_or"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "add_set_get_set_get"
 pattern = ["i32_add", "local_set", "local_get", "local_set", "local_get"]
@@ -4600,7 +4532,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=8668, savings=34672 dispatches
 [[fused]]
 op = "load_tee_get_add_tee"
 pattern = ["i32_load", "local_tee", "local_get", "i32_add", "local_tee"]
@@ -4613,7 +4544,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=8667, savings=34668 dispatches
 [[fused]]
 op = "tee_get_add_tee_get"
 pattern = ["local_tee", "local_get", "i32_add", "local_tee", "local_get"]
@@ -4626,7 +4556,27 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=11415, savings=34245 dispatches
+[[fused]]
+op = "get_const_shl_add_set"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "tee_eqz_brif"
+pattern = ["local_tee", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "const_set_get_const"
 pattern = ["i32_const", "local_set", "local_get", "i32_const"]
@@ -4639,58 +4589,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=8510, savings=34040 dispatches
-[[fused]]
-op = "tee_get_get_gt_s_tee"
-pattern = ["local_tee", "local_get", "local_get", "i32_gt_s", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=8510, savings=34040 dispatches
-[[fused]]
-op = "const_get_get_const_shl"
-pattern = ["i32_const", "local_get", "local_get", "i32_const", "i32_shl"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "const_val_3", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 0, push = 3 }
-
-# Auto-discovered: count=8510, savings=34040 dispatches
-[[fused]]
-op = "const_get_get_lt_s_get"
-pattern = ["i32_const", "local_get", "local_get", "i32_lt_s", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 0, push = 3 }
-
-# Auto-discovered: count=8510, savings=34040 dispatches
-[[fused]]
-op = "add_load_tee_get_add"
-pattern = ["i32_add", "i32_load", "local_tee", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=8510, savings=34040 dispatches
 [[fused]]
 op = "add_tee_get_get_gt_s"
 pattern = ["i32_add", "local_tee", "local_get", "local_get", "i32_gt_s"]
@@ -4702,7 +4600,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=8510, savings=34040 dispatches
 [[fused]]
 op = "set_const_get_get_lt_s"
 pattern = ["local_set", "i32_const", "local_get", "local_get", "i32_lt_s"]
@@ -4715,7 +4612,53 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=8469, savings=33876 dispatches
+[[fused]]
+op = "add_load_tee_get_add"
+pattern = ["i32_add", "i32_load", "local_tee", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "const_get_get_lt_s_get"
+pattern = ["i32_const", "local_get", "local_get", "i32_lt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+[[fused]]
+op = "const_get_get_const_shl"
+pattern = ["i32_const", "local_get", "local_get", "i32_const", "i32_shl"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+[[fused]]
+op = "tee_get_get_gt_s_tee"
+pattern = ["local_tee", "local_get", "local_get", "i32_gt_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
 [[fused]]
 op = "store_get_const_add_tee"
 pattern = ["i32_store", "local_get", "i32_const", "i32_add", "local_tee"]
@@ -4728,7 +4671,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=2784, savings=8352 dispatches
 [[fused]]
 op = "store_get_const_add"
 pattern = ["i32_store", "local_get", "i32_const", "i32_add"]
@@ -4740,28 +4682,29 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=1783, savings=3566 dispatches
 [[fused]]
-op = "get_add_tee"
-pattern = ["local_get", "i32_add", "local_tee"]
+op = "set_get_set_get_set"
+pattern = ["local_set", "local_get", "local_set", "local_get", "local_set"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
     { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=2877, savings=2877 dispatches
 [[fused]]
-op = "or_tee"
-pattern = ["i32_or", "local_tee"]
+op = "get_get_add"
+pattern = ["local_get", "local_get", "i32_add"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=8345, savings=33380 dispatches
 [[fused]]
 op = "get_const_add_store_get"
 pattern = ["local_get", "i32_const", "i32_add", "i32_store", "local_get"]
@@ -4774,7 +4717,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=16689, savings=33378 dispatches
+[[fused]]
+op = "or_tee"
+pattern = ["i32_or", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "get_add_get"
 pattern = ["local_get", "i32_add", "local_get"]
@@ -4785,7 +4736,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=11087, savings=33261 dispatches
 [[fused]]
 op = "const_shr_u_tee_const"
 pattern = ["i32_const", "i32_shr_u", "local_tee", "i32_const"]
@@ -4797,7 +4747,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=1586, savings=3172 dispatches
+[[fused]]
+op = "get_add_tee"
+pattern = ["local_get", "i32_add", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "load8_u_set_get"
 pattern = ["i32_load8_u", "local_set", "local_get"]
@@ -4809,14 +4768,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=32988, savings=32988 dispatches
 [[fused]]
-op = "xor_eqz"
-pattern = ["i32_xor", "i32_eqz"]
+op = "get_const_add_store"
+pattern = ["local_get", "i32_const", "i32_add", "i32_store"]
 c_impl = true
-tos_pattern = { pop = 2, push = 1 }
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=8133, savings=32532 dispatches
 [[fused]]
 op = "add_set_const_set_const"
 pattern = ["i32_add", "local_set", "i32_const", "local_set", "i32_const"]
@@ -4829,17 +4791,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=32437, savings=32437 dispatches
-[[fused]]
-op = "tee_eqz"
-pattern = ["local_tee", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=7637, savings=15274 dispatches
 [[fused]]
 op = "add_load_tee"
 pattern = ["i32_add", "i32_load", "local_tee"]
@@ -4850,7 +4801,15 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=801, savings=1602 dispatches
+[[fused]]
+op = "tee_eqz"
+pattern = ["local_tee", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "get_store8_get"
 pattern = ["local_get", "i32_store8", "local_get"]
@@ -4862,7 +4821,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=674, savings=1348 dispatches
+[[fused]]
+op = "const_lt_s_brif"
+pattern = ["i32_const", "i32_lt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_get_sub"
 pattern = ["local_get", "local_get", "i32_sub"]
@@ -4873,18 +4841,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=15566, savings=31132 dispatches
-[[fused]]
-op = "get_const_lt_s"
-pattern = ["local_get", "i32_const", "i32_lt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=7758, savings=31032 dispatches
 [[fused]]
 op = "get_load_set_const_set"
 pattern = ["local_get", "i32_load", "local_set", "i32_const", "local_set"]
@@ -4898,7 +4854,28 @@ encoding.fields = [
 ]
 tos_pattern = "none"
 
-# Auto-discovered: count=7674, savings=30696 dispatches
+[[fused]]
+op = "get_gt_s_tee"
+pattern = ["local_get", "i32_gt_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "load8_u_tee_const_ne_brif"
+pattern = ["i32_load8_u", "local_tee", "i32_const", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "add_const_store8_get_get"
 pattern = ["i32_add", "i32_const", "i32_store8", "local_get", "local_get"]
@@ -4911,18 +4888,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=15318, savings=30636 dispatches
-[[fused]]
-op = "get_gt_s_tee"
-pattern = ["local_get", "i32_gt_s", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=7635, savings=30540 dispatches
 [[fused]]
 op = "const_shr_u_tee_const_shl"
 pattern = ["i32_const", "i32_shr_u", "local_tee", "i32_const", "i32_shl"]
@@ -4934,17 +4899,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=15213, savings=30426 dispatches
-[[fused]]
-op = "and_tee_eqz"
-pattern = ["i32_and", "local_tee", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=7583, savings=30332 dispatches
 [[fused]]
 op = "store_get_const_add_set"
 pattern = ["i64_store", "local_get", "i32_const", "i32_add", "local_set"]
@@ -4957,18 +4911,27 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=15025, savings=30050 dispatches
 [[fused]]
-op = "get_load_eqz"
-pattern = ["local_get", "i32_load", "i32_eqz"]
+op = "get_const_and_get"
+pattern = ["local_get", "i32_const", "i32_and", "local_get"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
 ]
-tos_pattern = { pop = 0, push = 1 }
+tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=7508, savings=30032 dispatches
+[[fused]]
+op = "load_eqz_brif"
+pattern = ["i32_load", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_get_const_shr_u_tee"
 pattern = ["local_get", "local_get", "i32_const", "i32_shr_u", "local_tee"]
@@ -4981,31 +4944,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=10003, savings=30009 dispatches
-[[fused]]
-op = "get_const_and_get"
-pattern = ["local_get", "i32_const", "i32_and", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-# Auto-discovered: count=14999, savings=29998 dispatches
-[[fused]]
-op = "get_load16_s_tee"
-pattern = ["local_get", "i32_load16_s", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=14992, savings=29984 dispatches
 [[fused]]
 op = "add_tee_load"
 pattern = ["i32_add", "local_tee", "i64_load"]
@@ -5016,7 +4954,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=7495, savings=29980 dispatches
+[[fused]]
+op = "get_gt_s_brif"
+pattern = ["local_get", "i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "get_load_set_get_get"
 pattern = ["local_get", "i64_load", "local_set", "local_get", "local_get"]
@@ -5030,7 +4977,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=29974, savings=29974 dispatches
+[[fused]]
+op = "get_add_const_add_set"
+pattern = ["local_get", "i32_add", "i32_const", "i32_add", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "tee_load_2"
 pattern = ["local_tee", "i64_load"]
@@ -5041,7 +4998,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=7493, savings=29972 dispatches
 [[fused]]
 op = "set_get_load_set_const"
 pattern = ["local_set", "local_get", "i32_load", "local_set", "i32_const"]
@@ -5055,19 +5011,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=7490, savings=29960 dispatches
-[[fused]]
-op = "load_const_shr_u_const_and"
-pattern = ["i32_load", "i32_const", "i32_shr_u", "i32_const", "i32_and"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=14979, savings=29958 dispatches
 [[fused]]
 op = "store_const_set"
 pattern = ["i64_store", "i32_const", "local_set"]
@@ -5079,7 +5022,27 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=7488, savings=29952 dispatches
+[[fused]]
+op = "load_const_shr_u_const_and"
+pattern = ["i32_load", "i32_const", "i32_shr_u", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "tee_gt_s_brif"
+pattern = ["local_tee", "i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
 [[fused]]
 op = "get_load_const_shr_u_const"
 pattern = ["local_get", "i32_load", "i32_const", "i32_shr_u", "i32_const"]
@@ -5092,7 +5055,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=7488, savings=29952 dispatches
 [[fused]]
 op = "get_const_shl_add_load8_u"
 pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_load8_u"]
@@ -5104,78 +5066,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=14975, savings=29950 dispatches
 [[fused]]
-op = "load8_u_tee_gt_s"
-pattern = ["i32_load8_u", "local_tee", "i32_gt_s"]
+op = "load16_s_tee_brif"
+pattern = ["i32_load16_s", "local_tee", "br_if"]
 c_impl = true
 encoding.fields = [
     { name = "offset", bits = 32, from = 0 },
     { name = "local_idx", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
-# Auto-discovered: count=7486, savings=29944 dispatches
-[[fused]]
-op = "and_get_add_const_add"
-pattern = ["i32_and", "local_get", "i32_add", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=7486, savings=29944 dispatches
-[[fused]]
-op = "const_shl_add_load8_u_tee"
-pattern = ["i32_const", "i32_shl", "i32_add", "i32_load8_u", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "offset", bits = 32, from = 3 },
-    { name = "local_idx", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=7486, savings=29944 dispatches
-[[fused]]
-op = "const_shl_add_const_store8"
-pattern = ["i32_const", "i32_shl", "i32_add", "i32_const", "i32_store8"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_3", bits = 32, from = 3 },
-    { name = "offset", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-# Auto-discovered: count=7486, savings=29944 dispatches
-[[fused]]
-op = "const_and_get_add_const"
-pattern = ["i32_const", "i32_and", "local_get", "i32_add", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=7486, savings=29944 dispatches
-[[fused]]
-op = "get_add_store_get_const"
-pattern = ["local_get", "i64_add", "i64_store", "local_get", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "const_val", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=7486, savings=29944 dispatches
 [[fused]]
 op = "get_get_load_get_add"
 pattern = ["local_get", "local_get", "i64_load", "local_get", "i64_add"]
@@ -5188,7 +5089,18 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=7486, savings=29944 dispatches
+[[fused]]
+op = "get_add_store_get_const"
+pattern = ["local_get", "i64_add", "i64_store", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "shr_u_const_and_get_add"
 pattern = ["i32_shr_u", "i32_const", "i32_and", "local_get", "i32_add"]
@@ -5199,7 +5111,16 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=7486, savings=29944 dispatches
+[[fused]]
+op = "and_get_add_const_add"
+pattern = ["i32_and", "local_get", "i32_add", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
 [[fused]]
 op = "add_load8_u_tee_const_ne"
 pattern = ["i32_add", "i32_load8_u", "local_tee", "i32_const", "i32_ne"]
@@ -5211,7 +5132,39 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=909, savings=2727 dispatches
+[[fused]]
+op = "const_shl_add_load8_u_tee"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_load8_u", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "const_shl_add_const_store8"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_const", "i32_store8"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
+op = "const_and_get_add_const"
+pattern = ["i32_const", "i32_and", "local_get", "i32_add", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
 [[fused]]
 op = "get_const_shl_tee"
 pattern = ["local_get", "i32_const", "i32_shl", "local_tee"]
@@ -5223,18 +5176,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=14653, savings=29306 dispatches
-[[fused]]
-op = "get_add_const"
-pattern = ["local_get", "i32_add", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=7281, savings=29124 dispatches
 [[fused]]
 op = "const_set_get_const_sub"
 pattern = ["i32_const", "local_set", "local_get", "i32_const", "i32_sub"]
@@ -5247,7 +5188,28 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=6916, savings=27664 dispatches
+[[fused]]
+op = "get_add_const"
+pattern = ["local_get", "i32_add", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
+op = "const_add_set_get_set"
+pattern = ["i32_const", "i32_add", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
 [[fused]]
 op = "shr_u_const_and_tee_get"
 pattern = ["i32_shr_u", "i32_const", "i32_and", "local_tee", "local_get"]
@@ -5259,7 +5221,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=6914, savings=27656 dispatches
 [[fused]]
 op = "get_const_xor_get_const"
 pattern = ["local_get", "i32_const", "i32_xor", "local_get", "i32_const"]
@@ -5272,7 +5233,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 3 }
 
-# Auto-discovered: count=6905, savings=27620 dispatches
 [[fused]]
 op = "and_tee_get_const_xor"
 pattern = ["i32_and", "local_tee", "local_get", "i32_const", "i32_xor"]
@@ -5284,7 +5244,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 2 }
 
-# Auto-discovered: count=6905, savings=27620 dispatches
 [[fused]]
 op = "const_xor_get_const_and"
 pattern = ["i32_const", "i32_xor", "local_get", "i32_const", "i32_and"]
@@ -5296,33 +5255,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=6808, savings=27232 dispatches
-[[fused]]
-op = "tee_add_load_tee_const"
-pattern = ["local_tee", "i32_add", "i32_load", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "const_val", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=6808, savings=27232 dispatches
-[[fused]]
-op = "const_get_get_gt_s_get"
-pattern = ["i32_const", "local_get", "local_get", "i32_gt_s", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 0, push = 3 }
-
-# Auto-discovered: count=6808, savings=27232 dispatches
 [[fused]]
 op = "const_shl_tee_add_load"
 pattern = ["i32_const", "i32_shl", "local_tee", "i32_add", "i32_load"]
@@ -5334,7 +5266,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=6808, savings=27232 dispatches
 [[fused]]
 op = "get_add_load_tee_get"
 pattern = ["local_get", "i32_add", "i32_load", "local_tee", "local_get"]
@@ -5347,7 +5278,30 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=2166, savings=6498 dispatches
+[[fused]]
+op = "const_get_get_gt_s_get"
+pattern = ["i32_const", "local_get", "local_get", "i32_gt_s", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+[[fused]]
+op = "tee_add_load_tee_const"
+pattern = ["local_tee", "i32_add", "i32_load", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
 [[fused]]
 op = "const_shl_tee_add"
 pattern = ["i32_const", "i32_shl", "local_tee", "i32_add"]
@@ -5358,7 +5312,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=8857, savings=26571 dispatches
 [[fused]]
 op = "load8_u_tee_const_ne"
 pattern = ["i32_load8_u", "local_tee", "i32_const", "i32_ne"]
@@ -5370,7 +5323,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=13173, savings=26346 dispatches
 [[fused]]
 op = "load8_u_tee_eqz"
 pattern = ["i32_load8_u", "local_tee", "i32_eqz"]
@@ -5381,7 +5333,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 1 }
 
-# Auto-discovered: count=6404, savings=25616 dispatches
 [[fused]]
 op = "get_get_add_tee_get"
 pattern = ["local_get", "local_get", "i32_add", "local_tee", "local_get"]
@@ -5394,7 +5345,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=8510, savings=25530 dispatches
 [[fused]]
 op = "get_get_gt_s_tee"
 pattern = ["local_get", "local_get", "i32_gt_s", "local_tee"]
@@ -5406,7 +5356,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=8510, savings=25530 dispatches
 [[fused]]
 op = "get_get_lt_s_get"
 pattern = ["local_get", "local_get", "i32_lt_s", "local_get"]
@@ -5418,19 +5367,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 0, push = 2 }
 
-# Auto-discovered: count=1663, savings=4989 dispatches
-[[fused]]
-op = "get_get_add_tee"
-pattern = ["local_get", "local_get", "i32_add", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=443, savings=1329 dispatches
 [[fused]]
 op = "store_get_const_add_2"
 pattern = ["i64_store", "local_get", "i32_const", "i32_add"]
@@ -5442,7 +5378,17 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 1 }
 
-# Auto-discovered: count=7982, savings=23946 dispatches
+[[fused]]
+op = "set_get_const_sub"
+pattern = ["local_set", "local_get", "i32_const", "i32_sub"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
 [[fused]]
 op = "const_store8_get_get"
 pattern = ["i32_const", "i32_store8", "local_get", "local_get"]
@@ -5455,19 +5401,28 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 1, push = 2 }
 
-# Auto-discovered: count=7964, savings=23892 dispatches
 [[fused]]
-op = "set_get_const_sub"
-pattern = ["local_set", "local_get", "i32_const", "i32_sub"]
+op = "tee_const_ne_brif"
+pattern = ["local_tee", "i32_const", "i32_ne", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "get_get_add_tee"
+pattern = ["local_get", "local_get", "i32_add", "local_tee"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
     { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 0, push = 1 }
 
-# Auto-discovered: count=11508, savings=23016 dispatches
 [[fused]]
 op = "store_const_set_2"
 pattern = ["i32_store", "i32_const", "local_set"]
@@ -5479,7 +5434,6 @@ encoding.fields = [
 ]
 tos_pattern = { pop = 2, push = 0 }
 
-# Auto-discovered: count=7659, savings=22977 dispatches
 [[fused]]
 op = "add_tee_get_load16_u"
 pattern = ["i32_add", "local_tee", "local_get", "i32_load16_u"]
@@ -5490,417 +5444,3 @@ encoding.fields = [
     { name = "offset", bits = 32, from = 3 },
 ]
 tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=7635, savings=22905 dispatches
-[[fused]]
-op = "shr_u_tee_const_shl"
-pattern = ["i32_shr_u", "local_tee", "i32_const", "i32_shl"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=3720, savings=7440 dispatches
-[[fused]]
-op = "shr_u_tee_const"
-pattern = ["i32_shr_u", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=7540, savings=22620 dispatches
-[[fused]]
-op = "get_add_const_add"
-pattern = ["local_get", "i32_add", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=7494, savings=22482 dispatches
-[[fused]]
-op = "load_set_get_get_2"
-pattern = ["i64_load", "local_set", "local_get", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=7486, savings=22458 dispatches
-[[fused]]
-op = "get_load_get_add"
-pattern = ["local_get", "i64_load", "local_get", "i64_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=7295, savings=21885 dispatches
-[[fused]]
-op = "add_load_tee_const"
-pattern = ["i32_add", "i32_load", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx", bits = 16, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=7260, savings=21780 dispatches
-[[fused]]
-op = "const_and_tee_get"
-pattern = ["i32_const", "i32_and", "local_tee", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=6946, savings=20838 dispatches
-[[fused]]
-op = "tee_get_const_xor"
-pattern = ["local_tee", "local_get", "i32_const", "i32_xor"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=6905, savings=20715 dispatches
-[[fused]]
-op = "xor_get_const_and"
-pattern = ["i32_xor", "local_get", "i32_const", "i32_and"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=1750, savings=3500 dispatches
-[[fused]]
-op = "set_const_get"
-pattern = ["local_set", "i32_const", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=5106, savings=20424 dispatches
-[[fused]]
-op = "store16_get_get_add_tee"
-pattern = ["i32_store16", "local_get", "local_get", "i32_add", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=5106, savings=20424 dispatches
-[[fused]]
-op = "sub_const_and_const_ge_u"
-pattern = ["i32_sub", "i32_const", "i32_and", "i32_const", "i32_ge_u"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=5106, savings=20424 dispatches
-[[fused]]
-op = "get_add_tee_get_load16_u"
-pattern = ["local_get", "i32_add", "local_tee", "local_get", "i32_load16_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "offset", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=6808, savings=20424 dispatches
-[[fused]]
-op = "get_get_gt_s_get"
-pattern = ["local_get", "local_get", "i32_gt_s", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-# Auto-discovered: count=5106, savings=5106 dispatches
-[[fused]]
-op = "get_load16_s"
-pattern = ["local_get", "i32_load16_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=10017, savings=20034 dispatches
-[[fused]]
-op = "load_tee_const"
-pattern = ["i32_load", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=961, savings=1922 dispatches
-[[fused]]
-op = "const_shl_tee"
-pattern = ["i32_const", "i32_shl", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=4878, savings=4878 dispatches
-[[fused]]
-op = "get_sub"
-pattern = ["local_get", "i32_sub"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=19365, savings=19365 dispatches
-[[fused]]
-op = "and_eqz"
-pattern = ["i32_and", "i32_eqz"]
-c_impl = true
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=820, savings=1640 dispatches
-[[fused]]
-op = "load8_u_tee_const"
-pattern = ["i32_load8_u", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=2511, savings=5022 dispatches
-[[fused]]
-op = "get_const_xor"
-pattern = ["local_get", "i32_const", "i32_xor"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=4696, savings=18784 dispatches
-[[fused]]
-op = "get_const_sub_set_get"
-pattern = ["local_get", "i32_const", "i32_sub", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-# Auto-discovered: count=9068, savings=18136 dispatches
-[[fused]]
-op = "tee_const_ne"
-pattern = ["local_tee", "i32_const", "i32_ne"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=5863, savings=17589 dispatches
-[[fused]]
-op = "const_and_const_shr_u"
-pattern = ["i32_const", "i32_and", "i32_const", "i32_shr_u"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=8510, savings=17020 dispatches
-[[fused]]
-op = "get_lt_s_get"
-pattern = ["local_get", "i32_lt_s", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=739, savings=2217 dispatches
-[[fused]]
-op = "get_const_sub_set"
-pattern = ["local_get", "i32_const", "i32_sub", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = "none"
-
-# Auto-discovered: count=15699, savings=15699 dispatches
-[[fused]]
-op = "const_lt_s"
-pattern = ["i32_const", "i32_lt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=7669, savings=15338 dispatches
-[[fused]]
-op = "tee_get_load16_u"
-pattern = ["local_tee", "local_get", "i32_load16_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=5106, savings=15318 dispatches
-[[fused]]
-op = "const_and_const_ge_u"
-pattern = ["i32_const", "i32_and", "i32_const", "i32_ge_u"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=15318, savings=15318 dispatches
-[[fused]]
-op = "gt_s_tee"
-pattern = ["i32_gt_s", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=3829, savings=15316 dispatches
-[[fused]]
-op = "tee_const_shl_add_get"
-pattern = ["local_tee", "i32_const", "i32_shl", "i32_add", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-# Auto-discovered: count=3829, savings=15316 dispatches
-[[fused]]
-op = "tee_get_load16_u_get_sub"
-pattern = ["local_tee", "local_get", "i32_load16_u", "local_get", "i32_sub"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=3829, savings=15316 dispatches
-[[fused]]
-op = "tee_get_load16_u_get_add"
-pattern = ["local_tee", "local_get", "i32_load16_u", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-# Auto-discovered: count=3829, savings=15316 dispatches
-[[fused]]
-op = "const_and_mul_get_add"
-pattern = ["i32_const", "i32_and", "i32_mul", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-# Auto-discovered: count=3829, savings=15316 dispatches
-[[fused]]
-op = "get_const_shl_add_load16_u"
-pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_load16_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "offset", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-# Auto-discovered: count=7658, savings=15316 dispatches
-[[fused]]
-op = "get_load16_u_get"
-pattern = ["local_get", "i32_load16_u", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 2 }

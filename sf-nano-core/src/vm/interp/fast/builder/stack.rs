@@ -483,6 +483,26 @@ impl StackTracker {
     // Call Handling
     // =========================================================================
 
+    /// Check if a br_if at the given label would be "simple" (arity=0, no stack drop).
+    ///
+    /// `height_at_brif` is the stack height when the condition value is on top
+    /// (before br_if pops it).
+    pub fn is_br_if_simple_at(&self, label: u32, height_at_brif: usize) -> bool {
+        let Some(frame) = self.frame_at_depth(label) else {
+            return false;
+        };
+        let arity = if frame.kind == BlockKind::Loop {
+            frame.param_count
+        } else {
+            frame.result_count
+        };
+        if arity != 0 {
+            return false;
+        }
+        let height_after_pop = height_at_brif.saturating_sub(1);
+        height_after_pop == frame.start_height
+    }
+
     /// Apply call effect: pop params, push results.
     pub fn apply_call(&mut self, params: usize, results: usize) {
         self.pop_n(params);

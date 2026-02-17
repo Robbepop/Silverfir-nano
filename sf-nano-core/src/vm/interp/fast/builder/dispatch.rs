@@ -154,7 +154,7 @@ impl<'a> OpcodeHandler for DispatchHandler<'a> {
         #[cfg(feature = "fusion")]
         if !super::super::is_fusion_disabled() {
             let mut fuser = OpFuser::new(stream);
-            while let Some(op) = fuser.next()? {
+            while let Some(op) = fuser.next(self.stack)? {
                 match op {
                     FusedOp::Single { wasm_op, imm } => {
                         #[cfg(feature = "tos-stats")]
