@@ -240,11 +240,14 @@ impl HandlerVariantSource for FusedHandler {
     fn dispatch(&self) -> Option<DispatchMode> {
         // Fused patterns ending with br_if always need nonlinear dispatch:
         // the taken branch target is never the next sequential instruction.
+        // Patterns ending with if_ use guard-check dispatch (default):
+        // the then-path falls through to pc_next(pc) which is linear.
         if self.dispatch.is_some() {
             self.dispatch
         } else if self.pattern.iter().any(|op| op == "br_if") {
             Some(DispatchMode::Nonlinear)
         } else {
+            // if_ patterns and everything else use guard-check (None = default)
             None
         }
     }

@@ -1,7 +1,7 @@
 // Fusion pattern matching code generator.
 // Produces fast_fusion.rs: FusedOp enum, OpFuser struct, try_match_N, try_fuse_*.
 
-use super::op_classify::{get_pop_push, has_branch, immediate_variant, is_tos_none, pattern_op_to_opcode, CategoryMap};
+use super::op_classify::{get_pop_push, has_branch, has_branch_or_if, has_if, immediate_variant, is_comparison_op, is_tos_none, pattern_op_to_opcode, CategoryMap};
 use super::types::{bits_to_rust_type, to_pascal_case, FieldKind, FusedHandler};
 
 /// Generate empty stub when no fused entries exist.
@@ -58,16 +58,19 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     for fused in fused_handlers {
         let variant = to_pascal_case(&fused.op);
         let fields = fused.get_fields();
+        let is_if_pattern = has_if(fused);
 
         code.push_str(&format!("    /// Fused: {}\n", fused.pattern.join(" -> ")));
         code.push_str(&format!("    {} {{\n", variant));
 
         for field in fields {
             if field.kind == FieldKind::Target {
-                // Branch target stored as label index
-                code.push_str(&format!(
-                    "        target_label: u32,\n"
-                ));
+                if is_if_pattern {
+                    // IF patterns: target is patched at ELSE/END, not stored in FusedOp
+                    continue;
+                }
+                // br_if: Branch target stored as label index
+                code.push_str("        target_label: u32,\n");
             } else {
                 let rust_type = bits_to_rust_type(field.bits);
                 code.push_str(&format!("        {}: {},\n", field.name, rust_type));
@@ -112,7 +115,7 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     for (len, group) in &by_length {
         code.push_str(&format!("        // {}-way patterns\n", len));
         for fused in group {
-            if has_branch(fused) {
+            if has_branch_or_if(fused) {
                 code.push_str(&format!(
                     "        if let Some(fused) = self.try_fuse_{}(stack)? {{\n",
                     fused.op
@@ -199,12 +202,14 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
     let n = fused.pattern.len();
     let fields = fused.get_fields();
     let is_br = has_branch(fused);
+    let is_if = has_if(fused);
+    let needs_stack = is_br || is_if;
 
     code.push_str(&format!(
         "    /// Pattern: {}\n",
         fused.pattern.join(" -> ")
     ));
-    if is_br {
+    if needs_stack {
         code.push_str(&format!(
             "    fn try_fuse_{}(&mut self, stack: &StackTracker) -> Result<Option<FusedOp>, WasmError> {{\n",
             fused.op
@@ -223,7 +228,7 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
         .iter()
         .map(|op| pattern_op_to_opcode(categories, op).to_string())
         .collect();
-    let imms_binding = if fields.is_empty() { "_imms" } else { "imms" };
+    let imms_binding = if fields.is_empty() && !is_if { "_imms" } else { "imms" };
     code.push_str(&format!(
         "        let Some({}) = self.try_match_{}([{}])? else {{\n",
         imms_binding,
@@ -245,15 +250,19 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
         let imm_variant = immediate_variant(categories, pattern_op);
 
         if field.kind == FieldKind::Target {
-            // Branch target
-            assert_eq!(
-                imm_variant, "LabelIndex",
-                "target field must come from br_if"
-            );
-            code.push_str(&format!(
-                "        let Immediate::LabelIndex(target_label) = imms[{}] else {{ return Ok(None) }};\n",
-                from_idx
-            ));
+            if imm_variant == "LabelIndex" {
+                // br_if: extract label index for branch resolution
+                code.push_str(&format!(
+                    "        let Immediate::LabelIndex(target_label) = imms[{}] else {{ return Ok(None) }};\n",
+                    from_idx
+                ));
+            } else if imm_variant == "Block" {
+                // if_: target field exists in encoding but label comes from patching,
+                // not from the instruction immediate. We validate the block type below.
+            } else {
+                panic!("target field in '{}' references op '{}' with unexpected immediate variant '{}'",
+                    fused.op, pattern_op, imm_variant);
+            }
         } else {
             match imm_variant {
                 "LocalIndex" => {
@@ -301,6 +310,19 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
         }
     }
 
+    // For if_ patterns: only fuse when block type is empty (no params, no results).
+    // This avoids needing access to the CompileContext to resolve complex block types.
+    if is_if {
+        let if_idx = fused.pattern.iter().position(|op| op == "if_").unwrap();
+        code.push_str(&format!(
+            "        let Immediate::Block(ref block_type) = imms[{}] else {{ return Ok(None) }};\n",
+            if_idx
+        ));
+        code.push_str("        if !matches!(block_type, crate::op_decoder::BlockType::Empty) {\n");
+        code.push_str("            return Ok(None);\n");
+        code.push_str("        }\n");
+    }
+
     // For br_if patterns, check simplicity before consuming
     if is_br {
         let tos_none = is_tos_none(fused);
@@ -320,6 +342,23 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
         code.push_str("        }\n");
     }
 
+    // Phase 1: Branch-aware pattern yielding.
+    // For non-branch patterns ending with a comparison op: if the next instruction
+    // is br_if or if_, yield (return None) so shorter patterns get a chance,
+    // leaving the comparison available for branch fusion.
+    if !is_br && !is_if {
+        let last_op = fused.pattern.last().unwrap();
+        if is_comparison_op(last_op) {
+            code.push_str("        // Branch-aware yielding: comparison at end, check if next op is a branch\n");
+            code.push_str(&format!(
+                "        if let Some(next) = self.stream.peek_at({})? {{\n", n));
+            code.push_str("            if matches!(next.wasm_op, WasmOpcode::OP(o) if o == BR_IF || o == IF) {\n");
+            code.push_str("                return Ok(None);\n");
+            code.push_str("            }\n");
+            code.push_str("        }\n");
+        }
+    }
+
     // All checks passed — consume the matched instructions and build the variant
     code.push_str(&format!("\n        self.stream.skip({});\n", n));
     code.push_str(&format!("        Ok(Some(FusedOp::{} {{\n", variant));
@@ -330,7 +369,11 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
         let imm_variant = immediate_variant(categories, pattern_op);
 
         if field.kind == FieldKind::Target {
-            code.push_str("            target_label,\n");
+            if imm_variant == "LabelIndex" {
+                // br_if: include target_label in the variant
+                code.push_str("            target_label,\n");
+            }
+            // if_: target field is NOT included in FusedOp (patched later at ELSE/END)
         } else {
             let cast = match (imm_variant, field.bits) {
                 ("LocalIndex", 16) => format!("{} as u16", field.name),

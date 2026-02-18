@@ -2,7 +2,7 @@
 // Produces fast_fusion_emit.rs: emit_fused dispatch, spill/fill helpers,
 // CodeEmitter emit_fused_* methods.
 
-use super::op_classify::{first_wasm_opcode, get_pop_push, has_branch, is_tos_none, pattern_op_to_opcode, to_upper_snake, CategoryMap};
+use super::op_classify::{first_wasm_opcode, get_pop_push, has_branch, has_branch_or_if, has_if, is_tos_none, pattern_op_to_opcode, to_upper_snake, CategoryMap};
 use super::types::{bits_to_rust_type, to_pascal_case, FieldKind, FusedHandler};
 
 /// Generate empty stub when no fused entries exist.
@@ -157,10 +157,13 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
     let (pop, push) = get_pop_push(fused);
     let tos_none = is_tos_none(fused);
     let has_br = has_branch(fused);
+    let is_if = has_if(fused);
 
-    // Build the pattern destructuring
+    // Build the pattern destructuring.
+    // For IF patterns: skip Target fields (they're not in the FusedOp variant).
     let field_names: Vec<String> = fields
         .iter()
+        .filter(|f| !(f.kind == FieldKind::Target && is_if))
         .map(|f| {
             if f.kind == FieldKind::Target {
                 "target_label".to_string()
@@ -184,8 +187,8 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             .map(|f| f.name.clone())
             .collect();
 
-        // For branch patterns, spill all TOS values to memory before the handler
-        if has_br {
+        // For branch/if patterns, spill all TOS values to memory before the handler
+        if has_br || is_if {
             code.push_str("            emit_spill_all_for_branch(stack, emitter);\n");
         }
 
@@ -196,7 +199,7 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             emitter_args.join(", ")
         ));
 
-        // Handle branch target
+        // Handle branch target (br_if)
         if has_br {
             code.push_str("            let (_, target) = stack.branch_info(target_label);\n");
             code.push_str("            if let Some(tgt) = target {\n");
@@ -204,6 +207,10 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             code.push_str("            } else {\n");
             code.push_str("                stack.register_forward_branch(target_label, idx, None);\n");
             code.push_str("            }\n");
+        } else if is_if {
+            // IF patterns: enter block scope and register for ELSE/END patching
+            code.push_str("            stack.enter_block(BlockKind::If, 0, 0, idx);\n");
+            code.push_str("            stack.set_if_inst(idx);\n");
         } else {
             // idx is unused
             code.push_str("            let _ = idx;\n");
@@ -219,8 +226,8 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             ));
         }
 
-        if has_br {
-            // For branch patterns: spill all except the operands the handler reads from TOS
+        if has_br || is_if {
+            // For branch/if patterns: spill all except the operands the handler reads from TOS
             code.push_str("            let tos_before_spill = stack.tos_count();\n");
             code.push_str(&format!(
                 "            emit_spill_all_except_top_for_branch(stack, emitter, {});\n",
@@ -259,7 +266,7 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
         let mut emitter_args = vec!["handler".to_string()];
         for f in fields {
             if f.kind == FieldKind::Target {
-                // Skip target — handled by branch patching
+                // Skip target — handled by branch patching / IF block setup
                 continue;
             }
             emitter_args.push(f.name.clone());
@@ -282,15 +289,15 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             }
         }
 
-        // For branch patterns: restore TOS tracking after pop
-        if has_br {
+        // For branch/if patterns: restore TOS tracking after pop
+        if has_br || is_if {
             code.push_str(&format!(
                 "            stack.record_fill(tos_before_spill.saturating_sub({}));\n",
                 pop
             ));
         }
 
-        // Handle branch target
+        // Handle branch target (br_if)
         if has_br {
             code.push_str("\n            let (_, target) = stack.branch_info(target_label);\n");
             code.push_str("            if let Some(tgt) = target {\n");
@@ -298,6 +305,10 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             code.push_str("            } else {\n");
             code.push_str("                stack.register_forward_branch(target_label, idx, None);\n");
             code.push_str("            }\n");
+        } else if is_if {
+            // IF patterns: enter block scope and register for ELSE/END patching
+            code.push_str("\n            stack.enter_block(BlockKind::If, 0, 0, idx);\n");
+            code.push_str("            stack.set_if_inst(idx);\n");
         } else {
             code.push_str("            let _ = idx;\n");
         }
@@ -345,7 +356,7 @@ fn generate_emit_method(code: &mut String, fused: &FusedHandler, categories: &Ca
         "handler".to_string()
     };
 
-    let target_suffix = if has_branch(fused) { ".with_target()" } else { "" };
+    let target_suffix = if has_branch_or_if(fused) { ".with_target()" } else { "" };
 
     if pattern_data_fields.is_empty() {
         code.push_str(&format!(

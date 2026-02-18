@@ -362,6 +362,17 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "load_set_get"
+pattern = ["i32_load", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
 op = "get_set_get_const"
 pattern = ["local_get", "local_set", "local_get", "i32_const"]
 c_impl = true
@@ -374,26 +385,14 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 2 }
 
 [[fused]]
-op = "load_set_get"
-pattern = ["i32_load", "local_set", "local_get"]
+op = "const_shr_u_const_and_add"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_add"]
 c_impl = true
 encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
 ]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "add_tee_const_le_u_brif"
-pattern = ["i32_add", "local_tee", "i32_const", "i32_le_u", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "target", bits = 64, from = 4, kind = "target" },
-]
-tos_pattern = { pop = 2, push = 0 }
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "const_add_tee_const_le_u"
@@ -407,14 +406,15 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "const_shr_u_const_and_add"
-pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_and", "i32_add"]
+op = "add_tee_const_le_u_brif"
+pattern = ["i32_add", "local_tee", "i32_const", "i32_le_u", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "get_const_and"
@@ -471,6 +471,16 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "tee_const"
+pattern = ["local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
 op = "get_get_const_shl"
 pattern = ["local_get", "local_get", "i32_const", "i32_shl"]
 c_impl = true
@@ -480,16 +490,6 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 2 },
 ]
 tos_pattern = { pop = 0, push = 2 }
-
-[[fused]]
-op = "tee_const"
-pattern = ["local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
 op = "tee_const_shr_u_const_and"
@@ -585,15 +585,15 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "shl_const_add_load_const"
-pattern = ["i32_shl", "i32_const", "i32_add", "i32_load", "i32_const"]
+op = "const_and_const_shl_const"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_shl", "i32_const"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "offset", bits = 32, from = 3 },
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
     { name = "const_val_4", bits = 32, from = 4 },
 ]
-tos_pattern = { pop = 2, push = 2 }
+tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
 op = "get_const_and_const_shl"
@@ -617,6 +617,17 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
+op = "shl_const_add_load_const"
+pattern = ["i32_shl", "i32_const", "i32_add", "i32_load", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
 op = "add_load_const_add_tee"
 pattern = ["i32_add", "i32_load", "i32_const", "i32_add", "local_tee"]
 c_impl = true
@@ -626,17 +637,6 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "const_and_const_shl_const"
-pattern = ["i32_const", "i32_and", "i32_const", "i32_shl", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
 op = "shr_u_const"
@@ -932,16 +932,6 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
-op = "load_const_add"
-pattern = ["i32_load", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
 op = "set_get_eqz_brif"
 pattern = ["local_set", "local_get", "i32_eqz", "br_if"]
 c_impl = true
@@ -951,6 +941,16 @@ encoding.fields = [
     { name = "target", bits = 64, from = 3, kind = "target" },
 ]
 tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "load_const_add"
+pattern = ["i32_load", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "const_shl_const_add"
@@ -1005,6 +1005,17 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
+op = "get_const_eq_if"
+pattern = ["local_get", "i32_const", "i32_eq", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
+
+[[fused]]
 op = "const_set_get"
 pattern = ["i32_const", "local_set", "local_get"]
 c_impl = true
@@ -1051,18 +1062,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "get_set_get_brif"
-pattern = ["local_get", "local_set", "local_get", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "target", bits = 64, from = 3, kind = "target" },
-]
-tos_pattern = "none"
-
-[[fused]]
 op = "add_tee_get_ne_brif"
 pattern = ["i32_add", "local_tee", "local_get", "i32_ne", "br_if"]
 c_impl = true
@@ -1083,6 +1082,18 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "get_set_get_brif"
+pattern = ["local_get", "local_set", "local_get", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
 
 [[fused]]
 op = "const_shl_add_load16_s"
@@ -1152,18 +1163,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "set_const_set_get_eqz"
-pattern = ["local_set", "i32_const", "local_set", "local_get", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
 op = "set_get_load_set"
 pattern = ["local_set", "local_get", "i32_load", "local_set"]
 c_impl = true
@@ -1174,6 +1173,18 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "set_const_set_get_eqz"
+pattern = ["local_set", "i32_const", "local_set", "local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "tee_load_set"
@@ -1257,6 +1268,19 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
+op = "set_get_load8_u_tee_if"
+pattern = ["local_set", "local_get", "i32_load8_u", "local_tee", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
 op = "get_const_ne_brif"
 pattern = ["local_get", "i32_const", "i32_ne", "br_if"]
 c_impl = true
@@ -1299,6 +1323,15 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "const_and_add"
+pattern = ["i32_const", "i32_and", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
 op = "tee_get"
 pattern = ["local_tee", "local_get"]
 c_impl = true
@@ -1307,15 +1340,6 @@ encoding.fields = [
     { name = "local_idx_1", bits = 16, from = 1 },
 ]
 tos_pattern = { pop = 1, push = 2 }
-
-[[fused]]
-op = "const_and_add"
-pattern = ["i32_const", "i32_and", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "const_le_u_brif"
@@ -1328,16 +1352,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
-op = "const_set"
-pattern = ["i32_const", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = "none"
-
-[[fused]]
 op = "set_get_const_add_tee"
 pattern = ["local_set", "local_get", "i32_const", "i32_add", "local_tee"]
 c_impl = true
@@ -1348,6 +1362,26 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "const_set"
+pattern = ["i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = "none"
+
+[[fused]]
+op = "const_eq_if"
+pattern = ["i32_const", "i32_eq", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "set_get_load_set_get"
@@ -1430,17 +1464,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "and_tee_const_xor_get"
-pattern = ["i32_and", "local_tee", "i32_const", "i32_xor", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
 op = "const_and_tee_const_xor"
 pattern = ["i32_const", "i32_and", "local_tee", "i32_const", "i32_xor"]
 c_impl = true
@@ -1452,22 +1475,22 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "and_tee_const_xor_get"
+pattern = ["i32_and", "local_tee", "i32_const", "i32_xor", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
 op = "eqz_brif"
 pattern = ["i32_eqz", "br_if"]
 c_impl = true
 encoding.fields = [
     { name = "target", bits = 64, from = 1, kind = "target" },
-]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
-op = "load_tee_brif"
-pattern = ["i32_load", "local_tee", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "target", bits = 64, from = 2, kind = "target" },
 ]
 tos_pattern = { pop = 1, push = 0 }
 
@@ -1479,6 +1502,17 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 1 },
 ]
 tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "load_tee_brif"
+pattern = ["i32_load", "local_tee", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "add_set_get_get"
@@ -1524,16 +1558,25 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
-op = "get_get_const_shr_u_get"
-pattern = ["local_get", "local_get", "i32_const", "i32_shr_u", "local_get"]
+op = "const_shr_u_get_xor_const"
+pattern = ["i32_const", "i32_shr_u", "local_get", "i32_xor", "i32_const"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
 ]
-tos_pattern = { pop = 0, push = 3 }
+tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
+op = "shr_u_get_xor_const_and"
+pattern = ["i32_shr_u", "local_get", "i32_xor", "i32_const", "i32_and"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "get_const_shr_u_get_xor"
@@ -1547,25 +1590,44 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
-op = "shr_u_get_xor_const_and"
-pattern = ["i32_shr_u", "local_get", "i32_xor", "i32_const", "i32_and"]
+op = "get_get_const_shr_u_get"
+pattern = ["local_get", "local_get", "i32_const", "i32_shr_u", "local_get"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 3 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 3 }
+
+[[fused]]
+op = "shl_const_add"
+pattern = ["i32_shl", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
 ]
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "const_shr_u_get_xor_const"
-pattern = ["i32_const", "i32_shr_u", "local_get", "i32_xor", "i32_const"]
+op = "and_const_shl"
+pattern = ["i32_and", "i32_const", "i32_shl"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
+    { name = "const_val", bits = 32, from = 1 },
 ]
-tos_pattern = { pop = 1, push = 2 }
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "and_tee_const"
+pattern = ["i32_and", "local_tee", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
 op = "get_get_mul_const_shl"
@@ -1591,25 +1653,6 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 3 }
 
 [[fused]]
-op = "shl_const_add"
-pattern = ["i32_shl", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "and_tee_const"
-pattern = ["i32_and", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
 op = "tee_get_ne_brif"
 pattern = ["local_tee", "local_get", "i32_ne", "br_if"]
 c_impl = true
@@ -1633,6 +1676,17 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "const_and_const_gt_u_if"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_gt_u", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
 op = "sub_const_and_const_gt_u"
 pattern = ["i32_sub", "i32_const", "i32_and", "i32_const", "i32_gt_u"]
 c_impl = true
@@ -1641,16 +1695,6 @@ encoding.fields = [
     { name = "const_val_3", bits = 32, from = 3 },
 ]
 tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "get_const_eq"
-pattern = ["local_get", "i32_const", "i32_eq"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
 op = "add_set_get_load8_u"
@@ -1662,6 +1706,18 @@ encoding.fields = [
     { name = "offset", bits = 32, from = 3 },
 ]
 tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "get_load8_u_tee_if"
+pattern = ["local_get", "i32_load8_u", "local_tee", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
 
 [[fused]]
 op = "const_add_tee_const_gt_u"
@@ -1755,17 +1811,6 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "add_tee_load8_u_const_add"
-pattern = ["i32_add", "local_tee", "i32_load8_u", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
 op = "tee_load8_u_const_add_tee"
 pattern = ["local_tee", "i32_load8_u", "i32_const", "i32_add", "local_tee"]
 c_impl = true
@@ -1776,6 +1821,17 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "add_tee_load8_u_const_add"
+pattern = ["i32_add", "local_tee", "i32_load8_u", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "const_and_eq_brif"
@@ -1819,6 +1875,16 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
+op = "get_load8_u"
+pattern = ["local_get", "i32_load8_u"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
 op = "get_store_get_get"
 pattern = ["local_get", "i32_store", "local_get", "local_get"]
 c_impl = true
@@ -1829,16 +1895,6 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 1, push = 2 }
-
-[[fused]]
-op = "get_load8_u"
-pattern = ["local_get", "i32_load8_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
 op = "get_load8_u_tee"
@@ -1884,28 +1940,6 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "mul_tee_const_shr_u_const"
-pattern = ["i32_mul", "local_tee", "i32_const", "i32_shr_u", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val_2", bits = 32, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
-op = "const_shl_add_load16_u_get"
-pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_u", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "offset", bits = 32, from = 3 },
-    { name = "local_idx", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
 op = "const_and_get_const_shr_u"
 pattern = ["i32_const", "i32_and", "local_get", "i32_const", "i32_shr_u"]
 c_impl = true
@@ -1925,6 +1959,28 @@ encoding.fields = [
     { name = "const_val_2", bits = 32, from = 2 },
 ]
 tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "const_shl_add_load16_u_get"
+pattern = ["i32_const", "i32_shl", "i32_add", "i32_load16_u", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "mul_tee_const_shr_u_const"
+pattern = ["i32_mul", "local_tee", "i32_const", "i32_shr_u", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
 op = "load16_u_get_const_and_eq"
@@ -1967,14 +2023,14 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "get_const_and_xor_eqz"
-pattern = ["local_get", "i32_const", "i32_and", "i32_xor", "i32_eqz"]
+op = "const_and_xor_eqz_brif"
+pattern = ["i32_const", "i32_and", "i32_xor", "i32_eqz", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "load8_u_get_const_and_xor"
@@ -1988,14 +2044,14 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "const_and_xor_eqz_brif"
-pattern = ["i32_const", "i32_and", "i32_xor", "i32_eqz", "br_if"]
+op = "get_const_and_xor_eqz"
+pattern = ["local_get", "i32_const", "i32_and", "i32_xor", "i32_eqz"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "target", bits = 64, from = 4, kind = "target" },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
 ]
-tos_pattern = { pop = 2, push = 0 }
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "const_shl_add_set_get"
@@ -2019,6 +2075,18 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
+op = "get_get_const_or_tee"
+pattern = ["local_get", "local_get", "i32_const", "i32_or", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+[[fused]]
 op = "get_const_shr_u_get"
 pattern = ["local_get", "i32_const", "i32_shr_u", "local_get"]
 c_impl = true
@@ -2037,18 +2105,6 @@ encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
     { name = "local_idx_1", bits = 16, from = 1 },
     { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-[[fused]]
-op = "get_get_const_or_tee"
-pattern = ["local_get", "local_get", "i32_const", "i32_or", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 0, push = 2 }
 
@@ -2085,15 +2141,14 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 2 }
 
 [[fused]]
-op = "tee_const_shl_add_set"
-pattern = ["local_tee", "i32_const", "i32_shl", "i32_add", "local_set"]
+op = "get_const_sub"
+pattern = ["local_get", "i32_const", "i32_sub"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx", bits = 16, from = 0 },
     { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 2, push = 0 }
+tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
 op = "tee_load_tee"
@@ -2107,14 +2162,15 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "get_const_sub"
-pattern = ["local_get", "i32_const", "i32_sub"]
+op = "tee_const_shl_add_set"
+pattern = ["local_tee", "i32_const", "i32_shl", "i32_add", "local_set"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
+    { name = "local_idx_0", bits = 16, from = 0 },
     { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 0, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "add_set_get_const_and"
@@ -2135,6 +2191,17 @@ encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
     { name = "local_idx_1", bits = 16, from = 1 },
     { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "const_or_tee_get_mul"
+pattern = ["i32_const", "i32_or", "local_tee", "local_get", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 1, push = 1 }
 
@@ -2160,17 +2227,6 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 4 },
 ]
 tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
-op = "const_or_tee_get_mul"
-pattern = ["i32_const", "i32_or", "local_tee", "local_get", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "get_get_store_get_const"
@@ -2210,6 +2266,18 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
+op = "set_get_const_and_const"
+pattern = ["local_set", "local_get", "i32_const", "i32_and", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val_4", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
 op = "tee_load_set_const_set"
 pattern = ["local_tee", "i32_load", "local_set", "i32_const", "local_set"]
 c_impl = true
@@ -2223,16 +2291,15 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
-op = "set_get_const_and_const"
-pattern = ["local_set", "local_get", "i32_const", "i32_and", "i32_const"]
+op = "const_shr_u_const_add_set"
+pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_add", "local_set"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val_0", bits = 32, from = 0 },
     { name = "const_val_2", bits = 32, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
+    { name = "local_idx", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 1, push = 2 }
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "shr_u_const_add_set_get"
@@ -2246,25 +2313,14 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "const_shr_u_const_add_set"
-pattern = ["i32_const", "i32_shr_u", "i32_const", "i32_add", "local_set"]
+op = "and_const_gt_u_if"
+pattern = ["i32_and", "i32_const", "i32_gt_u", "if_"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-    { name = "local_idx", bits = 16, from = 4 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
-op = "const_and_const_gt_u"
-pattern = ["i32_const", "i32_and", "i32_const", "i32_gt_u"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "get_ne_brif"
@@ -2273,6 +2329,16 @@ c_impl = true
 encoding.fields = [
     { name = "local_idx", bits = 16, from = 0 },
     { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "tee_brif"
+pattern = ["local_tee", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 1, kind = "target" },
 ]
 tos_pattern = { pop = 1, push = 0 }
 
@@ -2287,16 +2353,6 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 3 },
 ]
 tos_pattern = { pop = 0, push = 2 }
-
-[[fused]]
-op = "tee_brif"
-pattern = ["local_tee", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "target", bits = 64, from = 1, kind = "target" },
-]
-tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "tee_const_gt_u_brif"
@@ -2390,6 +2446,26 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
+op = "get_eqz"
+pattern = ["local_get", "i32_eqz"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "load8_u_tee_if"
+pattern = ["i32_load8_u", "local_tee", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
 op = "and_get_const_shr_u"
 pattern = ["i32_and", "local_get", "i32_const", "i32_shr_u"]
 c_impl = true
@@ -2398,15 +2474,6 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 2 },
 ]
 tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
-op = "get_eqz"
-pattern = ["local_get", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-]
-tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
 op = "xor_const_and"
@@ -2441,6 +2508,15 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 2 }
 
 [[fused]]
+op = "le_u_brif"
+pattern = ["i32_le_u", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
 op = "get_const_add_get_const"
 pattern = ["local_get", "i32_const", "i32_add", "local_get", "i32_const"]
 c_impl = true
@@ -2464,15 +2540,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "le_u_brif"
-pattern = ["i32_le_u", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "target", bits = 64, from = 1, kind = "target" },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-[[fused]]
 op = "get_load8_u_const_and"
 pattern = ["local_get", "i32_load8_u", "i32_const", "i32_and"]
 c_impl = true
@@ -2482,15 +2549,6 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 2 },
 ]
 tos_pattern = { pop = 0, push = 1 }
-
-[[fused]]
-op = "const_eq"
-pattern = ["i32_const", "i32_eq"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "get_get_const_or"
@@ -2513,6 +2571,15 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 2 },
 ]
 tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "eq_if"
+pattern = ["i32_eq", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "get_const_or_tee"
@@ -2737,15 +2804,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "and_const_gt_u"
-pattern = ["i32_and", "i32_const", "i32_gt_u"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
 op = "const_ne"
 pattern = ["i32_const", "i32_ne"]
 c_impl = true
@@ -2753,6 +2811,16 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 0 },
 ]
 tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "const_gt_u_if"
+pattern = ["i32_const", "i32_gt_u", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "get_brif"
@@ -2774,6 +2842,15 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 0, push = 2 }
+
+[[fused]]
+op = "get_add"
+pattern = ["local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "const_add_store_get"
@@ -2804,15 +2881,6 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 1 },
 ]
 tos_pattern = { pop = 1, push = 2 }
-
-[[fused]]
-op = "get_add"
-pattern = ["local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "sub_const"
@@ -2908,16 +2976,6 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
-op = "mul_tee_const"
-pattern = ["i32_mul", "local_tee", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
 op = "set_get_load_tee_get"
 pattern = ["local_set", "local_get", "i32_load", "local_tee", "local_get"]
 c_impl = true
@@ -2941,14 +2999,14 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "tee_const_shl"
-pattern = ["local_tee", "i32_const", "i32_shl"]
+op = "mul_tee_const"
+pattern = ["i32_mul", "local_tee", "i32_const"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 2 },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
 op = "get_const_add_set_const"
@@ -2963,15 +3021,14 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
-op = "get_const_and_const_eq"
-pattern = ["local_get", "i32_const", "i32_and", "i32_const", "i32_eq"]
+op = "tee_const_shl"
+pattern = ["local_tee", "i32_const", "i32_shl"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "const_val", bits = 32, from = 1 },
 ]
-tos_pattern = { pop = 0, push = 1 }
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "set_const_set_const_set"
@@ -2983,6 +3040,28 @@ encoding.fields = [
     { name = "local_idx_2", bits = 16, from = 2 },
     { name = "const_val_3", bits = 32, from = 3 },
     { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "get_const_and_const_eq"
+pattern = ["local_get", "i32_const", "i32_and", "i32_const", "i32_eq"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "const_and_const_eq_if"
+pattern = ["i32_const", "i32_and", "i32_const", "i32_eq", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
 ]
 tos_pattern = { pop = 1, push = 0 }
 
@@ -3007,6 +3086,15 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
+op = "const_and_mul"
+pattern = ["i32_const", "i32_and", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
 op = "add_load16_u_get"
 pattern = ["i32_add", "i32_load16_u", "local_get"]
 c_impl = true
@@ -3015,15 +3103,6 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 2 },
 ]
 tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
-op = "const_and_mul"
-pattern = ["i32_const", "i32_and", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "const_shl_add_const"
@@ -3109,6 +3188,16 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "get_const_or"
+pattern = ["local_get", "i32_const", "i32_or"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
 op = "load16_s_mul_get_add_get"
 pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add", "local_get"]
 c_impl = true
@@ -3120,14 +3209,13 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
-op = "get_const_or"
-pattern = ["local_get", "i32_const", "i32_or"]
+op = "const_sub"
+pattern = ["i32_const", "i32_sub"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "const_val", bits = 32, from = 0 },
 ]
-tos_pattern = { pop = 0, push = 1 }
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "get_load8_u_const_and_eqz"
@@ -3139,15 +3227,6 @@ encoding.fields = [
     { name = "const_val", bits = 32, from = 2 },
 ]
 tos_pattern = { pop = 0, push = 1 }
-
-[[fused]]
-op = "const_sub"
-pattern = ["i32_const", "i32_sub"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "store8_get_const_add_set"
@@ -3174,6 +3253,17 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 3 }
 
 [[fused]]
+op = "store_get_get_2"
+pattern = ["i64_store", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
 op = "get_get_get_get_mul"
 pattern = ["local_get", "local_get", "local_get", "local_get", "i32_mul"]
 c_impl = true
@@ -3184,17 +3274,6 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 0, push = 3 }
-
-[[fused]]
-op = "store_get_get_2"
-pattern = ["i64_store", "local_get", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
 op = "const_shr_u_const_and_const"
@@ -3219,16 +3298,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "get_get_gt_s"
-pattern = ["local_get", "local_get", "i32_gt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-[[fused]]
 op = "get_set_get_load_tee"
 pattern = ["local_get", "local_set", "local_get", "i32_load", "local_tee"]
 c_impl = true
@@ -3238,6 +3307,16 @@ encoding.fields = [
     { name = "local_idx_2", bits = 16, from = 2 },
     { name = "offset", bits = 32, from = 3 },
     { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "get_get_gt_s"
+pattern = ["local_get", "local_get", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
 ]
 tos_pattern = { pop = 0, push = 1 }
 
@@ -3302,16 +3381,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "load16_s_mul_get_add"
-pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
 op = "const_and_add_const_add"
 pattern = ["i32_const", "i32_and", "i32_add", "i32_const", "i32_add"]
 c_impl = true
@@ -3344,6 +3413,19 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
+op = "get_const_store16_get_get"
+pattern = ["local_get", "i32_const", "i32_store16", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+[[fused]]
 op = "get_load_tee_sub_const"
 pattern = ["local_get", "i32_load", "local_tee", "i32_sub", "i32_const"]
 c_impl = true
@@ -3356,17 +3438,14 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "get_const_store16_get_get"
-pattern = ["local_get", "i32_const", "i32_store16", "local_get", "local_get"]
+op = "load16_s_mul_get_add"
+pattern = ["i32_load16_s", "i32_mul", "local_get", "i32_add"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 2 },
 ]
-tos_pattern = { pop = 0, push = 2 }
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "const_and_tee_eqz_brif"
@@ -3457,15 +3536,26 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "get_const_shl_add_store"
-pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_store"]
+op = "get_get_sub_const_shr_s"
+pattern = ["local_get", "local_get", "i32_sub", "i32_const", "i32_shr_s"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "offset", bits = 32, from = 4 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
 ]
-tos_pattern = { pop = 2, push = 0 }
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "const_and_add_set_get"
+pattern = ["i32_const", "i32_and", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "store_get_const_lt_s_brif"
@@ -3480,13 +3570,24 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
-op = "const_and_add_set_get"
-pattern = ["i32_const", "i32_and", "i32_add", "local_set", "local_get"]
+op = "get_const_shl_add_store"
+pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "i32_store"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
+op = "const_and_add_tee_load"
+pattern = ["i32_const", "i32_and", "i32_add", "local_tee", "i64_load"]
 c_impl = true
 encoding.fields = [
     { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
 ]
 tos_pattern = { pop = 2, push = 1 }
 
@@ -3524,26 +3625,28 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "const_and_add_tee_load"
-pattern = ["i32_const", "i32_and", "i32_add", "local_tee", "i64_load"]
+op = "const_shr_s_set_get_get"
+pattern = ["i32_const", "i32_shr_s", "local_set", "local_get", "local_get"]
 c_impl = true
 encoding.fields = [
     { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 3 },
-    { name = "offset", bits = 32, from = 4 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "get_get_sub_const_shr_s"
-pattern = ["local_get", "local_get", "i32_sub", "i32_const", "i32_shr_s"]
+op = "const_shr_s_get_load8_u_tee"
+pattern = ["i32_const", "i32_shr_s", "local_get", "i32_load8_u", "local_tee"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 3 },
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 0, push = 1 }
+tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
 op = "store8_const_set_get_eqz"
@@ -3558,74 +3661,27 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "sub_const_shr_s_get_load8_u"
-pattern = ["i32_sub", "i32_const", "i32_shr_s", "local_get", "i32_load8_u"]
+op = "shr_s_get_load8_u_tee_gt_s"
+pattern = ["i32_shr_s", "local_get", "i32_load8_u", "local_tee", "i32_gt_s"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx", bits = 16, from = 3 },
-    { name = "offset", bits = 32, from = 4 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
 ]
-tos_pattern = { pop = 2, push = 2 }
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "get_store_get_const_lt_s"
-pattern = ["local_get", "i32_store", "local_get", "i32_const", "i32_lt_s"]
+op = "store_get_get_gt_s_brif"
+pattern = ["i32_store", "local_get", "local_get", "i32_gt_s", "br_if"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "get_load8_u_tee_gt_s_brif"
-pattern = ["local_get", "i32_load8_u", "local_tee", "i32_gt_s", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
     { name = "local_idx_2", bits = 16, from = 2 },
     { name = "target", bits = 64, from = 4, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
-op = "get_sub_const_shr_s_set"
-pattern = ["local_get", "i32_sub", "i32_const", "i32_shr_s", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
-op = "get_set_get_load_set"
-pattern = ["local_get", "local_set", "local_get", "i32_load", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "offset", bits = 32, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = "none"
-
-[[fused]]
-op = "sub_const_shr_s_set_get"
-pattern = ["i32_sub", "i32_const", "i32_shr_s", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "load8_u_set_get_set_get"
@@ -3641,40 +3697,52 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "store_get_get_gt_s_brif"
-pattern = ["i32_store", "local_get", "local_get", "i32_gt_s", "br_if"]
+op = "get_store_get_const_lt_s"
+pattern = ["local_get", "i32_store", "local_get", "i32_const", "i32_lt_s"]
 c_impl = true
 encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
     { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "target", bits = 64, from = 4, kind = "target" },
+    { name = "const_val", bits = 32, from = 3 },
 ]
-tos_pattern = { pop = 2, push = 0 }
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "const_shr_s_get_load8_u_tee"
-pattern = ["i32_const", "i32_shr_s", "local_get", "i32_load8_u", "local_tee"]
+op = "get_set_get_load_set"
+pattern = ["local_get", "local_set", "local_get", "i32_load", "local_set"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
     { name = "local_idx_2", bits = 16, from = 2 },
     { name = "offset", bits = 32, from = 3 },
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 1, push = 2 }
+tos_pattern = "none"
 
 [[fused]]
-op = "const_shr_s_set_get_get"
-pattern = ["i32_const", "i32_shr_s", "local_set", "local_get", "local_get"]
+op = "get_sub_const_shr_s_set"
+pattern = ["local_get", "i32_sub", "i32_const", "i32_shr_s", "local_set"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 1, push = 2 }
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "get_load8_u_tee_gt_s_brif"
+pattern = ["local_get", "i32_load8_u", "local_tee", "i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "tee_load8_u_set_get_set"
@@ -3690,62 +3758,19 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
-op = "shr_s_get_load8_u_tee_gt_s"
-pattern = ["i32_shr_s", "local_get", "i32_load8_u", "local_tee", "i32_gt_s"]
+op = "sub_const_shr_s_get_load8_u"
+pattern = ["i32_sub", "i32_const", "i32_shr_s", "local_get", "i32_load8_u"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
-op = "get_extend_i32_s_lt_s_set_get"
-pattern = ["local_get", "i64_extend_i32_s", "i64_lt_s", "local_set", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "get_load_get_extend_i32_s_lt_s"
-pattern = ["local_get", "i64_load", "local_get", "i64_extend_i32_s", "i64_lt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-[[fused]]
-op = "shr_u_const_and_const_add"
-pattern = ["i32_shr_u", "i32_const", "i32_and", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_1", bits = 32, from = 1 },
-    { name = "const_val_3", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "load_get_extend_i32_s_lt_s_set"
-pattern = ["i64_load", "local_get", "i64_extend_i32_s", "i64_lt_s", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
-op = "and_const_add_set_get"
-pattern = ["i32_and", "i32_const", "i32_add", "local_set", "local_get"]
+op = "sub_const_shr_s_set_get"
+pattern = ["i32_sub", "i32_const", "i32_shr_s", "local_set", "local_get"]
 c_impl = true
 encoding.fields = [
     { name = "const_val", bits = 32, from = 1 },
@@ -3753,17 +3778,6 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "extend_i32_s_lt_s_set_get_set"
-pattern = ["i64_extend_i32_s", "i64_lt_s", "local_set", "local_get", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "const_and_const_add_set"
@@ -3787,6 +3801,71 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
+op = "shr_u_const_and_const_add"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_1", bits = 32, from = 1 },
+    { name = "const_val_3", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "get_load_get_extend_i32_s_lt_s"
+pattern = ["local_get", "i64_load", "local_get", "i64_extend_i32_s", "i64_lt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "get_extend_i32_s_lt_s_set_get"
+pattern = ["local_get", "i64_extend_i32_s", "i64_lt_s", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "and_const_add_set_get"
+pattern = ["i32_and", "i32_const", "i32_add", "local_set", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "load_get_extend_i32_s_lt_s_set"
+pattern = ["i64_load", "local_get", "i64_extend_i32_s", "i64_lt_s", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
+op = "extend_i32_s_lt_s_set_get_set"
+pattern = ["i64_extend_i32_s", "i64_lt_s", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
 op = "load_get_extend_i32_s"
 pattern = ["i64_load", "local_get", "i64_extend_i32_s"]
 c_impl = true
@@ -3797,27 +3876,15 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "get_get_load_get_extend_i32_s"
-pattern = ["local_get", "local_get", "i64_load", "local_get", "i64_extend_i32_s"]
+op = "const_shl_add_get_store8"
+pattern = ["i32_const", "i32_shl", "i32_add", "local_get", "i32_store8"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 3 },
+    { name = "offset", bits = 32, from = 4 },
 ]
-tos_pattern = { pop = 0, push = 3 }
-
-[[fused]]
-op = "get_extend_i32_s_add_store_const"
-pattern = ["local_get", "i64_extend_i32_s", "i64_add", "i64_store", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 3 },
-    { name = "const_val", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "get_load_get_extend_i32_s_add"
@@ -3831,15 +3898,27 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
-op = "const_shl_add_get_store8"
-pattern = ["i32_const", "i32_shl", "i32_add", "local_get", "i32_store8"]
+op = "get_extend_i32_s_add_store_const"
+pattern = ["local_get", "i64_extend_i32_s", "i64_add", "i64_store", "i32_const"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 3 },
-    { name = "offset", bits = 32, from = 4 },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
 ]
-tos_pattern = { pop = 2, push = 0 }
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "get_get_load_get_extend_i32_s"
+pattern = ["local_get", "local_get", "i64_load", "local_get", "i64_extend_i32_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 3 }
 
 [[fused]]
 op = "const_set_const_set"
@@ -3863,6 +3942,16 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "const_and_eqz_brif"
+pattern = ["i32_const", "i32_and", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
 op = "set_const_set_const"
 pattern = ["local_set", "i32_const", "local_set", "i32_const"]
 c_impl = true
@@ -3875,21 +3964,22 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "const_and_eqz_brif"
-pattern = ["i32_const", "i32_and", "i32_eqz", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "target", bits = 64, from = 3, kind = "target" },
-]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
 op = "xor_get"
 pattern = ["i32_xor", "local_get"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "store8_get_get"
+pattern = ["i32_store8", "local_get", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
 ]
 tos_pattern = { pop = 2, push = 2 }
 
@@ -3903,17 +3993,6 @@ encoding.fields = [
     { name = "local_idx_2", bits = 16, from = 2 },
 ]
 tos_pattern = { pop = 1, push = 2 }
-
-[[fused]]
-op = "store8_get_get"
-pattern = ["i32_store8", "local_get", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
 op = "get_load_tee_get"
@@ -3959,14 +4038,14 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "const_and_const_eq"
-pattern = ["i32_const", "i32_and", "i32_const", "i32_eq"]
+op = "and_const_eq_if"
+pattern = ["i32_and", "i32_const", "i32_eq", "if_"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "const_val_2", bits = 32, from = 2 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "and_get"
@@ -3976,6 +4055,16 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 1 },
 ]
 tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "tee_if"
+pattern = ["local_tee", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "eq_brif"
@@ -3999,16 +4088,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "mul_get_add_get"
-pattern = ["i32_mul", "local_get", "i32_add", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
 op = "const_get_get"
 pattern = ["i32_const", "local_get", "local_get"]
 c_impl = true
@@ -4020,10 +4099,42 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 3 }
 
 [[fused]]
+op = "mul_get_add_get"
+pattern = ["i32_mul", "local_get", "i32_add", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "tee_load8_u_tee_eqz_if"
+pattern = ["local_tee", "i32_load8_u", "local_tee", "i32_eqz", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
 op = "mul_get_add"
 pattern = ["i32_mul", "local_get", "i32_add"]
 c_impl = true
 encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "store8_get"
+pattern = ["i32_store8", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
     { name = "local_idx", bits = 16, from = 1 },
 ]
 tos_pattern = { pop = 2, push = 1 }
@@ -4036,16 +4147,6 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 0 },
 ]
 tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "store8_get"
-pattern = ["i32_store8", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "get_const_lt_s_brif"
@@ -4090,18 +4191,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "const_add_store_const_set"
-pattern = ["i32_const", "i32_add", "i32_store", "i32_const", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "const_val_3", bits = 32, from = 3 },
-    { name = "local_idx", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-[[fused]]
 op = "get_const_store16_get"
 pattern = ["local_get", "i32_const", "i32_store16", "local_get"]
 c_impl = true
@@ -4133,6 +4222,18 @@ encoding.fields = [
     { name = "offset", bits = 32, from = 3 },
 ]
 tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "const_add_store_const_set"
+pattern = ["i32_const", "i32_add", "i32_store", "i32_const", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val_0", bits = 32, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "const_val_3", bits = 32, from = 3 },
+    { name = "local_idx", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "get_add_tee_get"
@@ -4167,6 +4268,18 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
+op = "get_set_get_set"
+pattern = ["local_get", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = "none"
 
 [[fused]]
 op = "and_tee_eqz_brif"
@@ -4212,17 +4325,6 @@ encoding.fields = [
 tos_pattern = "none"
 
 [[fused]]
-op = "load8_u_tee_gt_s_brif"
-pattern = ["i32_load8_u", "local_tee", "i32_gt_s", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "target", bits = 64, from = 3, kind = "target" },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-[[fused]]
 op = "shr_s_set_get_get"
 pattern = ["i32_shr_s", "local_set", "local_get", "local_get"]
 c_impl = true
@@ -4232,6 +4334,17 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "load8_u_tee_gt_s_brif"
+pattern = ["i32_load8_u", "local_tee", "i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "get_load16_s_tee_brif"
@@ -4265,18 +4378,6 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 1 },
 ]
 tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "get_set_get_set"
-pattern = ["local_get", "local_set", "local_get", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = "none"
 
 [[fused]]
 op = "const_set_const_set_get"
@@ -4366,6 +4467,19 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
+op = "set_const_set_get_if"
+pattern = ["local_set", "i32_const", "local_set", "local_get", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "target", bits = 64, from = 4, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
 op = "get_get_const_shl_tee"
 pattern = ["local_get", "local_get", "i32_const", "i32_shl", "local_tee"]
 c_impl = true
@@ -4376,6 +4490,15 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 0, push = 2 }
+
+[[fused]]
+op = "gt_u_if"
+pattern = ["i32_gt_u", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "target", bits = 64, from = 1, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
 op = "const_shl_add_set_const"
@@ -4418,15 +4541,6 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
-op = "load16_s_mul"
-pattern = ["i32_load16_s", "i32_mul"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
 op = "get_set_get_set_get"
 pattern = ["local_get", "local_set", "local_get", "local_set", "local_get"]
 c_impl = true
@@ -4438,6 +4552,15 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "load16_s_mul"
+pattern = ["i32_load16_s", "i32_mul"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "get_gt_s"
@@ -4458,15 +4581,15 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
-op = "tee_load8_u_tee_eqz"
-pattern = ["local_tee", "i32_load8_u", "local_tee", "i32_eqz"]
+op = "load8_u_tee_eqz_if"
+pattern = ["i32_load8_u", "local_tee", "i32_eqz", "if_"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "offset", bits = 32, from = 0 },
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "get_const_shl_tee_add"
@@ -4490,6 +4613,27 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
+op = "const_set_get_if"
+pattern = ["i32_const", "local_set", "local_get", "if_"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
+]
+tos_pattern = "none"
+
+[[fused]]
+op = "const_or"
+pattern = ["i32_const", "i32_or"]
+c_impl = true
+encoding.fields = [
+    { name = "const_val", bits = 32, from = 0 },
+]
+tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
 op = "const_set_const_set_const"
 pattern = ["i32_const", "local_set", "i32_const", "local_set", "i32_const"]
 c_impl = true
@@ -4503,22 +4647,14 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
-op = "and_const_eq"
-pattern = ["i32_and", "i32_const", "i32_eq"]
+op = "get_get_add"
+pattern = ["local_get", "local_get", "i32_add"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
 ]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "const_or"
-pattern = ["i32_const", "i32_or"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-]
-tos_pattern = { pop = 1, push = 1 }
+tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
 op = "add_set_get_set_get"
@@ -4557,6 +4693,16 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
+op = "tee_eqz_brif"
+pattern = ["local_tee", "i32_eqz", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 1, push = 0 }
+
+[[fused]]
 op = "get_const_shl_add_set"
 pattern = ["local_get", "i32_const", "i32_shl", "i32_add", "local_set"]
 c_impl = true
@@ -4564,16 +4710,6 @@ encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
     { name = "const_val", bits = 32, from = 1 },
     { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
-op = "tee_eqz_brif"
-pattern = ["local_tee", "i32_eqz", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "target", bits = 64, from = 2, kind = "target" },
 ]
 tos_pattern = { pop = 1, push = 0 }
 
@@ -4588,40 +4724,6 @@ encoding.fields = [
     { name = "const_val_3", bits = 32, from = 3 },
 ]
 tos_pattern = { pop = 0, push = 2 }
-
-[[fused]]
-op = "add_tee_get_get_gt_s"
-pattern = ["i32_add", "local_tee", "local_get", "local_get", "i32_gt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
-op = "set_const_get_get_lt_s"
-pattern = ["local_set", "i32_const", "local_get", "local_get", "i32_lt_s"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-[[fused]]
-op = "add_load_tee_get_add"
-pattern = ["i32_add", "i32_load", "local_tee", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "const_get_get_lt_s_get"
@@ -4648,6 +4750,18 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 3 }
 
 [[fused]]
+op = "set_const_get_get_lt_s"
+pattern = ["local_set", "i32_const", "local_get", "local_get", "i32_lt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
 op = "tee_get_get_gt_s_tee"
 pattern = ["local_tee", "local_get", "local_get", "i32_gt_s", "local_tee"]
 c_impl = true
@@ -4658,6 +4772,41 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
+op = "add_tee_get_get_gt_s"
+pattern = ["i32_add", "local_tee", "local_get", "local_get", "i32_gt_s"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "add_load_tee_get_add"
+pattern = ["i32_add", "i32_load", "local_tee", "local_get", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "set_get_set_get_set"
+pattern = ["local_set", "local_get", "local_set", "local_get", "local_set"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "store_get_const_add_tee"
@@ -4683,27 +4832,23 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "set_get_set_get_set"
-pattern = ["local_set", "local_get", "local_set", "local_get", "local_set"]
+op = "get_add_tee"
+pattern = ["local_get", "i32_add", "local_tee"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
     { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 1, push = 0 }
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "get_get_add"
-pattern = ["local_get", "local_get", "i32_add"]
+op = "or_tee"
+pattern = ["i32_or", "local_tee"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx", bits = 16, from = 1 },
 ]
-tos_pattern = { pop = 0, push = 1 }
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "get_const_add_store_get"
@@ -4716,15 +4861,6 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "or_tee"
-pattern = ["i32_or", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "get_add_get"
@@ -4748,16 +4884,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
-op = "get_add_tee"
-pattern = ["local_get", "i32_add", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
 op = "load8_u_set_get"
 pattern = ["i32_load8_u", "local_set", "local_get"]
 c_impl = true
@@ -4767,17 +4893,6 @@ encoding.fields = [
     { name = "local_idx_2", bits = 16, from = 2 },
 ]
 tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "get_const_add_store"
-pattern = ["local_get", "i32_const", "i32_add", "i32_store"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "offset", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "add_set_const_set_const"
@@ -4792,14 +4907,15 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "add_load_tee"
-pattern = ["i32_add", "i32_load", "local_tee"]
+op = "get_const_add_store"
+pattern = ["local_get", "i32_const", "i32_add", "i32_store"]
 c_impl = true
 encoding.fields = [
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx", bits = 16, from = 2 },
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "offset", bits = 32, from = 3 },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "tee_eqz"
@@ -4809,6 +4925,16 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 0 },
 ]
 tos_pattern = { pop = 1, push = 1 }
+
+[[fused]]
+op = "add_load_tee"
+pattern = ["i32_add", "i32_load", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "get_store8_get"
@@ -4855,16 +4981,6 @@ encoding.fields = [
 tos_pattern = "none"
 
 [[fused]]
-op = "get_gt_s_tee"
-pattern = ["local_get", "i32_gt_s", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
 op = "load8_u_tee_const_ne_brif"
 pattern = ["i32_load8_u", "local_tee", "i32_const", "i32_ne", "br_if"]
 c_impl = true
@@ -4887,6 +5003,16 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "get_gt_s_tee"
+pattern = ["local_get", "i32_gt_s", "local_tee"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+]
+tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
 op = "const_shr_u_tee_const_shl"
@@ -4912,15 +5038,15 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
-op = "get_const_and_get"
-pattern = ["local_get", "i32_const", "i32_and", "local_get"]
+op = "get_add_const_add_set"
+pattern = ["local_get", "i32_add", "i32_const", "i32_add", "local_set"]
 c_impl = true
 encoding.fields = [
     { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_4", bits = 16, from = 4 },
 ]
-tos_pattern = { pop = 0, push = 2 }
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "load_eqz_brif"
@@ -4941,6 +5067,27 @@ encoding.fields = [
     { name = "local_idx_1", bits = 16, from = 1 },
     { name = "const_val", bits = 32, from = 2 },
     { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+[[fused]]
+op = "tee_gt_s_brif"
+pattern = ["local_tee", "i32_gt_s", "br_if"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "target", bits = 64, from = 2, kind = "target" },
+]
+tos_pattern = { pop = 2, push = 0 }
+
+[[fused]]
+op = "get_const_and_get"
+pattern = ["local_get", "i32_const", "i32_and", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 0, push = 2 }
 
@@ -4978,17 +5125,6 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 2 }
 
 [[fused]]
-op = "get_add_const_add_set"
-pattern = ["local_get", "i32_add", "i32_const", "i32_add", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 2 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
 op = "tee_load_2"
 pattern = ["local_tee", "i64_load"]
 c_impl = true
@@ -5012,17 +5148,6 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "store_const_set"
-pattern = ["i64_store", "i32_const", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-[[fused]]
 op = "load_const_shr_u_const_and"
 pattern = ["i32_load", "i32_const", "i32_shr_u", "i32_const", "i32_and"]
 c_impl = true
@@ -5034,12 +5159,13 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 1 }
 
 [[fused]]
-op = "tee_gt_s_brif"
-pattern = ["local_tee", "i32_gt_s", "br_if"]
+op = "store_const_set"
+pattern = ["i64_store", "i32_const", "local_set"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "target", bits = 64, from = 2, kind = "target" },
+    { name = "offset", bits = 32, from = 0 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
 ]
 tos_pattern = { pop = 2, push = 0 }
 
@@ -5078,59 +5204,15 @@ encoding.fields = [
 tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
-op = "get_get_load_get_add"
-pattern = ["local_get", "local_get", "i64_load", "local_get", "i64_add"]
+op = "const_and_get_add_const"
+pattern = ["i32_const", "i32_and", "local_get", "i32_add", "i32_const"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-[[fused]]
-op = "get_add_store_get_const"
-pattern = ["local_get", "i64_add", "i64_store", "local_get", "i32_const"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "const_val", bits = 32, from = 4 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
-op = "shr_u_const_and_get_add"
-pattern = ["i32_shr_u", "i32_const", "i32_and", "local_get", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "and_get_add_const_add"
-pattern = ["i32_and", "local_get", "i32_add", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "add_load8_u_tee_const_ne"
-pattern = ["i32_add", "i32_load8_u", "local_tee", "i32_const", "i32_ne"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 1 },
+    { name = "const_val_0", bits = 32, from = 0 },
     { name = "local_idx", bits = 16, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
+    { name = "const_val_4", bits = 32, from = 4 },
 ]
-tos_pattern = { pop = 2, push = 1 }
+tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
 op = "const_shl_add_load8_u_tee"
@@ -5155,15 +5237,59 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 0 }
 
 [[fused]]
-op = "const_and_get_add_const"
-pattern = ["i32_const", "i32_and", "local_get", "i32_add", "i32_const"]
+op = "shr_u_const_and_get_add"
+pattern = ["i32_shr_u", "i32_const", "i32_and", "local_get", "i32_add"]
 c_impl = true
 encoding.fields = [
-    { name = "const_val_0", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 2 },
-    { name = "const_val_4", bits = 32, from = 4 },
+    { name = "const_val", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 3 },
 ]
-tos_pattern = { pop = 1, push = 2 }
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "get_add_store_get_const"
+pattern = ["local_get", "i64_add", "i64_store", "local_get", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "const_val", bits = 32, from = 4 },
+]
+tos_pattern = { pop = 2, push = 2 }
+
+[[fused]]
+op = "get_get_load_get_add"
+pattern = ["local_get", "local_get", "i64_load", "local_get", "i64_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+]
+tos_pattern = { pop = 0, push = 2 }
+
+[[fused]]
+op = "and_get_add_const_add"
+pattern = ["i32_and", "local_get", "i32_add", "i32_const", "i32_add"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 1 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
+
+[[fused]]
+op = "add_load8_u_tee_const_ne"
+pattern = ["i32_add", "i32_load8_u", "local_tee", "i32_const", "i32_ne"]
+c_impl = true
+encoding.fields = [
+    { name = "offset", bits = 32, from = 1 },
+    { name = "local_idx", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
 op = "get_const_shl_tee"
@@ -5175,6 +5301,16 @@ encoding.fields = [
     { name = "local_idx_3", bits = 16, from = 3 },
 ]
 tos_pattern = { pop = 0, push = 1 }
+
+[[fused]]
+op = "get_add_const"
+pattern = ["local_get", "i32_add", "i32_const"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx", bits = 16, from = 0 },
+    { name = "const_val", bits = 32, from = 2 },
+]
+tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
 op = "const_set_get_const_sub"
@@ -5189,14 +5325,15 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 1 }
 
 [[fused]]
-op = "get_add_const"
-pattern = ["local_get", "i32_add", "i32_const"]
+op = "set_get_eqz_if"
+pattern = ["local_set", "local_get", "i32_eqz", "if_"]
 c_impl = true
 encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 2 },
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "target", bits = 64, from = 3, kind = "target" },
 ]
-tos_pattern = { pop = 1, push = 2 }
+tos_pattern = { pop = 1, push = 0 }
 
 [[fused]]
 op = "const_add_set_get_set"
@@ -5234,17 +5371,6 @@ encoding.fields = [
 tos_pattern = { pop = 0, push = 3 }
 
 [[fused]]
-op = "and_tee_get_const_xor"
-pattern = ["i32_and", "local_tee", "local_get", "i32_const", "i32_xor"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "const_val", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }
-
-[[fused]]
 op = "const_xor_get_const_and"
 pattern = ["i32_const", "i32_xor", "local_get", "i32_const", "i32_and"]
 c_impl = true
@@ -5254,6 +5380,17 @@ encoding.fields = [
     { name = "const_val_3", bits = 32, from = 3 },
 ]
 tos_pattern = { pop = 1, push = 2 }
+
+[[fused]]
+op = "and_tee_get_const_xor"
+pattern = ["i32_and", "local_tee", "local_get", "i32_const", "i32_xor"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_1", bits = 16, from = 1 },
+    { name = "local_idx_2", bits = 16, from = 2 },
+    { name = "const_val", bits = 32, from = 3 },
+]
+tos_pattern = { pop = 2, push = 2 }
 
 [[fused]]
 op = "const_shl_tee_add_load"
@@ -5267,18 +5404,6 @@ encoding.fields = [
 tos_pattern = { pop = 2, push = 1 }
 
 [[fused]]
-op = "get_add_load_tee_get"
-pattern = ["local_get", "i32_add", "i32_load", "local_tee", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "offset", bits = 32, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-[[fused]]
 op = "const_get_get_gt_s_get"
 pattern = ["i32_const", "local_get", "local_get", "i32_gt_s", "local_get"]
 c_impl = true
@@ -5289,6 +5414,18 @@ encoding.fields = [
     { name = "local_idx_4", bits = 16, from = 4 },
 ]
 tos_pattern = { pop = 0, push = 3 }
+
+[[fused]]
+op = "get_add_load_tee_get"
+pattern = ["local_get", "i32_add", "i32_load", "local_tee", "local_get"]
+c_impl = true
+encoding.fields = [
+    { name = "local_idx_0", bits = 16, from = 0 },
+    { name = "offset", bits = 32, from = 2 },
+    { name = "local_idx_3", bits = 16, from = 3 },
+    { name = "local_idx_4", bits = 16, from = 4 },
+]
+tos_pattern = { pop = 1, push = 2 }
 
 [[fused]]
 op = "tee_add_load_tee_const"
@@ -5311,136 +5448,3 @@ encoding.fields = [
     { name = "local_idx", bits = 16, from = 2 },
 ]
 tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "load8_u_tee_const_ne"
-pattern = ["i32_load8_u", "local_tee", "i32_const", "i32_ne"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "load8_u_tee_eqz"
-pattern = ["i32_load8_u", "local_tee", "i32_eqz"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "get_get_add_tee_get"
-pattern = ["local_get", "local_get", "i32_add", "local_tee", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-    { name = "local_idx_4", bits = 16, from = 4 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-[[fused]]
-op = "get_get_gt_s_tee"
-pattern = ["local_get", "local_get", "i32_gt_s", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-[[fused]]
-op = "get_get_lt_s_get"
-pattern = ["local_get", "local_get", "i32_lt_s", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 2 }
-
-[[fused]]
-op = "store_get_const_add_2"
-pattern = ["i64_store", "local_get", "i32_const", "i32_add"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "local_idx", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 2, push = 1 }
-
-[[fused]]
-op = "set_get_const_sub"
-pattern = ["local_set", "local_get", "i32_const", "i32_sub"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "const_val", bits = 32, from = 2 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[fused]]
-op = "const_store8_get_get"
-pattern = ["i32_const", "i32_store8", "local_get", "local_get"]
-c_impl = true
-encoding.fields = [
-    { name = "const_val", bits = 32, from = 0 },
-    { name = "offset", bits = 32, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 1, push = 2 }
-
-[[fused]]
-op = "tee_const_ne_brif"
-pattern = ["local_tee", "i32_const", "i32_ne", "br_if"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx", bits = 16, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "target", bits = 64, from = 3, kind = "target" },
-]
-tos_pattern = { pop = 1, push = 0 }
-
-[[fused]]
-op = "get_get_add_tee"
-pattern = ["local_get", "local_get", "i32_add", "local_tee"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_0", bits = 16, from = 0 },
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_3", bits = 16, from = 3 },
-]
-tos_pattern = { pop = 0, push = 1 }
-
-[[fused]]
-op = "store_const_set_2"
-pattern = ["i32_store", "i32_const", "local_set"]
-c_impl = true
-encoding.fields = [
-    { name = "offset", bits = 32, from = 0 },
-    { name = "const_val", bits = 32, from = 1 },
-    { name = "local_idx", bits = 16, from = 2 },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-[[fused]]
-op = "add_tee_get_load16_u"
-pattern = ["i32_add", "local_tee", "local_get", "i32_load16_u"]
-c_impl = true
-encoding.fields = [
-    { name = "local_idx_1", bits = 16, from = 1 },
-    { name = "local_idx_2", bits = 16, from = 2 },
-    { name = "offset", bits = 32, from = 3 },
-]
-tos_pattern = { pop = 2, push = 2 }

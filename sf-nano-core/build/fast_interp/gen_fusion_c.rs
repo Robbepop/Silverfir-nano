@@ -139,6 +139,21 @@ impl StackSim {
                 self.emit("        return target;".to_string());
                 self.emit("    }".to_string());
             }
+            "if_" => {
+                // IF semantics: condition == 0 jumps to else/end (target),
+                // condition != 0 falls through to then-body (pc_next).
+                // Uses guard-check dispatch, so the linear path (then) is fast.
+                // Must use pattern-specific decode_target (not pc_alt) because
+                // the target may not be in imm0 when other fields occupy it.
+                let cond = self.pop();
+                self.emit(format!(
+                    "    struct Instruction* target = (struct Instruction*){}_decode_target(pc);",
+                    fused_op_name
+                ));
+                self.emit(format!("    if ((uint32_t){} == 0) {{", cond));
+                self.emit("        return target;".to_string());
+                self.emit("    }".to_string());
+            }
 
             // --- Load ops: pop addr, push value, trapping ---
             _ if is_load_op(categories, op) => {

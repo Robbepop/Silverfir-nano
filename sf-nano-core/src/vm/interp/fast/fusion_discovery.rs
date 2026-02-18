@@ -90,7 +90,7 @@ pub fn is_store_op(op: &str) -> bool {
 }
 
 pub fn is_fusible_op(op: &str) -> bool {
-    matches!(op, "local_get" | "local_set" | "local_tee" | "i32_const" | "i64_const" | "br_if")
+    matches!(op, "local_get" | "local_set" | "local_tee" | "i32_const" | "i64_const" | "br_if" | "if_")
         || is_pure_binop(op)
         || is_trapping_binop(op)
         || is_pure_unary(op)
@@ -113,7 +113,7 @@ fn op_stack_effect(op: &str) -> (u32, u32) {
         "local_get" | "i32_const" | "i64_const" => (0, 1),
         "local_set" => (1, 0),
         "local_tee" => (1, 1),
-        "br_if" => (1, 0),
+        "br_if" | "if_" => (1, 0),
         _ if is_pure_binop(op) || is_trapping_binop(op) => (2, 1),
         _ if is_pure_unary(op) => (1, 1),
         _ if is_load_op(op) => (1, 1),
@@ -148,7 +148,7 @@ fn op_encoding_bits(op: &str) -> u32 {
     match op {
         "local_get" | "local_set" | "local_tee" => 16,
         "i32_const" => 32,
-        "i64_const" | "br_if" => 64,
+        "i64_const" | "br_if" | "if_" => 64,
         _ if is_load_op(op) || is_store_op(op) => 32,
         _ => 0,
     }
@@ -208,6 +208,7 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
     let mut const64_count = 0u32;
     let mut load_store_count = 0u32;
     let mut brif_count = 0u32;
+    let mut if_count = 0u32;
 
     for op in pattern {
         match *op {
@@ -215,6 +216,7 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
             "i32_const" => const32_count += 1,
             "i64_const" => const64_count += 1,
             "br_if" => brif_count += 1,
+            "if_" => if_count += 1,
             _ if is_load_op(op) || is_store_op(op) => load_store_count += 1,
             _ => {}
         }
@@ -254,6 +256,14 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
                 };
                 fields.push(EncodingField { name, bits: 64, kind: Some(String::from("target")), from: i });
             }
+            "if_" => {
+                let name = if if_count == 1 {
+                    String::from("target")
+                } else {
+                    std::format!("target_{}", i)
+                };
+                fields.push(EncodingField { name, bits: 64, kind: Some(String::from("target")), from: i });
+            }
             _ if is_load_op(op) || is_store_op(op) => {
                 let name = if load_store_count == 1 {
                     String::from("offset")
@@ -281,6 +291,7 @@ fn abbreviate_op(op: &str) -> &str {
         "i32_const" | "f32_const" => "const",
         "i64_const" | "f64_const" => "const64",
         "br_if" => "brif",
+        "if_" => "if",
         _ => {
             if let Some(pos) = op.find('_') {
                 let prefix = &op[..pos];
@@ -340,8 +351,9 @@ fn is_pattern_fusible(pattern: &[&str]) -> bool {
     if !pattern.iter().all(|op| is_fusible_op(op)) {
         return false;
     }
+    // br_if and if_ can only appear at the END of a pattern, not in the middle
     for op in &pattern[..pattern.len() - 1] {
-        if *op == "br_if" {
+        if *op == "br_if" || *op == "if_" {
             return false;
         }
     }

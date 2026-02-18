@@ -40,8 +40,25 @@ pub fn is_store_op(categories: &CategoryMap, op: &str) -> bool {
 
 /// Check if an op is any known fusible op.
 pub fn is_fusible_op(categories: &CategoryMap, op: &str) -> bool {
-    matches!(op, "local_get" | "local_set" | "local_tee" | "i32_const" | "i64_const" | "br_if")
+    matches!(op, "local_get" | "local_set" | "local_tee" | "i32_const" | "i64_const" | "br_if" | "if_")
         || categories.contains_key(op)
+}
+
+/// Check if an op is a comparison/test op (produces a boolean result).
+/// Used by branch-aware pattern yielding: patterns ending with a comparison
+/// should yield to branch fusion when followed by br_if or if_.
+pub fn is_comparison_op(op: &str) -> bool {
+    matches!(
+        op,
+        "i32_eq" | "i32_ne" | "i32_eqz"
+        | "i32_lt_s" | "i32_lt_u" | "i32_gt_s" | "i32_gt_u"
+        | "i32_le_s" | "i32_le_u" | "i32_ge_s" | "i32_ge_u"
+        | "i64_eq" | "i64_ne" | "i64_eqz"
+        | "i64_lt_s" | "i64_lt_u" | "i64_gt_s" | "i64_gt_u"
+        | "i64_le_s" | "i64_le_u" | "i64_ge_s" | "i64_ge_u"
+        | "f32_eq" | "f32_ne" | "f32_lt" | "f32_gt" | "f32_le" | "f32_ge"
+        | "f64_eq" | "f64_ne" | "f64_lt" | "f64_gt" | "f64_le" | "f64_ge"
+    )
 }
 
 /// Convert snake_case to UPPER_SNAKE_CASE
@@ -51,9 +68,13 @@ pub fn to_upper_snake(name: &str) -> String {
 
 /// Map a pattern op name to its Opcode constant name.
 /// All fusible ops follow the convention: snake_case → UPPER_SNAKE_CASE.
+/// Special case: "if_" → "IF" (trailing underscore is a Rust naming convention, not part of the opcode).
 pub fn pattern_op_to_opcode(categories: &CategoryMap, op: &str) -> String {
     assert!(is_fusible_op(categories, op), "Unknown pattern op for Opcode mapping: {}", op);
-    op.to_uppercase()
+    match op {
+        "if_" => "IF".to_string(),
+        _ => op.to_uppercase(),
+    }
 }
 
 /// Determine the Immediate variant for a pattern op.
@@ -63,6 +84,7 @@ pub fn immediate_variant(categories: &CategoryMap, op: &str) -> &'static str {
         "i32_const" => "I32",
         "i64_const" => "I64",
         "br_if" => "LabelIndex",
+        "if_" => "Block",
         _ => match categories.get(op) {
             Some(OpCategory::Load) | Some(OpCategory::Store) => "MemArg",
             Some(OpCategory::PureBinop) | Some(OpCategory::TrappingBinop) | Some(OpCategory::PureUnary) => "None",
@@ -77,9 +99,19 @@ pub fn first_wasm_opcode(categories: &CategoryMap, fused: &FusedHandler) -> Stri
     format!("WasmOpcode::OP({})", opcode_name)
 }
 
-/// Check if pattern has a branch target (contains br_if)
+/// Check if pattern has a br_if branch target
 pub fn has_branch(fused: &FusedHandler) -> bool {
     fused.pattern.iter().any(|op| op == "br_if")
+}
+
+/// Check if pattern contains if_ (conditional block entry)
+pub fn has_if(fused: &FusedHandler) -> bool {
+    fused.pattern.iter().any(|op| op == "if_")
+}
+
+/// Check if pattern has any branch-like target (br_if or if_)
+pub fn has_branch_or_if(fused: &FusedHandler) -> bool {
+    fused.pattern.iter().any(|op| op == "br_if" || op == "if_")
 }
 
 /// Get pop/push for tos_pattern
