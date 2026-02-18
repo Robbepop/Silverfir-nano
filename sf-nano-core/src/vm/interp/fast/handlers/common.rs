@@ -73,6 +73,18 @@ pub fn frame_write(fp_pp: *mut *mut u64, offset: usize, value: u64) {
     }
 }
 
+/// Spill l0 register to fp[0] before frame changes (calls).
+#[inline(always)]
+pub fn l0_spill(fp_pp: *mut *mut u64, p_l0: *mut u64) {
+    unsafe { *(*fp_pp) = *p_l0; }
+}
+
+/// Fill l0 register from fp[0] after frame restoration (returns, external calls).
+#[inline(always)]
+pub fn l0_fill(fp_pp: *mut *mut u64, p_l0: *mut u64) {
+    unsafe { *p_l0 = *(*fp_pp); }
+}
+
 // =============================================================================
 // PC Navigation
 // =============================================================================

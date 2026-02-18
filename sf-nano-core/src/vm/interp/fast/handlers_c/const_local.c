@@ -69,4 +69,42 @@ FORCE_INLINE struct Instruction* impl_f64_const(IMPL_PARAMS_POP0_PUSH1) {
     return pc_next(pc);
 }
 
+// =============================================================================
+// L0 Local Register Cache Operations
+// =============================================================================
+
+// init_l0: function prologue — swap fp[0]↔fp[K], set *p_l0
+FORCE_INLINE struct Instruction* impl_init_l0(IMPL_PARAMS_BASE) {
+    (void)ctx;
+    uint16_t K = init_l0_decode_hot_local_idx(pc);
+    if (K != 0) {
+        uint64_t tmp = fp[0];
+        fp[0] = fp[K];
+        fp[K] = tmp;
+    }
+    *p_l0 = fp[0];
+    return pc_next(pc);
+}
+
+// local_get_l0: push l0 to TOS
+FORCE_INLINE struct Instruction* impl_local_get_l0(IMPL_PARAMS_POP0_PUSH1) {
+    (void)ctx; (void)pfp;
+    *p_dst = *p_l0;
+    return pc_next(pc);
+}
+
+// local_set_l0: pop TOS to l0
+FORCE_INLINE struct Instruction* impl_local_set_l0(IMPL_PARAMS_POP1_PUSH0) {
+    (void)ctx; (void)pfp;
+    *p_l0 = *p_src;
+    return pc_next(pc);
+}
+
+// local_tee_l0: copy TOS to l0, keep TOS unchanged
+FORCE_INLINE struct Instruction* impl_local_tee_l0(IMPL_PARAMS_POP1_PUSH1) {
+    (void)ctx; (void)pfp; (void)p_dst;
+    *p_l0 = *p_src;
+    return pc_next(pc);
+}
+
 #undef fp

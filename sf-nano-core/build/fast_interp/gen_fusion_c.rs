@@ -83,6 +83,9 @@ impl StackSim {
     ) {
         match op {
             // --- Special ops with immediates ---
+            // General local ops — use SEM macros (fp[idx]).
+            // At match time, l0 locals are excluded from these patterns,
+            // so idx is guaranteed non-zero when l0 is active.
             "local_get" => {
                 let fname = field_name.expect("local_get needs field name");
                 let var = self.fresh_var();
@@ -107,6 +110,22 @@ impl StackSim {
                 let decode = format!("{}_decode_{}(pc)", fused_op_name, fname);
                 self.emit(format!("    uint16_t {} = {};", fname, decode));
                 self.emit(format!("    SEM_LOCAL_SET(fp, {}, {});", fname, val));
+                self.push(val);
+            }
+            // L0 register ops — direct register access, no field decode needed.
+            // The compiler can fully eliminate these as reg-to-reg copies when fused.
+            "local_get_l0" => {
+                let var = self.fresh_var();
+                self.emit(format!("    uint64_t {} = *p_l0;", var));
+                self.push(var);
+            }
+            "local_set_l0" => {
+                let val = self.pop();
+                self.emit(format!("    *p_l0 = (uint64_t)({});", val));
+            }
+            "local_tee_l0" => {
+                let val = self.pop();
+                self.emit(format!("    *p_l0 = (uint64_t)({});", val));
                 self.push(val);
             }
             "i32_const" => {

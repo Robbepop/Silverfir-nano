@@ -12,6 +12,7 @@ mod context;
 mod dispatch;
 mod emitter;
 mod finalizer;
+mod hot_local;
 // Auto-generated from handlers.toml [[fused]] entries.
 // See `build/fast_interp/gen_fusion.rs` for the generator.
 #[cfg(feature = "fusion")]
@@ -93,12 +94,25 @@ pub fn build_for_function(
     let locals_count = function.locals().len();
 
     let ctx = CompileContext::new(types, store, module, results_count);
-    let mut stack = StackTracker::new(params_count, locals_count, results_count);
+    let frame_size = params_count + locals_count;
+    let hot_local = hot_local::find_hot_local(code, frame_size);
+    let mut stack = StackTracker::new(params_count, locals_count, results_count, hot_local);
     let mut emitter = CodeEmitter::new();
 
-    // SP-based model: no prologue needed
-    // - Locals are zeroed in runtime.rs (for entry) or call_local (for calls)
-    // - sp is set to fp + params + locals by caller
+    // Always emit init_l0 to maintain the l0 = fp[0] invariant.
+    //
+    // Call/return handlers unconditionally spill/fill l0 via fp[0], so l0 must
+    // always mirror fp[0] — even in functions that have no hot local.
+    //
+    // Special case: frame_size == 0 (no params, no locals).
+    // fp[0] is the return_pc metadata slot, NOT a local. init_l0(K=0) loads
+    // the return address into l0, which is meaningless but harmless: the
+    // spill/fill cycle writes it back unchanged, and no local_get_l0/set_l0
+    // instructions are emitted (there are no locals to access). Without this,
+    // l0 would remain 0 (from run_trampoline) and the call_local spill would
+    // overwrite return_pc with zero, corrupting the stack.
+    let init_k = hot_local.unwrap_or(0);
+    emitter.emit_init_l0(init_k);
 
     // Decode and dispatch (includes fusion at decode time)
     dispatch::decode_and_dispatch(code, &ctx, &mut stack, &mut emitter)?;

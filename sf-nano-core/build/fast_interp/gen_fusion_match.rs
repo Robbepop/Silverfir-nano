@@ -1,8 +1,15 @@
 // Fusion pattern matching code generator.
 // Produces fast_fusion.rs: FusedOp enum, OpFuser struct, try_match_N, try_fuse_*.
 
-use super::op_classify::{get_pop_push, has_branch, has_branch_or_if, has_if, immediate_variant, is_comparison_op, is_tos_none, pattern_op_to_opcode, CategoryMap};
+use super::op_classify::{get_pop_push, has_branch, has_branch_or_if, has_if, immediate_variant, is_any_local_op, is_comparison_op, is_l0_local_op, is_tos_none, pattern_op_to_opcode, CategoryMap};
 use super::types::{bits_to_rust_type, to_pascal_case, FieldKind, FusedHandler};
+
+/// Whether a try_fuse_* method needs the `stack` parameter.
+/// Required for branch/if patterns (target resolution) and patterns with
+/// local ops (l0 check and index remapping).
+fn needs_stack_param(fused: &FusedHandler) -> bool {
+    has_branch_or_if(fused) || fused.pattern.iter().any(|op| is_any_local_op(op))
+}
 
 /// Generate empty stub when no fused entries exist.
 pub fn generate_empty() -> String {
@@ -115,7 +122,7 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     for (len, group) in &by_length {
         code.push_str(&format!("        // {}-way patterns\n", len));
         for fused in group {
-            if has_branch_or_if(fused) {
+            if needs_stack_param(fused) {
                 code.push_str(&format!(
                     "        if let Some(fused) = self.try_fuse_{}(stack)? {{\n",
                     fused.op
@@ -203,7 +210,7 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
     let fields = fused.get_fields();
     let is_br = has_branch(fused);
     let is_if = has_if(fused);
-    let needs_stack = is_br || is_if;
+    let needs_stack = needs_stack_param(fused);
 
     code.push_str(&format!(
         "    /// Pattern: {}\n",
@@ -228,7 +235,7 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
         .iter()
         .map(|op| pattern_op_to_opcode(categories, op).to_string())
         .collect();
-    let imms_binding = if fields.is_empty() && !is_if { "_imms" } else { "imms" };
+    let imms_binding = "imms";
     code.push_str(&format!(
         "        let Some({}) = self.try_match_{}([{}])? else {{\n",
         imms_binding,
@@ -237,6 +244,22 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
     ));
     code.push_str("            return Ok(None);\n");
     code.push_str("        };\n\n");
+
+    // L0 position checks: for pattern positions that are l0 ops (local_get_l0 etc.),
+    // verify the captured local index actually remaps to 0 (the hot local).
+    for (i, op) in fused.pattern.iter().enumerate() {
+        if is_l0_local_op(op) {
+            let var = format!("_l0_raw_{}", i);
+            code.push_str(&format!(
+                "        let Immediate::LocalIndex({}) = imms[{}] else {{ return Ok(None) }};\n",
+                var, i
+            ));
+            code.push_str(&format!(
+                "        if !(stack.remap_local({}) == 0 && stack.has_l0()) {{ return Ok(None); }}\n",
+                var
+            ));
+        }
+    }
 
     // Extract immediates from the matched ops
     for field in fields {
@@ -269,6 +292,16 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
                     code.push_str(&format!(
                         "        let Immediate::LocalIndex({}) = imms[{}] else {{ return Ok(None) }};\n",
                         field.name, from_idx
+                    ));
+                    // L0 exclusion: non-l0 local patterns must not match the hot local.
+                    // Remap the index (hot_local K ↔ 0) for correct fp[] addressing.
+                    code.push_str(&format!(
+                        "        if stack.has_l0() && stack.remap_local({}) == 0 {{ return Ok(None); }}\n",
+                        field.name
+                    ));
+                    code.push_str(&format!(
+                        "        let {} = stack.remap_local({});\n",
+                        field.name, field.name
                     ));
                 }
                 "I32" => {

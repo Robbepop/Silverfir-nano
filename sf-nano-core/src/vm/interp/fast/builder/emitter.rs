@@ -122,6 +122,21 @@ impl CodeEmitter {
     }
 
     // =========================================================================
+    // L0 Local Register Cache
+    // =========================================================================
+
+    /// Emit INIT_L0: function prologue to swap fp[0]↔fp[K] and set l0.
+    pub fn emit_init_l0(&mut self, hot_local_idx: u32) -> usize {
+        self.emit(TempInst::new(
+            op_init_l0,
+            PatternData::InitL0 {
+                hot_local_idx: hot_local_idx as u16,
+            },
+            WasmOpcode::OP(NOP),
+        ))
+    }
+
+    // =========================================================================
     // SP-based Arithmetic (handlers use sp[-1], sp[-2])
     // =========================================================================
 

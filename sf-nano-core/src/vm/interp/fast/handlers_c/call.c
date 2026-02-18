@@ -47,6 +47,9 @@ FORCE_INLINE struct Instruction* impl_call_local(IMPL_PARAMS_NONE) {
     uint16_t height = call_local_decode_height(pc);
     uint16_t frame_size = params_count + locals_count;
 
+    // Spill l0 before frame setup
+    fp[0] = *p_l0;
+
     // Compute operand base for current frame
     uint64_t* operand_base = OPERAND_BASE(operand_base_offset);
 
@@ -90,7 +93,7 @@ FORCE_INLINE struct Instruction* impl_call_local(IMPL_PARAMS_NONE) {
 // =============================================================================
 
 FORCE_INLINE struct Instruction* return_epilogue(
-    struct Ctx* ctx, uint64_t** pfp,
+    struct Ctx* ctx, uint64_t** pfp, uint64_t* p_l0,
     struct Instruction* return_pc, uint64_t* saved_fp, uint64_t saved_module
 ) {
     // Decrement call depth
@@ -103,6 +106,9 @@ FORCE_INLINE struct Instruction* return_epilogue(
 
     // Restore fp
     *pfp = saved_fp;
+
+    // Fill l0 from restored caller frame
+    *p_l0 = (*pfp)[0];
 
     // Cross-module return: restore caller's module context
     if (unlikely(saved_module != 0)) {
@@ -132,7 +138,7 @@ FORCE_INLINE struct Instruction* impl_return(IMPL_PARAMS_NONE) {
         fp[i] = operand_base[height - arity + i];
     }
 
-    return return_epilogue(ctx, pfp, return_pc, saved_fp, saved_module);
+    return return_epilogue(ctx, pfp, p_l0, return_pc, saved_fp, saved_module);
 }
 
 // =============================================================================
@@ -146,7 +152,7 @@ FORCE_INLINE struct Instruction* impl_return_void(IMPL_PARAMS_NONE) {
     uint64_t* saved_fp = (uint64_t*)fp[frame_size + 1];
     uint64_t saved_module = fp[frame_size + 2];
 
-    return return_epilogue(ctx, pfp, return_pc, saved_fp, saved_module);
+    return return_epilogue(ctx, pfp, p_l0, return_pc, saved_fp, saved_module);
 }
 
 // =============================================================================
@@ -167,7 +173,7 @@ FORCE_INLINE struct Instruction* impl_return_one(IMPL_PARAMS_NONE) {
     // Single result: fp[0] = operand_base[height - 1]
     fp[0] = operand_base[height - 1];
 
-    return return_epilogue(ctx, pfp, return_pc, saved_fp, saved_module);
+    return return_epilogue(ctx, pfp, p_l0, return_pc, saved_fp, saved_module);
 }
 
 #undef fp

@@ -245,28 +245,43 @@ fn dispatch_opcode(
         // =====================================================================
         OP(LOCAL_GET) => {
             if let Immediate::LocalIndex(idx) = imm {
+                let remapped = stack.remap_local(*idx);
                 emit_spill_if_needed(stack, emitter);
                 let variant_idx = post_op_variant_idx(stack);
-                let handler = handler_lookup::LOCAL_GET[variant_idx];
-                emitter.emit_local_get_variant(handler, *idx);
+                let handler = if remapped == 0 && stack.has_l0() {
+                    handler_lookup::LOCAL_GET_L0[variant_idx]
+                } else {
+                    handler_lookup::LOCAL_GET[variant_idx]
+                };
+                emitter.emit_local_get_variant(handler, remapped);
                 stack.push();
             }
         }
         OP(LOCAL_SET) => {
             if let Immediate::LocalIndex(idx) = imm {
+                let remapped = stack.remap_local(*idx);
                 emit_fill_for_operands(stack, emitter, 1);
                 let variant_idx = pre_op_variant_idx(stack);
-                let handler = handler_lookup::LOCAL_SET[variant_idx];
+                let handler = if remapped == 0 && stack.has_l0() {
+                    handler_lookup::LOCAL_SET_L0[variant_idx]
+                } else {
+                    handler_lookup::LOCAL_SET[variant_idx]
+                };
                 stack.pop();
-                emitter.emit_local_set_variant(handler, *idx);
+                emitter.emit_local_set_variant(handler, remapped);
             }
         }
         OP(LOCAL_TEE) => {
             if let Immediate::LocalIndex(idx) = imm {
+                let remapped = stack.remap_local(*idx);
                 emit_fill_for_operands(stack, emitter, 1);
                 let variant_idx = pre_op_variant_idx(stack);
-                let handler = handler_lookup::LOCAL_TEE[variant_idx];
-                emitter.emit_local_tee_variant(handler, *idx);
+                let handler = if remapped == 0 && stack.has_l0() {
+                    handler_lookup::LOCAL_TEE_L0[variant_idx]
+                } else {
+                    handler_lookup::LOCAL_TEE[variant_idx]
+                };
+                emitter.emit_local_tee_variant(handler, remapped);
             }
         }
 

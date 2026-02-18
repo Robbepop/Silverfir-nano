@@ -211,9 +211,13 @@ pub extern "C" fn impl_call_external(
     ctx: *mut Context,
     pc: *mut Instruction,
     fp_pp: *mut *mut u64,
+    p_l0: *mut u64,
 ) -> *mut Instruction {
     let delta = call_external::decode_delta(pc) as usize;
     let func_idx = call_external::decode_func_idx(pc) as usize;
+
+    // Spill l0 before external call
+    l0_spill(fp_pp, p_l0);
     let store_ptr = ctx_store(ctx) as *const Store;
 
     let store_ref: &Store = ptr_ref(store_ptr);
@@ -225,6 +229,9 @@ pub extern "C" fn impl_call_external(
     }
     // Results are at fp[delta..delta+results_len], no sp update needed
     refresh_mem0_for_module(ctx, store_ref, module_ref);
+
+    // Fill l0 after external call (fp unchanged, but host may have modified memory)
+    l0_fill(fp_pp, p_l0);
 
     pc_fallthrough(pc)
 }
@@ -243,13 +250,17 @@ pub extern "C" fn impl_call_internal(
     ctx: *mut Context,
     pc: *mut Instruction,
     fp_pp: *mut *mut u64,
+    p_l0: *mut u64,
 ) -> *mut Instruction {
     use super::super::encoding::call_internal;
 
     let callee_func_ptr = call_internal::decode_callee_func(pc) as *const FunctionInst;
     let delta = call_internal::decode_delta(pc) as usize;
 
-    let callee: &FunctionInst = unsafe { &*callee_func_ptr };
+    // Spill l0 before frame setup
+    l0_spill(fp_pp, p_l0);
+
+    let callee: &FunctionInst = ptr_ref(callee_func_ptr);
     let store_ref = ctx_store(ctx);
 
     match enter_unified_callee(ctx, pc, fp_pp, store_ref, callee, delta)
@@ -266,6 +277,7 @@ pub extern "C" fn impl_call_indirect(
     ctx: *mut Context,
     pc: *mut Instruction,
     fp_pp: *mut *mut u64,
+    p_l0: *mut u64,
 ) -> *mut Instruction {
     let delta = call_indirect::decode_delta(pc) as usize;
     let type_idx = call_indirect::decode_type_idx(pc) as usize;
@@ -273,6 +285,9 @@ pub extern "C" fn impl_call_indirect(
     let operand_base_offset = call_indirect::decode_operand_base_offset(pc) as usize;
     let height = call_indirect::decode_height(pc) as usize;
     let store_ptr: *const Store = ctx_store(ctx) as *const Store;
+
+    // Spill l0 before call
+    l0_spill(fp_pp, p_l0);
 
     // Read element index from operand stack (at height - 1, as index is top of stack)
     let elem_index = operand_read(fp_pp, operand_base_offset, height - 1) as usize;
@@ -323,6 +338,8 @@ pub extern "C" fn impl_call_indirect(
             return trap_with(ctx, e);
         }
         refresh_mem0_for_module(ctx, store_ref, module_ref);
+        // Fill l0 after external call
+        l0_fill(fp_pp, p_l0);
         return pc_fallthrough(pc);
     }
 
@@ -340,12 +357,16 @@ pub extern "C" fn impl_call_ref(
     ctx: *mut Context,
     pc: *mut Instruction,
     fp_pp: *mut *mut u64,
+    p_l0: *mut u64,
 ) -> *mut Instruction {
     let delta = call_ref::decode_delta(pc) as usize;
     let type_idx = call_ref::decode_type_idx(pc) as usize;
     let operand_base_offset = call_ref::decode_operand_base_offset(pc) as usize;
     let height = call_ref::decode_height(pc) as usize;
     let store_ptr = ctx_store(ctx) as *const Store;
+
+    // Spill l0 before call
+    l0_spill(fp_pp, p_l0);
 
     // Read function reference from operand stack (at height - 1, as ref is top of stack)
     let func_ref_raw = operand_read(fp_pp, operand_base_offset, height - 1) as usize;
@@ -382,6 +403,8 @@ pub extern "C" fn impl_call_ref(
             return trap_with(ctx, e);
         }
         refresh_mem0_for_module(ctx, store_ref, module_ref);
+        // Fill l0 after external call
+        l0_fill(fp_pp, p_l0);
         return pc_fallthrough(pc);
     }
 

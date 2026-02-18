@@ -11,11 +11,12 @@ use crate::vm::interp::fast::handlers::NextHandler;
 use crate::vm::interp::fast::instruction::Instruction;
 
 /// Handler function type.
-/// (ctx, pc, fp, t0, t1, t2, t3, nh) - 4 TOS, mem0 in context, preloaded next handler
+/// (ctx, pc, fp, l0, t0, t1, t2, t3, nh) - l0 local cache, 4 TOS, mem0 in context, preloaded next handler
 pub type Handler = unsafe extern "C" fn(
     *mut Context,
     *mut Instruction,
     *mut u64,
+    u64,
     u64,
     u64,
     u64,
