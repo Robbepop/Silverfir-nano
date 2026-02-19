@@ -20,6 +20,7 @@ use crate::vm::value::Value;
 mod preview1;
 
 pub const WASI_SNAPSHOT_PREVIEW1: &str = "wasi_snapshot_preview1";
+pub const WASI_UNSTABLE: &str = "wasi_unstable";
 
 // ---------------------------------------------------------------------------
 // WasiCtx — runtime state for a WASI instance
@@ -201,14 +202,11 @@ fn with_ctx_mut<R>(f: impl FnOnce(&mut WasiCtx) -> R) -> R {
 // WASI Import generation
 // ---------------------------------------------------------------------------
 
-/// Generate all WASI preview1 imports for use with `Instance::new()`.
-pub fn wasi_imports() -> Vec<Import> {
-    use crate::value_type::ValueType::{self, I32, I64};
-    let m = WASI_SNAPSHOT_PREVIEW1;
-
+/// Generate WASI imports for a given module namespace.
+fn wasi_imports_for(module: &str) -> Vec<Import> {
     macro_rules! wasi {
         ($name:literal, $f:expr) => {
-            Import::func(m, $name, $f)
+            Import::func(module, $name, $f)
         };
     }
 
@@ -256,4 +254,11 @@ pub fn wasi_imports() -> Vec<Import> {
         wasi!("path_link", preview1::path_link),
         wasi!("path_symlink", preview1::path_symlink),
     ]
+}
+
+/// Generate all WASI imports (preview1 + unstable) for use with `Instance::new()`.
+pub fn wasi_imports() -> Vec<Import> {
+    let mut imports = wasi_imports_for(WASI_SNAPSHOT_PREVIEW1);
+    imports.extend(wasi_imports_for(WASI_UNSTABLE));
+    imports
 }
