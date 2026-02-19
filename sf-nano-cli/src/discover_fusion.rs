@@ -24,6 +24,7 @@ const DEFAULT_FUSED_TOML: &str = "handlers_fused_discovered.toml";
 pub struct Workload {
     pub path: PathBuf,
     pub prog_args: Vec<String>,
+    pub dir: Option<PathBuf>,
 }
 
 pub struct DiscoverFusionArgs {
@@ -75,6 +76,7 @@ fn print_usage() {
     eprintln!("  -o, --output <PATH>              Output TOML file path [default: handlers_fused_discovered.toml]");
     eprintln!("      --show-trie                  Print the pattern trie before discovery");
     eprintln!("      --workload <WASM> [ARGS...]  Add a workload to profile (repeatable)");
+    eprintln!("        --dir <PATH>               Preopen directory for this workload (per-workload)");
     eprintln!("  -h, --help                       Print this help message");
     eprintln!();
     eprintln!("EXAMPLES:");
@@ -151,7 +153,8 @@ pub fn parse_args(args: &[String]) -> DiscoverFusionArgs {
             }
             "--workload" => {
                 // Collect workload: next arg is module path, rest until next
-                // --workload or global option are program args
+                // --workload or global option are program args.
+                // An optional --dir <path> can appear among the workload args.
                 i += 1;
                 if i >= args.len() {
                     eprintln!("Error: --workload requires a wasm file path");
@@ -160,11 +163,19 @@ pub fn parse_args(args: &[String]) -> DiscoverFusionArgs {
                 let path = PathBuf::from(&args[i]);
                 i += 1;
                 let mut prog_args = Vec::new();
+                let mut dir: Option<PathBuf> = None;
                 while i < args.len() && args[i] != "--workload" && !is_global_option(&args[i]) {
-                    prog_args.push(args[i].clone());
+                    if args[i] == "--dir" {
+                        i += 1;
+                        if i < args.len() {
+                            dir = Some(PathBuf::from(&args[i]));
+                        }
+                    } else {
+                        prog_args.push(args[i].clone());
+                    }
                     i += 1;
                 }
-                result.workloads.push(Workload { path, prog_args });
+                result.workloads.push(Workload { path, prog_args, dir });
                 continue; // don't increment i again
             }
             "--" => {
@@ -191,6 +202,7 @@ pub fn parse_args(args: &[String]) -> DiscoverFusionArgs {
             result.workloads.push(Workload {
                 path,
                 prog_args: bare_args,
+                dir: None,
             });
         }
     }
@@ -238,9 +250,10 @@ fn run_workload(workload: &Workload, window_size: usize) -> profiler::FastProfil
     let mut wasi_args = vec![module_name.to_string()];
     wasi_args.extend(workload.prog_args.clone());
 
+    let preopen = workload.dir.as_deref().unwrap_or_else(|| std::path::Path::new("."));
     let ctx = WasiContextBuilder::new()
         .args(&wasi_args)
-        .preopen_dir(".", ".")
+        .preopen_dir(".", preopen)
         .inherit_env()
         .build();
     set_wasi_ctx(ctx);

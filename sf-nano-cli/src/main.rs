@@ -34,8 +34,31 @@ fn main() {
         return;
     }
 
-    let path = PathBuf::from(&args[1]);
-    let prog_args: Vec<String> = args[2..].to_vec();
+    // Parse --dir option if present
+    let mut dir: Option<PathBuf> = None;
+    let mut remaining_args: Vec<String> = Vec::new();
+    {
+        let mut i = 1;
+        while i < args.len() {
+            if args[i] == "--dir" {
+                i += 1;
+                if i < args.len() {
+                    dir = Some(PathBuf::from(&args[i]));
+                }
+            } else {
+                remaining_args.push(args[i].clone());
+            }
+            i += 1;
+        }
+    }
+
+    if remaining_args.is_empty() {
+        eprintln!("Error: no wasm file specified");
+        process::exit(1);
+    }
+
+    let path = PathBuf::from(&remaining_args[0]);
+    let prog_args: Vec<String> = remaining_args[1..].to_vec();
 
     // Read WASM binary
     let data = fs::read(&path).unwrap_or_else(|err| {
@@ -52,9 +75,10 @@ fn main() {
     let mut wasi_args = vec![module_name.to_string()];
     wasi_args.extend(prog_args);
 
+    let preopen = dir.as_deref().unwrap_or_else(|| std::path::Path::new("."));
     let ctx = WasiContextBuilder::new()
         .args(&wasi_args)
-        .preopen_dir(".", ".")
+        .preopen_dir(".", preopen)
         .inherit_env()
         .build();
     set_wasi_ctx(ctx);
