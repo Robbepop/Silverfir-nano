@@ -323,23 +323,28 @@ pub fn merge_stats(all_stats: std::vec::Vec<FastProfileStats>) -> FastProfileSta
         (all_stats.iter().map(|s| s.total_instructions).sum::<u64>() as f64 / n) as u64;
     let max_window = all_stats.iter().map(|s| s.window_size).max().unwrap_or(2);
 
-    // Accumulate frequency sums per sequence key
-    let mut freq_sums: HashMap<SequenceKey, f64> = HashMap::new();
+    // Max-frequency merge: for each pattern, use its highest frequency
+    // across any workload. This ensures hot patterns aren't diluted by
+    // workloads that don't use them.
+    let mut freq_max: HashMap<SequenceKey, f64> = HashMap::new();
     for stats in &all_stats {
         let total = stats.total_instructions as f64;
         if total == 0.0 {
             continue;
         }
         for (key, &count) in &stats.sequences {
-            *freq_sums.entry(key.clone()).or_insert(0.0) += count as f64 / total;
+            let freq = count as f64 / total;
+            let entry = freq_max.entry(key.clone()).or_insert(0.0);
+            if freq > *entry {
+                *entry = freq;
+            }
         }
     }
 
-    // Average frequencies and scale to reference total
+    // Scale max frequencies to reference total
     let mut merged = HashMap::new();
-    for (key, freq_sum) in freq_sums {
-        let avg_freq = freq_sum / n;
-        let count = (avg_freq * avg_total as f64) as u64;
+    for (key, max_freq) in freq_max {
+        let count = (max_freq * avg_total as f64) as u64;
         if count > 0 {
             merged.insert(key, count);
         }
