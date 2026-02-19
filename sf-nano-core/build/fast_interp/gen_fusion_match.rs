@@ -336,6 +336,11 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
                         "        let {} = stack.remap_local({});\n",
                         field.name, field.name
                     ));
+                    // Guard: fused encoding uses 8-bit local indices; bail if >= 256
+                    code.push_str(&format!(
+                        "        if {} >= 256 {{ return Ok(None); }}\n",
+                        field.name
+                    ));
                 }
                 "I32" => {
                     code.push_str(&format!(
@@ -442,6 +447,7 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
             // if_: target field is NOT included in FusedOp (patched later at ELSE/END)
         } else {
             let cast = match (imm_variant, field.bits) {
+                ("LocalIndex", 8) => format!("{} as u8", field.name),
                 ("LocalIndex", 16) => format!("{} as u16", field.name),
                 ("I32", 32) => format!("{} as u32", field.name),
                 ("I32", 8) => format!("{} as u8", field.name),

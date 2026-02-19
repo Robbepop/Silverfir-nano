@@ -150,7 +150,7 @@ pub fn compute_tos_pattern(pattern: &[&str]) -> TosPattern {
 
 fn op_encoding_bits(op: &str) -> u32 {
     match op {
-        "local_get" | "local_set" | "local_tee" => 16,
+        "local_get" | "local_set" | "local_tee" => 8,
         "local_get_l0" | "local_set_l0" | "local_tee_l0"
         | "local_get_l1" | "local_set_l1" | "local_tee_l1"
         | "local_get_l2" | "local_set_l2" | "local_tee_l2" => 0, // no field — register access
@@ -243,7 +243,7 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
                 } else {
                     std::format!("local_idx_{}", i)
                 };
-                fields.push(EncodingField { name, bits: 16, kind: None, from: i });
+                fields.push(EncodingField { name, bits: 8, kind: None, from: i });
             }
             "i32_const" => {
                 let name = if total_const_count == 1 {
