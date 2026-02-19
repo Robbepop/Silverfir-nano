@@ -14,9 +14,7 @@ resolver = "2"
 lto = true
 codegen-units = 1
 opt-level = 3
-strip = true
 
-[profile.release-with-debug]
+[profile.release-stripped]
 inherits = "release"
-strip = false
-debug = true
+strip = true
