@@ -232,6 +232,9 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
         }
     }
 
+    let total_const_count = const32_count + const64_count;
+    let total_branch_count = brif_count + if_count;
+
     for (i, op) in pattern.iter().enumerate() {
         match *op {
             "local_get" | "local_set" | "local_tee" => {
@@ -243,7 +246,7 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
                 fields.push(EncodingField { name, bits: 16, kind: None, from: i });
             }
             "i32_const" => {
-                let name = if const32_count == 1 {
+                let name = if total_const_count == 1 {
                     String::from("const_val")
                 } else {
                     std::format!("const_val_{}", i)
@@ -251,7 +254,7 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
                 fields.push(EncodingField { name, bits: 32, kind: None, from: i });
             }
             "i64_const" => {
-                let name = if const64_count == 1 {
+                let name = if total_const_count == 1 {
                     String::from("const_val")
                 } else {
                     std::format!("const_val_{}", i)
@@ -259,7 +262,7 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
                 fields.push(EncodingField { name, bits: 64, kind: None, from: i });
             }
             "br_if" => {
-                let name = if brif_count == 1 {
+                let name = if total_branch_count == 1 {
                     String::from("target")
                 } else {
                     std::format!("target_{}", i)
@@ -267,7 +270,7 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
                 fields.push(EncodingField { name, bits: 64, kind: Some(String::from("target")), from: i });
             }
             "if_" => {
-                let name = if if_count == 1 {
+                let name = if total_branch_count == 1 {
                     String::from("target")
                 } else {
                     std::format!("target_{}", i)
