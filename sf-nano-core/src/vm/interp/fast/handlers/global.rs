@@ -25,6 +25,7 @@ pub extern "C" fn impl_global_get(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointer for output
     p_dst: *mut u64,
 ) -> *mut Instruction {
@@ -51,6 +52,7 @@ pub extern "C" fn impl_global_set(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointer for input
     p_src: *mut u64,
 ) -> *mut Instruction {

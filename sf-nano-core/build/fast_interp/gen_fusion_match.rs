@@ -1,7 +1,7 @@
 // Fusion pattern matching code generator.
 // Produces fast_fusion.rs: FusedOp enum, OpFuser struct, try_match_N, try_fuse_*.
 
-use super::op_classify::{get_pop_push, has_branch, has_branch_or_if, has_if, immediate_variant, is_any_local_op, is_comparison_op, is_l0_local_op, is_l1_local_op, is_tos_none, pattern_op_to_opcode, CategoryMap};
+use super::op_classify::{get_pop_push, has_branch, has_branch_or_if, has_if, immediate_variant, is_any_local_op, is_comparison_op, is_l0_local_op, is_l1_local_op, is_l2_local_op, is_tos_none, pattern_op_to_opcode, CategoryMap};
 use super::types::{bits_to_rust_type, to_pascal_case, FieldKind, FusedHandler};
 
 /// Whether a try_fuse_* method needs the `stack` parameter.
@@ -270,6 +270,17 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
                 var
             ));
         }
+        if is_l2_local_op(op) {
+            let var = format!("_l2_raw_{}", i);
+            code.push_str(&format!(
+                "        let Immediate::LocalIndex({}) = imms[{}] else {{ return Ok(None) }};\n",
+                var, i
+            ));
+            code.push_str(&format!(
+                "        if !(stack.remap_local({}) == 2 && stack.has_hot_local(2)) {{ return Ok(None); }}\n",
+                var
+            ));
+        }
     }
 
     // Extract immediates from the matched ops
@@ -314,6 +325,11 @@ fn generate_try_fuse(code: &mut String, fused: &FusedHandler, categories: &Categ
                     // Fused handlers read/write fp[idx] directly, bypassing the l1 register.
                     code.push_str(&format!(
                         "        if stack.has_l1() && stack.remap_local({}) == 1 {{ return Ok(None); }}\n",
+                        field.name
+                    ));
+                    // L2 exclusion: non-l2 local patterns must not match the third hot local.
+                    code.push_str(&format!(
+                        "        if stack.has_hot_local(2) && stack.remap_local({}) == 2 {{ return Ok(None); }}\n",
                         field.name
                     ));
                     code.push_str(&format!(

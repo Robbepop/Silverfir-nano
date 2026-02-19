@@ -147,6 +147,17 @@ impl CodeEmitter {
         ))
     }
 
+    /// Emit INIT_L2: function prologue to swap fp[2]↔fp[K2_eff] and set l2.
+    pub fn emit_init_l2(&mut self, hot_local_idx: u32) -> usize {
+        self.emit(TempInst::new(
+            op_init_l2,
+            PatternData::InitL2 {
+                hot_local_idx: hot_local_idx as u16,
+            },
+            WasmOpcode::OP(NOP),
+        ))
+    }
+
     // =========================================================================
     // SP-based Arithmetic (handlers use sp[-1], sp[-2])
     // =========================================================================

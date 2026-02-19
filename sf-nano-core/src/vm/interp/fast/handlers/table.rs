@@ -32,6 +32,7 @@ pub extern "C" fn impl_table_get(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers
     p_src: *mut u64,
     p_dst: *mut u64,
@@ -65,6 +66,7 @@ pub extern "C" fn impl_table_set(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers (pos2=index, pos1=ref)
     p_addr: *mut u64,
     p_val: *mut u64,
@@ -99,6 +101,7 @@ pub extern "C" fn impl_table_size(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointer for output
     p_dst: *mut u64,
 ) -> *mut Instruction {
@@ -125,6 +128,7 @@ pub extern "C" fn impl_table_grow(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers (pos2=init_ref, pos1=delta)
     p_lhs: *mut u64,
     p_rhs: *mut u64,
@@ -168,6 +172,7 @@ pub extern "C" fn impl_table_fill(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers (pos3=start, pos2=val, pos1=size)
     p_a: *mut u64,
     p_b: *mut u64,
@@ -200,6 +205,7 @@ pub extern "C" fn impl_table_init(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers (pos3=dst, pos2=src, pos1=size)
     p_a: *mut u64,
     p_b: *mut u64,
@@ -258,6 +264,7 @@ pub extern "C" fn impl_table_copy(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers (pos3=dst, pos2=src, pos1=size)
     p_a: *mut u64,
     p_b: *mut u64,
@@ -312,6 +319,7 @@ pub extern "C" fn impl_elem_drop(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
 ) -> *mut Instruction {
     let elem_idx = drop_op::decode_idx(pc) as usize;
 

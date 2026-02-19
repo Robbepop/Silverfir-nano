@@ -151,4 +151,45 @@ FORCE_INLINE struct Instruction* impl_local_tee_l1(IMPL_PARAMS_POP1_PUSH1) {
     return pc_next(pc);
 }
 
+// =============================================================================
+// L2 Local Register Cache Operations
+// =============================================================================
+
+// init_l2: function prologue — swap fp[2]↔fp[K], set *p_l2
+FORCE_INLINE struct Instruction* impl_init_l2(IMPL_PARAMS_BASE) {
+    (void)ctx;
+    uint16_t K = init_l2_decode_hot_local_idx(pc);
+    if (K != 2) {
+        uint64_t tmp = fp[2];
+        fp[2] = fp[K];
+        fp[K] = tmp;
+    }
+    *p_l2 = fp[2];
+    return pc_next(pc);
+}
+
+// local_get_l2: push l2 to TOS
+FORCE_INLINE struct Instruction* impl_local_get_l2(IMPL_PARAMS_POP0_PUSH1) {
+    (void)ctx; (void)pfp;
+
+    *p_dst = *p_l2;
+    return pc_next(pc);
+}
+
+// local_set_l2: pop TOS to l2
+FORCE_INLINE struct Instruction* impl_local_set_l2(IMPL_PARAMS_POP1_PUSH0) {
+    (void)ctx; (void)pfp;
+
+    *p_l2 = *p_src;
+    return pc_next(pc);
+}
+
+// local_tee_l2: copy TOS to l2, keep TOS unchanged
+FORCE_INLINE struct Instruction* impl_local_tee_l2(IMPL_PARAMS_POP1_PUSH1) {
+    (void)ctx; (void)pfp; (void)p_dst;
+
+    *p_l2 = *p_src;
+    return pc_next(pc);
+}
+
 #undef fp

@@ -26,6 +26,7 @@ pub extern "C" fn impl_ref_null(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointer for output
     p_dst: *mut u64,
 ) -> *mut Instruction {
@@ -44,6 +45,7 @@ pub extern "C" fn impl_ref_is_null(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers
     p_src: *mut u64,
     p_dst: *mut u64,
@@ -64,6 +66,7 @@ pub extern "C" fn impl_ref_func(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointer for output
     p_dst: *mut u64,
 ) -> *mut Instruction {
@@ -85,6 +88,7 @@ pub extern "C" fn impl_ref_as_non_null(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers
     p_src: *mut u64,
     p_dst: *mut u64,
@@ -107,6 +111,7 @@ pub extern "C" fn impl_ref_eq(
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
     _p_l1: *mut u64,
+    _p_l2: *mut u64,
     // Phase 3: Operand pointers
     p_lhs: *mut u64,
     p_rhs: *mut u64,

@@ -9,7 +9,7 @@ use crate::vm::interp::fast::frame_layout;
 use alloc::vec::Vec;
 
 /// Number of hot local register slots (l0, l1, ...).
-pub const HOT_LOCAL_COUNT: usize = 2;
+pub const HOT_LOCAL_COUNT: usize = 3;
 
 /// Control frame kind.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -157,7 +157,7 @@ pub fn internal_eval(
 
     unsafe {
         let nh: super::handlers::NextHandler = core::mem::transmute((*entry.add(1)).handler);
-        run_trampoline(&mut ctx, entry, fp, 0, 0, 0, 0, 0, 0, nh);
+        run_trampoline(&mut ctx, entry, fp, 0, 0, 0, 0, 0, 0, 0, nh);
     }
 
     // Convert deferred C trap message to WasmError

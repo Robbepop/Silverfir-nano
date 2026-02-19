@@ -48,11 +48,17 @@ pub fn is_l1_local_op(op: &str) -> bool {
     matches!(op, "local_get_l1" | "local_set_l1" | "local_tee_l1")
 }
 
-/// Check if an op is any kind of local op (l0, l1, or general).
+/// Check if an op is an l2 local register op (third hot local cached in register).
+pub fn is_l2_local_op(op: &str) -> bool {
+    matches!(op, "local_get_l2" | "local_set_l2" | "local_tee_l2")
+}
+
+/// Check if an op is any kind of local op (l0, l1, l2, or general).
 pub fn is_any_local_op(op: &str) -> bool {
     matches!(op, "local_get" | "local_set" | "local_tee"
         | "local_get_l0" | "local_set_l0" | "local_tee_l0"
-        | "local_get_l1" | "local_set_l1" | "local_tee_l1")
+        | "local_get_l1" | "local_set_l1" | "local_tee_l1"
+        | "local_get_l2" | "local_set_l2" | "local_tee_l2")
 }
 
 /// Check if an op is any known fusible op.
@@ -60,6 +66,7 @@ pub fn is_fusible_op(categories: &CategoryMap, op: &str) -> bool {
     matches!(op, "local_get" | "local_set" | "local_tee"
         | "local_get_l0" | "local_set_l0" | "local_tee_l0"
         | "local_get_l1" | "local_set_l1" | "local_tee_l1"
+        | "local_get_l2" | "local_set_l2" | "local_tee_l2"
         | "i32_const" | "i64_const" | "br_if" | "if_")
         || categories.contains_key(op)
 }
@@ -93,9 +100,9 @@ pub fn pattern_op_to_opcode(categories: &CategoryMap, op: &str) -> String {
     assert!(is_fusible_op(categories, op), "Unknown pattern op for Opcode mapping: {}", op);
     match op {
         "if_" => "IF".to_string(),
-        "local_get_l0" | "local_get_l1" => "LOCAL_GET".to_string(),
-        "local_set_l0" | "local_set_l1" => "LOCAL_SET".to_string(),
-        "local_tee_l0" | "local_tee_l1" => "LOCAL_TEE".to_string(),
+        "local_get_l0" | "local_get_l1" | "local_get_l2" => "LOCAL_GET".to_string(),
+        "local_set_l0" | "local_set_l1" | "local_set_l2" => "LOCAL_SET".to_string(),
+        "local_tee_l0" | "local_tee_l1" | "local_tee_l2" => "LOCAL_TEE".to_string(),
         _ => op.to_uppercase(),
     }
 }
@@ -105,7 +112,8 @@ pub fn immediate_variant(categories: &CategoryMap, op: &str) -> &'static str {
     match op {
         "local_get" | "local_set" | "local_tee"
         | "local_get_l0" | "local_set_l0" | "local_tee_l0"
-        | "local_get_l1" | "local_set_l1" | "local_tee_l1" => "LocalIndex",
+        | "local_get_l1" | "local_set_l1" | "local_tee_l1"
+        | "local_get_l2" | "local_set_l2" | "local_tee_l2" => "LocalIndex",
         "i32_const" => "I32",
         "i64_const" => "I64",
         "br_if" => "LabelIndex",

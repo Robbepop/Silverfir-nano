@@ -252,6 +252,8 @@ fn dispatch_opcode(
                     handler_lookup::LOCAL_GET_L0[variant_idx]
                 } else if remapped == 1 && stack.has_l1() {
                     handler_lookup::LOCAL_GET_L1[variant_idx]
+                } else if remapped == 2 && stack.has_hot_local(2) {
+                    handler_lookup::LOCAL_GET_L2[variant_idx]
                 } else {
                     handler_lookup::LOCAL_GET[variant_idx]
                 };
@@ -268,6 +270,8 @@ fn dispatch_opcode(
                     handler_lookup::LOCAL_SET_L0[variant_idx]
                 } else if remapped == 1 && stack.has_l1() {
                     handler_lookup::LOCAL_SET_L1[variant_idx]
+                } else if remapped == 2 && stack.has_hot_local(2) {
+                    handler_lookup::LOCAL_SET_L2[variant_idx]
                 } else {
                     handler_lookup::LOCAL_SET[variant_idx]
                 };
@@ -284,6 +288,8 @@ fn dispatch_opcode(
                     handler_lookup::LOCAL_TEE_L0[variant_idx]
                 } else if remapped == 1 && stack.has_l1() {
                     handler_lookup::LOCAL_TEE_L1[variant_idx]
+                } else if remapped == 2 && stack.has_hot_local(2) {
+                    handler_lookup::LOCAL_TEE_L2[variant_idx]
                 } else {
                     handler_lookup::LOCAL_TEE[variant_idx]
                 };

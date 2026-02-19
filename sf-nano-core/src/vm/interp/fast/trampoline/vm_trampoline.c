@@ -30,7 +30,7 @@
 // Note: fast_trace_instruction receives PARAMS (including nh) but ignores nh.
 #if defined(FAST_TRACE_ENABLED)
 void fast_trace_instruction(const char* name, PARAMS) {
-    (void)ctx; (void)pc; (void)fp; (void)l0; (void)l1;
+    (void)ctx; (void)pc; (void)fp; (void)l0; (void)l1; (void)l2;
     (void)t0; (void)t1; (void)t2; (void)t3;
     (void)nh;
     fprintf(stderr, "%s\n", name);
@@ -79,9 +79,10 @@ extern void fast_profile_record(const char* name);
 #define IMPL_PARAMS_BASE \
     struct Ctx* ctx, struct Instruction* pc, \
     uint64_t** pfp, __attribute__((unused)) uint64_t* p_l0, \
-    __attribute__((unused)) uint64_t* p_l1
+    __attribute__((unused)) uint64_t* p_l1, \
+    __attribute__((unused)) uint64_t* p_l2
 
-#define IMPL_ARGS_BASE ctx, pc, &fp, &l0, &l1
+#define IMPL_ARGS_BASE ctx, pc, &fp, &l0, &l1, &l2
 
 // -----------------------------------------------------------------------------
 // TOS Pattern Parameter Extensions
@@ -168,7 +169,7 @@ extern void fast_profile_record(const char* name);
 // Like ARGS but with pc replaced by np and nh replaced by new_nh.
 // The dispatch target is the preloaded nh (from previous handler).
 // Requires: np, new_nh in scope.
-#define ARGS_NEXT ctx, np, fp, l0, l1, t0, t1, t2, t3, new_nh
+#define ARGS_NEXT ctx, np, fp, l0, l1, l2, t0, t1, t2, t3, new_nh
 
 // ARGS_NEXT_RELOAD: Arguments for tail-call after reload (nonlinear/trap path)
 // Like ARGS_NEXT but used when dispatching to np->handler (freshly loaded).
@@ -185,7 +186,7 @@ extern void fast_profile_record(const char* name);
 PRESERVE_NONE
 void op_term(PARAMS)
 {
-    (void)ctx; (void)pc; (void)fp; (void)l0; (void)l1;
+    (void)ctx; (void)pc; (void)fp; (void)l0; (void)l1; (void)l2;
     (void)t0; (void)t1; (void)t2; (void)t3;
     (void)nh;
     return;

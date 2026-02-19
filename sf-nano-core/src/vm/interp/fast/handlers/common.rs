@@ -97,6 +97,18 @@ pub fn l1_fill(fp_pp: *mut *mut u64, p_l1: *mut u64) {
     unsafe { *p_l1 = *((*fp_pp).add(1)); }
 }
 
+/// Spill l2 register to fp[2] before frame changes (calls).
+#[inline(always)]
+pub fn l2_spill(fp_pp: *mut *mut u64, p_l2: *mut u64) {
+    unsafe { *((*fp_pp).add(2)) = *p_l2; }
+}
+
+/// Fill l2 register from fp[2] after frame restoration (returns, external calls).
+#[inline(always)]
+pub fn l2_fill(fp_pp: *mut *mut u64, p_l2: *mut u64) {
+    unsafe { *p_l2 = *((*fp_pp).add(2)); }
+}
+
 // =============================================================================
 // PC Navigation
 // =============================================================================
