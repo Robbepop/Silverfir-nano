@@ -8,6 +8,9 @@ use crate::vm::interp::fast::frame_layout;
 
 use alloc::vec::Vec;
 
+/// Number of hot local register slots (l0, l1, ...).
+pub const HOT_LOCAL_COUNT: usize = 2;
+
 /// Control frame kind.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BlockKind {
@@ -59,8 +62,10 @@ pub struct StackTracker {
     params_count: usize,
     locals_count: usize,
     results_count: usize,
-    /// Hot local index (pre-swap): None if l0 is disabled for this function.
-    hot_local_idx: Option<u32>,
+    /// Effective hot local indices after sequential swaps.
+    /// hot_locals[0] = l0's effective index, hot_locals[1] = l1's effective index, etc.
+    /// None means that register slot is unused for this function.
+    hot_locals: [Option<u32>; HOT_LOCAL_COUNT],
 
     // Stack height tracking
     height: usize,
@@ -77,12 +82,12 @@ pub struct StackTracker {
 }
 
 impl StackTracker {
-    pub fn new(params_count: usize, locals_count: usize, results_count: usize, hot_local_idx: Option<u32>) -> Self {
+    pub fn new(params_count: usize, locals_count: usize, results_count: usize, hot_locals: [Option<u32>; HOT_LOCAL_COUNT]) -> Self {
         let mut tracker = Self {
             params_count,
             locals_count,
             results_count,
-            hot_local_idx,
+            hot_locals,
             height: 0,
             max_height: 0,
             spill_depth: 0,
@@ -311,24 +316,39 @@ impl StackTracker {
     }
 
     // =========================================================================
-    // L0 Local Register Cache
+    // Hot Local Register Cache
     // =========================================================================
 
-    /// Whether l0 is enabled for this function.
+    /// Whether hot local register `n` is enabled for this function (0=l0, 1=l1, ...).
     #[inline]
-    pub fn has_l0(&self) -> bool {
-        self.hot_local_idx.is_some()
+    pub fn has_hot_local(&self, n: usize) -> bool {
+        n < HOT_LOCAL_COUNT && self.hot_locals[n].is_some()
     }
 
-    /// Remap a local index for l0: swaps index 0 ↔ hot_local_idx.
-    /// If l0 is disabled, returns idx unchanged.
+    /// Convenience aliases.
+    #[inline]
+    pub fn has_l0(&self) -> bool { self.has_hot_local(0) }
+    #[inline]
+    pub fn has_l1(&self) -> bool { self.has_hot_local(1) }
+
+    /// Remap a local index through sequential transpositions: swap(0,K0), swap(1,K1_eff), ...
+    ///
+    /// Each init_lN swaps fp[N]↔fp[KN_eff], so a Wasm local index maps to
+    /// the physical slot by applying each transposition in order.
     #[inline]
     pub fn remap_local(&self, idx: u32) -> u32 {
-        match self.hot_local_idx {
-            Some(k) if k == idx => 0,
-            Some(k) if idx == 0 => k,
-            _ => idx,
+        let mut pos = idx;
+        for (slot, k) in self.hot_locals.iter().enumerate() {
+            if let Some(k) = *k {
+                let slot = slot as u32;
+                if pos == k {
+                    pos = slot;
+                } else if pos == slot {
+                    pos = k;
+                }
+            }
         }
+        pos
     }
 
     // =========================================================================

@@ -25,6 +25,7 @@ pub extern "C" fn impl_term(
     _pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
 ) -> *mut Instruction {
     core::ptr::null_mut()
 }
@@ -41,6 +42,7 @@ pub extern "C" fn impl_data(
     _pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
 ) -> *mut Instruction {
     trap_with(ctx, WasmError::trap("executed data pseudo-instruction".into()))
 }

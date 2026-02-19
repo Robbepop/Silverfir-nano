@@ -28,6 +28,7 @@ pub extern "C" fn impl_memory_size(
     pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
     // Phase 3: Operand pointer for output
     p_dst: *mut u64,
 ) -> *mut Instruction {
@@ -59,6 +60,7 @@ pub extern "C" fn impl_memory_grow(
     pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
     // Phase 3: Operand pointers
     p_src: *mut u64,
     p_dst: *mut u64,
@@ -122,6 +124,7 @@ pub extern "C" fn impl_memory_init(
     pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
     // Phase 3: Operand pointers (pos3=dst, pos2=src, pos1=size)
     p_a: *mut u64,
     p_b: *mut u64,
@@ -180,6 +183,7 @@ pub extern "C" fn impl_data_drop(
     pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
 ) -> *mut Instruction {
     let data_idx = drop_op::decode_idx(pc) as usize;
 
@@ -202,6 +206,7 @@ pub extern "C" fn impl_memory_copy(
     pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
     // Phase 3: Operand pointers (pos3=dst, pos2=src, pos1=size)
     p_a: *mut u64,
     p_b: *mut u64,
@@ -257,6 +262,7 @@ pub extern "C" fn impl_memory_fill(
     pc: *mut Instruction,
     _fp_pp: *mut *mut u64,
     _p_l0: *mut u64,
+    _p_l1: *mut u64,
     // Phase 3: Operand pointers (pos3=dst, pos2=value, pos1=size)
     p_a: *mut u64,
     p_b: *mut u64,
@@ -303,6 +309,7 @@ macro_rules! impl_mm_load {
             pc: *mut Instruction,
             _fp_pp: *mut *mut u64,
             _p_l0: *mut u64,
+    _p_l1: *mut u64,
             // Phase 3: Operand pointers for TOS computation
             p_src: *mut u64,
             p_dst: *mut u64,
@@ -349,6 +356,7 @@ macro_rules! impl_mm_store {
             pc: *mut Instruction,
             _fp_pp: *mut *mut u64,
             _p_l0: *mut u64,
+    _p_l1: *mut u64,
             // Phase 3: Operand pointers for TOS computation
             p_addr: *mut u64,
             p_val: *mut u64,

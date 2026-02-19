@@ -74,6 +74,7 @@ fn generate_handler_decl(w: &mut CodeWriter, name: &str) {
     w.line("pc: *mut Instruction,");
     w.line("fp: *mut u64,");
     w.line("l0: u64,");
+    w.line("l1: u64,");
     for reg in tos_register_names() {
         wln!(w, "{}: u64,", reg);
     }

@@ -296,6 +296,26 @@ pub fn run(cmd: DiscoverFusionArgs) {
         eprintln!("Merged (frequency-averaged): {} virtual instructions", stats.total_instructions);
     }
 
+    // Print 1-gram (per-handler) breakdown
+    {
+        let mut unigrams: Vec<_> = stats.sequences.iter()
+            .filter(|(k, _)| k.len() == 1)
+            .map(|(k, &v)| (k.ops()[0], v))
+            .collect();
+        unigrams.sort_by(|a, b| b.1.cmp(&a.1));
+        eprintln!();
+        eprintln!("Per-handler instruction counts (1-grams):");
+        eprintln!("{:<30} {:>12} {:>8}", "Handler", "Count", "Pct");
+        eprintln!("{}", "-".repeat(52));
+        for (name, count) in &unigrams {
+            let pct = *count as f64 / stats.total_instructions as f64 * 100.0;
+            eprintln!("{:<30} {:>12} {:>7.2}%", name, count, pct);
+        }
+        eprintln!("{}", "-".repeat(52));
+        eprintln!("{:<30} {:>12}", "TOTAL", stats.total_instructions);
+        eprintln!();
+    }
+
     // Build pattern trie
     eprintln!("Building pattern trie...");
     let trie = PatternTrie::from_stats(&stats);

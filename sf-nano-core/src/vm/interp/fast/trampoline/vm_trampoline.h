@@ -70,6 +70,7 @@ typedef void (*OpHandler)(
     struct Instruction* pc,
     uint64_t* fp,
     uint64_t l0,               // Local register cache (fp[0] cached)
+    uint64_t l1,               // Local register cache (fp[1] cached)
     uint64_t t0,               // TOS register 0 (by value)
     uint64_t t1,               // TOS register 1 (by value)
     uint64_t t2,               // TOS register 2 (by value)
@@ -99,8 +100,8 @@ struct Instruction {
 // fp: pointer to current frame's locals (params, then locals)
 // t0-t3: TOS (Top-of-Stack) registers passed by value (4 TOS registers)
 // nh: preloaded next handler (NextHandler)
-#define PARAMS struct Ctx* ctx, struct Instruction* pc, uint64_t* fp, uint64_t l0, uint64_t t0, uint64_t t1, uint64_t t2, uint64_t t3, NextHandler nh
-#define ARGS ctx, pc, fp, l0, t0, t1, t2, t3, nh
+#define PARAMS struct Ctx* ctx, struct Instruction* pc, uint64_t* fp, uint64_t l0, uint64_t l1, uint64_t t0, uint64_t t1, uint64_t t2, uint64_t t3, NextHandler nh
+#define ARGS ctx, pc, fp, l0, l1, t0, t1, t2, t3, nh
 
 // Entry: starts execution at pc using its handler. Pointers are updated in place.
 // ctx is opaque to C and passed through unchanged.

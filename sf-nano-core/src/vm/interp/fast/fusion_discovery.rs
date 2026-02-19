@@ -92,6 +92,7 @@ pub fn is_store_op(op: &str) -> bool {
 pub fn is_fusible_op(op: &str) -> bool {
     matches!(op, "local_get" | "local_set" | "local_tee"
         | "local_get_l0" | "local_set_l0" | "local_tee_l0"
+        | "local_get_l1" | "local_set_l1" | "local_tee_l1"
         | "i32_const" | "i64_const" | "br_if" | "if_")
         || is_pure_binop(op)
         || is_trapping_binop(op)
@@ -112,9 +113,9 @@ pub enum TosPattern {
 
 fn op_stack_effect(op: &str) -> (u32, u32) {
     match op {
-        "local_get" | "local_get_l0" | "i32_const" | "i64_const" => (0, 1),
-        "local_set" | "local_set_l0" => (1, 0),
-        "local_tee" | "local_tee_l0" => (1, 1),
+        "local_get" | "local_get_l0" | "local_get_l1" | "i32_const" | "i64_const" => (0, 1),
+        "local_set" | "local_set_l0" | "local_set_l1" => (1, 0),
+        "local_tee" | "local_tee_l0" | "local_tee_l1" => (1, 1),
         "br_if" | "if_" => (1, 0),
         _ if is_pure_binop(op) || is_trapping_binop(op) => (2, 1),
         _ if is_pure_unary(op) => (1, 1),
@@ -149,7 +150,8 @@ pub fn compute_tos_pattern(pattern: &[&str]) -> TosPattern {
 fn op_encoding_bits(op: &str) -> u32 {
     match op {
         "local_get" | "local_set" | "local_tee" => 16,
-        "local_get_l0" | "local_set_l0" | "local_tee_l0" => 0, // no field — register access
+        "local_get_l0" | "local_set_l0" | "local_tee_l0"
+        | "local_get_l1" | "local_set_l1" | "local_tee_l1" => 0, // no field — register access
         "i32_const" => 32,
         "i64_const" | "br_if" | "if_" => 64,
         _ if is_load_op(op) || is_store_op(op) => 32,
@@ -216,7 +218,8 @@ pub fn auto_encoding_fields(pattern: &[&str]) -> Vec<EncodingField> {
     for op in pattern {
         match *op {
             "local_get" | "local_set" | "local_tee" => local_count += 1,
-            "local_get_l0" | "local_set_l0" | "local_tee_l0" => {} // no field needed
+            "local_get_l0" | "local_set_l0" | "local_tee_l0"
+            | "local_get_l1" | "local_set_l1" | "local_tee_l1" => {} // no field needed
             "i32_const" => const32_count += 1,
             "i64_const" => const64_count += 1,
             "br_if" => brif_count += 1,
@@ -295,6 +298,9 @@ fn abbreviate_op(op: &str) -> &str {
         "local_get_l0" => "gl0",
         "local_set_l0" => "sl0",
         "local_tee_l0" => "tl0",
+        "local_get_l1" => "gl1",
+        "local_set_l1" => "sl1",
+        "local_tee_l1" => "tl1",
         "i32_const" | "f32_const" => "const",
         "i64_const" | "f64_const" => "const64",
         "br_if" => "brif",

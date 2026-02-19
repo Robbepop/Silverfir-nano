@@ -1,11 +1,11 @@
-//! Hot local analysis for the L0 register cache.
+//! Hot local analysis for the register cache.
 //!
 //! Walks raw Wasm bytecode and counts local variable accesses weighted by
-//! loop nesting depth. The local with the highest weight becomes the hot
-//! local (cached in l0).
+//! loop nesting depth. The top N locals by weight are cached in l0, l1, ...
 
 use alloc::vec::Vec;
 use crate::utils::leb128;
+use super::stack::HOT_LOCAL_COUNT;
 
 /// Read an unsigned LEB128 u32 from `code` at position `i`, returning (value, new_position).
 /// Silently returns 0 on malformed input (best-effort for analysis).
@@ -35,16 +35,17 @@ fn read_i64(code: &[u8], i: usize) -> (i64, usize) {
     }
 }
 
-/// Find the hottest local variable in a function body.
+/// Find the top-N hottest local variables in a function body.
 ///
-/// Returns the index of the local with the highest loop-depth-weighted
-/// access count, or None if the function has no locals/params (frame_size == 0).
+/// Returns an array where each element is the index of a local with the
+/// highest loop-depth-weighted access count, or None if unavailable.
+/// Element 0 is cached in l0, element 1 in l1, etc.
 ///
 /// `code` is the raw Wasm function body bytecode (starting after the locals section).
 /// `frame_size` is params_count + locals_count.
-pub fn find_hot_local(code: &[u8], frame_size: usize) -> Option<u32> {
+pub fn find_hot_locals(code: &[u8], frame_size: usize) -> [Option<u32>; HOT_LOCAL_COUNT] {
     if frame_size == 0 {
-        return None;
+        return [None; HOT_LOCAL_COUNT];
     }
 
     let mut weights: Vec<u64> = alloc::vec![0u64; frame_size];
@@ -198,18 +199,81 @@ pub fn find_hot_local(code: &[u8], frame_size: usize) -> Option<u32> {
         }
     }
 
-    // Find the index with maximum weight
-    let (max_idx, max_weight) = weights
-        .iter()
-        .enumerate()
-        .max_by_key(|(_, w)| *w)
-        .unwrap();
+    // Find top-N by weight
+    // Each element is (local_index, weight), sorted descending by weight.
+    let mut best: [(u32, u64); HOT_LOCAL_COUNT] = [(0, 0); HOT_LOCAL_COUNT];
+    let mut found = 0usize;
 
-    if *max_weight == 0 {
-        return None;
+    for (idx, &w) in weights.iter().enumerate() {
+        if w == 0 {
+            continue;
+        }
+        // Insert into sorted best array
+        let mut insert_at = found.min(HOT_LOCAL_COUNT);
+        for i in 0..found.min(HOT_LOCAL_COUNT) {
+            if w > best[i].1 {
+                insert_at = i;
+                break;
+            }
+        }
+        if insert_at < HOT_LOCAL_COUNT {
+            // Shift down
+            let mut j = (found.min(HOT_LOCAL_COUNT)).min(HOT_LOCAL_COUNT - 1);
+            while j > insert_at {
+                best[j] = best[j - 1];
+                j -= 1;
+            }
+            best[insert_at] = (idx as u32, w);
+            found += 1;
+        }
     }
 
-    Some(max_idx as u32)
+    let mut result = [None; HOT_LOCAL_COUNT];
+    for i in 0..found.min(HOT_LOCAL_COUNT) {
+        if best[i].1 > 0 {
+            result[i] = Some(best[i].0);
+        }
+    }
+    result
+}
+
+/// Compute effective indices after sequential swaps.
+///
+/// Each init_lN swaps fp[N]↔fp[KN]. If a later swap's target was moved by
+/// an earlier swap, we adjust it. For example, if init_l0 swaps fp[0]↔fp[K0],
+/// then K1_eff must account for the fact that the value originally at fp[K1]
+/// may now be at a different position.
+///
+/// `raw` contains the original (pre-swap) hot local indices from `find_hot_locals`.
+/// Returns effective indices suitable for passing to StackTracker and init_lN.
+pub fn compute_effective_indices(
+    raw: &[Option<u32>; HOT_LOCAL_COUNT],
+    frame_size: usize,
+) -> [Option<u32>; HOT_LOCAL_COUNT] {
+    let mut eff = [None; HOT_LOCAL_COUNT];
+    for slot in 0..HOT_LOCAL_COUNT {
+        if frame_size <= slot {
+            break; // not enough locals for this register
+        }
+        let Some(k) = raw[slot] else {
+            // No hot local found for this slot; earlier slots disable later ones
+            break;
+        };
+        // Apply all previous swaps to find where k ended up
+        let mut k_eff = k;
+        for prev in 0..slot {
+            if let Some(kp) = eff[prev] {
+                let prev_slot = prev as u32;
+                if k_eff == prev_slot {
+                    k_eff = kp;
+                } else if k_eff == kp {
+                    k_eff = prev_slot;
+                }
+            }
+        }
+        eff[slot] = Some(k_eff);
+    }
+    eff
 }
 
 /// Compute loop weight: 10^min(depth, 6)

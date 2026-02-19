@@ -128,6 +128,21 @@ impl StackSim {
                 self.emit(format!("    *p_l0 = (uint64_t)({});", val));
                 self.push(val);
             }
+            // L1 register ops — direct register access, no field decode needed.
+            "local_get_l1" => {
+                let var = self.fresh_var();
+                self.emit(format!("    uint64_t {} = *p_l1;", var));
+                self.push(var);
+            }
+            "local_set_l1" => {
+                let val = self.pop();
+                self.emit(format!("    *p_l1 = (uint64_t)({});", val));
+            }
+            "local_tee_l1" => {
+                let val = self.pop();
+                self.emit(format!("    *p_l1 = (uint64_t)({});", val));
+                self.push(val);
+            }
             "i32_const" => {
                 let fname = field_name.expect("i32_const needs field name");
                 let var = self.fresh_var();

@@ -250,6 +250,8 @@ fn dispatch_opcode(
                 let variant_idx = post_op_variant_idx(stack);
                 let handler = if remapped == 0 && stack.has_l0() {
                     handler_lookup::LOCAL_GET_L0[variant_idx]
+                } else if remapped == 1 && stack.has_l1() {
+                    handler_lookup::LOCAL_GET_L1[variant_idx]
                 } else {
                     handler_lookup::LOCAL_GET[variant_idx]
                 };
@@ -264,6 +266,8 @@ fn dispatch_opcode(
                 let variant_idx = pre_op_variant_idx(stack);
                 let handler = if remapped == 0 && stack.has_l0() {
                     handler_lookup::LOCAL_SET_L0[variant_idx]
+                } else if remapped == 1 && stack.has_l1() {
+                    handler_lookup::LOCAL_SET_L1[variant_idx]
                 } else {
                     handler_lookup::LOCAL_SET[variant_idx]
                 };
@@ -278,6 +282,8 @@ fn dispatch_opcode(
                 let variant_idx = pre_op_variant_idx(stack);
                 let handler = if remapped == 0 && stack.has_l0() {
                     handler_lookup::LOCAL_TEE_L0[variant_idx]
+                } else if remapped == 1 && stack.has_l1() {
+                    handler_lookup::LOCAL_TEE_L1[variant_idx]
                 } else {
                     handler_lookup::LOCAL_TEE[variant_idx]
                 };
