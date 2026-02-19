@@ -492,14 +492,39 @@ pub fn fd_read(
 
     match fd {
         0 => {
-            // stdin: report EOF
+            // stdin: read from real stdin
             let is_closed =
                 super::with_ctx(|ctx| ctx.closed_stdio.contains(&0));
             if is_closed {
                 results[0] = Value::I32(ERRNO_BADF);
                 return Ok(());
             }
-            write_u32_le(mem, nread_ptr, 0)?;
+            let mut iovs = Vec::new();
+            for i in 0..iovs_len {
+                let base = iovs_ptr + i * 8;
+                let ptr = read_u32_le(mem, base)?;
+                let len = read_u32_le(mem, base + 4)?;
+                iovs.push((ptr, len));
+            }
+            let mut total_read: u32 = 0;
+            let mut stdin = std::io::stdin();
+            for &(ptr, len) in &iovs {
+                let start = ptr as usize;
+                let end = start + len as usize;
+                if end > mem.len() {
+                    results[0] = Value::I32(ERRNO_INVAL);
+                    return Ok(());
+                }
+                match stdin.read(&mut mem[start..end]) {
+                    Ok(0) => break,
+                    Ok(n) => total_read += n as u32,
+                    Err(_) => {
+                        results[0] = Value::I32(ERRNO_IO);
+                        return Ok(());
+                    }
+                }
+            }
+            write_u32_le(mem, nread_ptr, total_read)?;
             results[0] = Value::I32(ERRNO_SUCCESS);
         }
         _ => {
