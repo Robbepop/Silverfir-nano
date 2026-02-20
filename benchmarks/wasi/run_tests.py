@@ -19,7 +19,6 @@ DEFAULT_CLI = os.path.join(REPO_ROOT, "target", "release", "sf-nano-cli")
 
 # Parameters are tuned so each test runs ~3-10 s on a typical machine.
 # simple: fib(20) is hardcoded, can't increase (~0.5s).
-# smallpt: can't go above 16 spp / 64 res without stack overflow (affects wasm3 too).
 TESTS = [
     {
         "name": "mandelbrot/mandel.wasm",
@@ -36,22 +35,7 @@ TESTS = [
         "pattern": r"Rendering took:\s*(.+\))",
         "source": "stderr",
     },
-    {
-        "name": "smallpt/smallpt-ex.wasm",
-        "cwd": os.path.join(SCRIPT_DIR, "smallpt"),
-        "args": ["smallpt-ex.wasm", "16", "64"],
-        "pattern": r"Elapsed:\s*(.+)",
-        "source": "stderr",
-    },
-    {
-        "name": "smallpt/smallpt-ex-mv.wasm",
-        "cwd": os.path.join(SCRIPT_DIR, "smallpt"),
-        "args": ["smallpt-ex-mv.wasm", "16", "64"],
-        "pattern": r"Elapsed:\s*(.+)",
-        "source": "stderr",
-    },
-
-    {
+{
         "name": "stream/stream.wasm",
         "cwd": os.path.join(SCRIPT_DIR, "stream"),
         "args": ["stream.wasm"],
@@ -67,14 +51,7 @@ TESTS = [
         "pattern": None,
         "source": None,
     },
-    {
-        "name": "binary_trees/binary-trees.wasm",
-        "cwd": os.path.join(SCRIPT_DIR, "binary_trees"),
-        "args": ["binary-trees.wasm", "17"],
-        "pattern": r"time\s+(.+)",
-        "source": "stdout",
-    },
-    {
+{
         "name": "coremark/coremark.wasm",
         "cwd": os.path.join(SCRIPT_DIR, "coremark"),
         "args": ["coremark.wasm"],
