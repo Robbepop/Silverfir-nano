@@ -4,7 +4,7 @@
 //! `fn(&mut Caller, &[Value], &mut [Value]) -> Result<(), WasmError>`
 
 use std::format;
-use std::io::{Read, Seek, SeekFrom, Write};
+use std::io::{IsTerminal, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::string::{String, ToString};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -506,24 +506,39 @@ pub fn fd_read(
                 let len = read_u32_le(mem, base + 4)?;
                 iovs.push((ptr, len));
             }
+            // Use buffered stdin to provide consistent read behavior.
+            // We read all remaining stdin data into a static buffer on first call,
+            // then serve subsequent reads from the buffer.
+            use std::sync::Mutex;
+            static STDIN_BUF: Mutex<Option<(Vec<u8>, usize)>> = Mutex::new(None);
+
             let mut total_read: u32 = 0;
-            let mut stdin = std::io::stdin();
+            let mut guard = STDIN_BUF.lock().unwrap();
+            let (buf, pos) = guard.get_or_insert_with(|| {
+                let mut data = Vec::new();
+                std::io::stdin().read_to_end(&mut data).unwrap_or_default();
+                (data, 0)
+            });
+
             for &(ptr, len) in &iovs {
+                if *pos >= buf.len() {
+                    break; // EOF
+                }
                 let start = ptr as usize;
                 let end = start + len as usize;
                 if end > mem.len() {
                     results[0] = Value::I32(ERRNO_INVAL);
                     return Ok(());
                 }
-                match stdin.read(&mut mem[start..end]) {
-                    Ok(0) => break,
-                    Ok(n) => total_read += n as u32,
-                    Err(_) => {
-                        results[0] = Value::I32(ERRNO_IO);
-                        return Ok(());
-                    }
+                let avail = std::cmp::min(len as usize, buf.len() - *pos);
+                mem[start..start + avail].copy_from_slice(&buf[*pos..*pos + avail]);
+                *pos += avail;
+                total_read += avail as u32;
+                if avail < len as usize {
+                    break; // short read
                 }
             }
+            drop(guard);
             write_u32_le(mem, nread_ptr, total_read)?;
             results[0] = Value::I32(ERRNO_SUCCESS);
         }
@@ -554,7 +569,12 @@ pub fn fd_read(
                             }
                             match file.read(&mut mem[start..end]) {
                                 Ok(0) => break,
-                                Ok(n) => total_read += n as u32,
+                                Ok(n) => {
+                                    total_read += n as u32;
+                                    if (n as u32) < len {
+                                        break;
+                                    }
+                                }
                                 Err(_) => return ERRNO_IO,
                             }
                         }
@@ -826,6 +846,23 @@ pub fn fd_fdstat_get(
     // +8:  u64 rights_base
     // +16: u64 rights_inheriting
 
+    // Determine actual filetype for stdio based on whether they're terminals
+    let stdin_type = if std::io::stdin().is_terminal() {
+        FILETYPE_CHARACTER_DEVICE
+    } else {
+        FILETYPE_UNKNOWN
+    };
+    let stdout_type = if std::io::stdout().is_terminal() {
+        FILETYPE_CHARACTER_DEVICE
+    } else {
+        FILETYPE_UNKNOWN
+    };
+    let stderr_type = if std::io::stderr().is_terminal() {
+        FILETYPE_CHARACTER_DEVICE
+    } else {
+        FILETYPE_UNKNOWN
+    };
+
     let result: Result<(u8, u16, u64, u64), i32> = super::with_ctx(|ctx| {
         match fd {
             0 => {
@@ -833,21 +870,21 @@ pub fn fd_fdstat_get(
                 if ctx.closed_stdio.contains(&0) {
                     return Err(ERRNO_BADF);
                 }
-                Ok((FILETYPE_CHARACTER_DEVICE, 0, RIGHT_FD_READ, 0))
+                Ok((stdin_type, 0, RIGHT_FD_READ | RIGHT_FD_FDSTAT_SET_FLAGS | RIGHT_FD_FILESTAT_GET | RIGHT_POLL_FD_READWRITE, 0))
             }
             1 => {
                 // stdout
                 if ctx.closed_stdio.contains(&1) {
                     return Err(ERRNO_BADF);
                 }
-                Ok((FILETYPE_CHARACTER_DEVICE, 0, RIGHT_FD_WRITE, 0))
+                Ok((stdout_type, 0, RIGHT_FD_WRITE | RIGHT_FD_FDSTAT_SET_FLAGS | RIGHT_FD_FILESTAT_GET | RIGHT_POLL_FD_READWRITE, 0))
             }
             2 => {
                 // stderr
                 if ctx.closed_stdio.contains(&2) {
                     return Err(ERRNO_BADF);
                 }
-                Ok((FILETYPE_CHARACTER_DEVICE, 0, RIGHT_FD_WRITE, 0))
+                Ok((stderr_type, 0, RIGHT_FD_WRITE, 0))
             }
             _ => {
                 // preopen dir?
@@ -1379,11 +1416,118 @@ pub fn path_create_directory(
 }
 
 pub fn path_filestat_get(
-    _caller: &mut Caller,
-    _args: &[Value],
+    caller: &mut Caller,
+    args: &[Value],
     results: &mut [Value],
 ) -> Result<(), WasmError> {
-    results[0] = Value::I32(ERRNO_NOSYS);
+    let fd = as_i32(&args[0])?;
+    let _flags = as_i32(&args[1])?; // lookup flags (e.g. symlink follow)
+    let path_ptr = as_i32(&args[2])? as u32;
+    let path_len = as_i32(&args[3])? as u32;
+    let buf_ptr = as_i32(&args[4])? as u32;
+
+    let mem = get_mem(caller)?;
+
+    // Read path from guest memory
+    let path_bytes = read_mem(mem, path_ptr, path_len)?;
+    let path_str = match std::str::from_utf8(path_bytes) {
+        Ok(s) => s.to_string(),
+        Err(_) => {
+            results[0] = Value::I32(ERRNO_ILSEQ);
+            return Ok(());
+        }
+    };
+
+    // Resolve the base directory from the fd
+    let base_path: Result<PathBuf, i32> = super::with_ctx(|ctx| {
+        let preopen_end = 3 + ctx.preopens.len() as i32;
+        if fd >= 3 && fd < preopen_end {
+            if ctx.closed_preopens.contains(&fd) {
+                return Err(ERRNO_BADF);
+            }
+            let idx = (fd - 3) as usize;
+            return Ok(ctx.preopens[idx].host_path.clone());
+        }
+        match ctx.fds.get(&fd) {
+            Some(FdEntry::Dir { host_path, .. }) => Ok(host_path.clone()),
+            Some(FdEntry::File { .. }) => Err(ERRNO_NOTDIR),
+            None => Err(ERRNO_BADF),
+        }
+    });
+
+    let base = match base_path {
+        Ok(p) => p,
+        Err(errno) => {
+            results[0] = Value::I32(errno);
+            return Ok(());
+        }
+    };
+
+    let host_path = match resolve_under_base(&base, &path_str) {
+        Ok(p) => p,
+        Err(errno) => {
+            results[0] = Value::I32(errno);
+            return Ok(());
+        }
+    };
+
+    // Get metadata from the host filesystem
+    let metadata = match std::fs::metadata(&host_path) {
+        Ok(m) => m,
+        Err(e) => {
+            results[0] = Value::I32(io_error_to_errno(&e));
+            return Ok(());
+        }
+    };
+
+    // Determine filetype
+    let filetype = if metadata.is_dir() {
+        FILETYPE_DIRECTORY
+    } else if metadata.is_file() {
+        FILETYPE_REGULAR_FILE
+    } else {
+        FILETYPE_UNKNOWN
+    };
+
+    // Get timestamps (nanoseconds since epoch)
+    let atim = metadata
+        .accessed()
+        .ok()
+        .and_then(|t| t.duration_since(UNIX_EPOCH).ok())
+        .map(|d| d.as_nanos() as u64)
+        .unwrap_or(0);
+    let mtim = metadata
+        .modified()
+        .ok()
+        .and_then(|t| t.duration_since(UNIX_EPOCH).ok())
+        .map(|d| d.as_nanos() as u64)
+        .unwrap_or(0);
+    let ctim = metadata
+        .created()
+        .ok()
+        .and_then(|t| t.duration_since(UNIX_EPOCH).ok())
+        .map(|d| d.as_nanos() as u64)
+        .unwrap_or(0);
+
+    // Write filestat_t (64 bytes) to guest memory:
+    //   dev:      u64 @ +0
+    //   ino:      u64 @ +8
+    //   filetype: u8  @ +16
+    //   nlink:    u64 @ +24
+    //   size:     u64 @ +32
+    //   atim:     u64 @ +40
+    //   mtim:     u64 @ +48
+    //   ctim:     u64 @ +56
+    write_u64_le(mem, buf_ptr, 0)?;          // dev
+    write_u64_le(mem, buf_ptr + 8, 0)?;      // ino
+    write_u8_le(mem, buf_ptr + 16, filetype)?;
+    write_u64_le(mem, buf_ptr + 24, 1)?;     // nlink
+    write_u64_le(mem, buf_ptr + 32, metadata.len())?;
+    write_u64_le(mem, buf_ptr + 40, atim)?;
+    write_u64_le(mem, buf_ptr + 48, mtim)?;
+    write_u64_le(mem, buf_ptr + 56, ctim)?;
+
+    results[0] = Value::I32(ERRNO_SUCCESS);
     Ok(())
 }
 

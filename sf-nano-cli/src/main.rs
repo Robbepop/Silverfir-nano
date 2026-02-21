@@ -75,10 +75,12 @@ fn main() {
     let mut wasi_args = vec![module_name.to_string()];
     wasi_args.extend(prog_args);
 
+    let mut ctx_builder = WasiContextBuilder::new()
+        .args(&wasi_args);
+    // Only preopen a directory when explicitly requested
     let preopen = dir.as_deref().unwrap_or_else(|| std::path::Path::new("."));
-    let ctx = WasiContextBuilder::new()
-        .args(&wasi_args)
-        .preopen_dir(".", preopen)
+    ctx_builder = ctx_builder.preopen_dir(".", preopen);
+    let ctx = ctx_builder
         .inherit_env()
         .build();
     set_wasi_ctx(ctx);
