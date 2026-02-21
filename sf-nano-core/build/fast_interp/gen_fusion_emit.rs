@@ -2,7 +2,7 @@
 // Produces fast_fusion_emit.rs: emit_fused dispatch, spill/fill helpers,
 // CodeEmitter emit_fused_* methods.
 
-use super::op_classify::{first_wasm_opcode, get_pop_push, has_branch, has_branch_or_if, has_if, is_tos_none, pattern_op_to_opcode, to_upper_snake, CategoryMap};
+use super::op_classify::{compute_peak_push, first_wasm_opcode, get_pop_push, has_branch, has_branch_or_if, has_if, is_tos_none, pattern_op_to_opcode, to_upper_snake, CategoryMap};
 use super::types::{bits_to_rust_type, to_pascal_case, FieldKind, FusedHandler};
 
 /// Generate empty stub when no fused entries exist.
@@ -130,7 +130,7 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     code.push_str("        }\n");
 
     for fused in fused_handlers {
-        generate_emit_match_arm(&mut code, fused);
+        generate_emit_match_arm(&mut code, fused, categories);
     }
 
     code.push_str("    }\n");
@@ -151,7 +151,7 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     code
 }
 
-fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
+fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler, categories: &CategoryMap) {
     let variant = to_pascal_case(&fused.op);
     let fields = fused.get_fields();
     let (pop, push) = get_pop_push(fused);
@@ -235,13 +235,19 @@ fn generate_emit_match_arm(code: &mut String, fused: &FusedHandler) {
             ));
         }
 
-        if push > pop {
-            // Net push — need spill for extra pushes
-            let net_push = (push - pop) as usize;
-            code.push_str(&format!(
-                "            emit_spills_for_net_push(stack, emitter, {});\n",
-                net_push
-            ));
+        if !(has_br || is_if) {
+            // For non-branch patterns, use peak intermediate push to match
+            // non-fused spill behavior. A fused pattern like local_get→i32_const→i32_and
+            // has net push 1 but peak push 2, because intermediate values exist on the
+            // stack before the final pop. Using net_push would skip a spill that the
+            // non-fused path would emit, causing spill_depth divergence downstream.
+            let peak_push = compute_peak_push(categories, &fused.pattern);
+            if peak_push > 0 {
+                code.push_str(&format!(
+                    "            emit_spills_for_net_push(stack, emitter, {});\n",
+                    peak_push
+                ));
+            }
         }
 
         // Compute output_depth for variant selection
