@@ -101,44 +101,56 @@ pub fn generate(fused_handlers: &[FusedHandler], categories: &CategoryMap) -> St
     code.push_str("    }\n\n");
 
     // --- next() method ---
-    code.push_str("    /// Get the next operation (fused or single).\n");
-    code.push_str("    pub fn next(&mut self, stack: &StackTracker) -> Result<Option<FusedOp>, WasmError> {\n");
-    code.push_str("        if self.stream.peek()?.is_none() {\n");
-    code.push_str("            return Ok(None);\n");
-    code.push_str("        }\n\n");
-
-    // Group by pattern length and try longest first
-    let mut by_length: Vec<(usize, Vec<&FusedHandler>)> = Vec::new();
+    // Group patterns by first opcode for dispatch
+    let mut by_first_opcode: Vec<(String, Vec<&FusedHandler>)> = Vec::new();
     for fused in fused_handlers {
-        let len = fused.pattern.len();
-        if let Some(entry) = by_length.iter_mut().find(|(l, _)| *l == len) {
+        let first_op = pattern_op_to_opcode(categories, &fused.pattern[0]);
+        if let Some(entry) = by_first_opcode.iter_mut().find(|(op, _)| *op == first_op) {
             entry.1.push(fused);
         } else {
-            by_length.push((len, vec![fused]));
+            by_first_opcode.push((first_op, vec![fused]));
         }
     }
-    by_length.sort_by(|a, b| b.0.cmp(&a.0)); // Longest first
+    // Sort each group by pattern length (longest first)
+    for (_, group) in &mut by_first_opcode {
+        group.sort_by(|a, b| b.pattern.len().cmp(&a.pattern.len()));
+    }
+    // Sort groups alphabetically for deterministic output
+    by_first_opcode.sort_by(|a, b| a.0.cmp(&b.0));
 
-    for (len, group) in &by_length {
-        code.push_str(&format!("        // {}-way patterns\n", len));
+    code.push_str("    /// Get the next operation (fused or single).\n");
+    code.push_str("    pub fn next(&mut self, stack: &StackTracker) -> Result<Option<FusedOp>, WasmError> {\n");
+    code.push_str("        let first = match self.stream.peek()? {\n");
+    code.push_str("            Some(op) => op.wasm_op,\n");
+    code.push_str("            None => return Ok(None),\n");
+    code.push_str("        };\n\n");
+    code.push_str("        match first {\n");
+
+    for (opcode, group) in &by_first_opcode {
+        code.push_str(&format!(
+            "            WasmOpcode::OP(Opcode::{}) => {{\n",
+            opcode
+        ));
         for fused in group {
             if needs_stack_param(fused) {
                 code.push_str(&format!(
-                    "        if let Some(fused) = self.try_fuse_{}(stack)? {{\n",
+                    "                if let Some(fused) = self.try_fuse_{}(stack)? {{\n",
                     fused.op
                 ));
             } else {
                 code.push_str(&format!(
-                    "        if let Some(fused) = self.try_fuse_{}()? {{\n",
+                    "                if let Some(fused) = self.try_fuse_{}()? {{\n",
                     fused.op
                 ));
             }
-            code.push_str("            return Ok(Some(fused));\n");
-            code.push_str("        }\n");
+            code.push_str("                    return Ok(Some(fused));\n");
+            code.push_str("                }\n");
         }
-        code.push('\n');
+        code.push_str("            }\n");
     }
 
+    code.push_str("            _ => {}\n");
+    code.push_str("        }\n\n");
     code.push_str("        // No fusion - return single\n");
     code.push_str("        let decoded = self.stream.next()?.unwrap();\n");
     code.push_str("        Ok(Some(FusedOp::Single {\n");
@@ -176,25 +188,24 @@ fn generate_try_match_n(code: &mut String, n: usize) {
         n, n, n
     ));
 
-    // Initialize array
-    code.push_str("        let mut imms = [\n");
-    for _ in 0..n {
-        code.push_str("            Immediate::None,\n");
+    // Phase 1: check all opcodes without cloning immediates
+    code.push_str("        for (i, expected_op) in ops.iter().enumerate() {\n");
+    code.push_str("            match self.stream.peek_at(i)? {\n");
+    code.push_str("                Some(op) if matches!(op.wasm_op, WasmOpcode::OP(o) if o == *expected_op) => {}\n");
+    code.push_str("                _ => return Ok(None),\n");
+    code.push_str("            }\n");
+    code.push_str("        }\n\n");
+
+    // Phase 2: clone immediates only on full opcode match (unrolled)
+    code.push_str("        // All opcodes matched — clone immediates\n");
+    code.push_str("        let imms = [\n");
+    for i in 0..n {
+        code.push_str(&format!(
+            "            self.stream.peek_at({})?.unwrap().imm.clone(),\n",
+            i
+        ));
     }
     code.push_str("        ];\n\n");
-
-    code.push_str("        for (i, expected_op) in ops.iter().enumerate() {\n");
-    code.push_str("            let (wasm_op, imm) = match self.stream.peek_at(i)? {\n");
-    code.push_str("                Some(op) => (op.wasm_op, op.imm.clone()),\n");
-    code.push_str("                None => return Ok(None),\n");
-    code.push_str("            };\n");
-    code.push_str(
-        "            if !matches!(wasm_op, WasmOpcode::OP(o) if o == *expected_op) {\n",
-    );
-    code.push_str("                return Ok(None);\n");
-    code.push_str("            }\n");
-    code.push_str("            imms[i] = imm;\n");
-    code.push_str("        }\n\n");
 
     code.push_str(&format!(
         "        // Match! Return imms (caller must call stream.skip({}) to consume).\n",
