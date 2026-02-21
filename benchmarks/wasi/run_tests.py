@@ -43,14 +43,6 @@ TESTS = [
         "source": "stdout",
         "multi": True,
     },
-    {
-        "name": "brotli/brotli.wasm",
-        "cwd": os.path.join(SCRIPT_DIR, "brotli"),
-        "args": ["brotli.wasm", "-c", "-f"],
-        "stdin": os.path.join(SCRIPT_DIR, "brotli", "alice29.txt"),
-        "pattern": None,
-        "source": None,
-    },
 {
         "name": "coremark/coremark.wasm",
         "cwd": os.path.join(SCRIPT_DIR, "coremark"),
@@ -89,6 +81,9 @@ def run_test(cli, test):
     if stdin_file:
         with open(stdin_file, "rb") as f:
             stdin_data = f.read()
+        repeat = test.get("stdin_repeat", 1)
+        if repeat > 1:
+            stdin_data = stdin_data * repeat
 
     t0 = time.monotonic()
     try:
