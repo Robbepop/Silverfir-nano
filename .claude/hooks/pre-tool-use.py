@@ -4,10 +4,11 @@ Claude Code PreToolUse permission hook.
 Single source of truth for all permissions — never falls through to allow/deny list.
 
 Rules:
-  1. DENY  all git invocations (even inside compound commands)
-  2. ASK   for gh (GitHub CLI) invocations
-  3. DENY  file operations outside workspace and /tmp
-  4. ALLOW everything else
+  1. ALLOW read-only git commands (status, log, diff, show, branch --list, etc.)
+  2. DENY  mutating git commands (commit, push, rebase, reset, stash, etc.)
+  3. ASK   for gh (GitHub CLI) invocations
+  4. DENY  file operations outside workspace and /tmp
+  5. ALLOW everything else
 """
 
 import json
@@ -82,49 +83,118 @@ def is_path_allowed(path):
     return False
 
 
+def _extract_git_subcommand(tokens, start_idx):
+    """Given tokens starting after 'git', find the subcommand (skipping flags like -C, --no-pager)."""
+    # git flags that consume the next argument
+    _GIT_FLAGS_WITH_ARG = {"-C", "-c", "--git-dir", "--work-tree", "--namespace"}
+    i = start_idx
+    while i < len(tokens):
+        tok = tokens[i]
+        if tok in _GIT_FLAGS_WITH_ARG:
+            i += 2  # skip flag + its argument
+            continue
+        if tok.startswith("-"):
+            i += 1  # skip standalone flags like --no-pager, --bare
+            continue
+        return tok  # first non-flag token is the subcommand
+    return None
+
+
+# Read-only git subcommands that are safe to allow
+_GIT_SAFE_SUBCMDS = frozenset({
+    "status", "log", "diff", "show", "branch", "tag",
+    "shortlog", "describe", "rev-parse", "rev-list",
+    "ls-files", "ls-tree", "ls-remote",
+    "cat-file", "name-rev", "blame", "annotate",
+    "grep", "reflog", "count-objects", "fsck",
+    "config",  # reading config is safe
+    "remote",  # 'git remote' (list) is safe; 'git remote add' etc. are low-risk
+    "stash",   # 'git stash list/show' — further checked below
+    "help", "version", "whatchanged", "cherry",
+})
+
+# Stash sub-subcommands that are safe (read-only)
+_GIT_STASH_SAFE = frozenset({"list", "show"})
+
+
+def _check_git_command(tokens, start_idx):
+    """Classify a git invocation as allow/deny.
+
+    tokens:     the full token list for this sub-command
+    start_idx:  index right after 'git' (or after prefix tokens)
+
+    Returns:
+        ("allow", reason) or ("deny", reason)
+    """
+    subcmd = _extract_git_subcommand(tokens, start_idx)
+
+    if subcmd is None:
+        # bare 'git' with no subcommand — harmless (prints usage)
+        return ("allow", "git (no subcommand)")
+
+    if subcmd in _GIT_SAFE_SUBCMDS:
+        # Extra guard: 'git stash' without list/show is mutating
+        if subcmd == "stash":
+            rest = tokens[tokens.index(subcmd) + 1:]
+            # strip flags
+            rest = [t for t in rest if not t.startswith("-")]
+            sub_sub = rest[0] if rest else None
+            if sub_sub is None or sub_sub not in _GIT_STASH_SAFE:
+                return ("deny", f"git stash (mutating) blocked: {' '.join(tokens)[:80]}")
+        return ("allow", f"git {subcmd} (read-only)")
+
+    return ("deny", f"git {subcmd} blocked: {' '.join(tokens)[:80]}")
+
+
 def find_blocked_command(command):
     """Check if any sub-command in a (possibly compound) shell string is blocked.
 
     Returns:
-        ("deny",  reason) — for hard-blocked commands (git)
+        ("deny",  reason) — for hard-blocked commands
         ("ask",   reason) — for commands needing user approval (gh)
+        ("allow", reason) — explicitly allowed (e.g. read-only git)
         None              — command is clean
     """
-    # Commands that are always denied vs require user approval
-    DENY_CMDS = {"git"}
-    ASK_CMDS  = {"gh"}
+    ASK_CMDS = {"gh"}
 
-    # Command substitutions: $(cmd ...) or `cmd ...`
-    for name in DENY_CMDS:
-        if re.search(rf'\$\([^)]*\b{name}\b', command):
-            return ("deny", f"{name} blocked: {command[:80]}")
-        if re.search(rf'`[^`]*\b{name}\b', command):
-            return ("deny", f"{name} blocked: {command[:80]}")
+    # ── Command substitutions: $(cmd ...) or `cmd ...` ────────────────────
+    # Git inside substitutions — deny all (too hard to parse subcommand reliably)
+    if re.search(r'\$\([^)]*\bgit\b', command):
+        return ("deny", f"git in substitution blocked: {command[:80]}")
+    if re.search(r'`[^`]*\bgit\b', command):
+        return ("deny", f"git in substitution blocked: {command[:80]}")
     for name in ASK_CMDS:
         if re.search(rf'\$\([^)]*\b{name}\b', command):
             return ("ask", f"{name} requires approval: {command[:80]}")
         if re.search(rf'`[^`]*\b{name}\b', command):
             return ("ask", f"{name} requires approval: {command[:80]}")
 
-    # Split on shell operators: ;  &&  ||  |  (  )
+    # ── Split on shell operators: ;  &&  ||  |  (  ) ─────────────────────
+    worst = None  # track the most restrictive result across sub-commands
     for part in re.split(r'[;&|()]+', command):
         tokens = part.split()
-        for tok in tokens:
-            # Skip env-var assignments like FOO=bar
+        cmd_idx = 0
+        for i, tok in enumerate(tokens):
             if '=' in tok and not tok.startswith('-'):
                 continue
-            # Skip known command prefixes
             if tok in _CMD_PREFIXES:
                 continue
-            # First real token is the command name
-            base = tok.rsplit("/", 1)[-1]  # handle /usr/bin/git etc.
-            if base in DENY_CMDS:
-                return ("deny", f"{base} blocked: {command[:80]}")
-            if base in ASK_CMDS:
-                return ("ask", f"{base} requires approval: {command[:80]}")
-            break  # not blocked → this sub-command is fine
+            base = tok.rsplit("/", 1)[-1]
 
-    return None
+            if base == "git":
+                result = _check_git_command(tokens, i + 1)
+                if result[0] == "deny":
+                    return result
+                # allow → continue checking remaining sub-commands
+                break
+
+            if base in ASK_CMDS:
+                worst = ("ask", f"{base} requires approval: {command[:80]}")
+                break
+
+            break  # not a special command → this sub-command is fine
+
+    return worst  # None if everything was clean, or ("ask", ...) if gh was found
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
