@@ -288,10 +288,13 @@ pub fn run(cmd: DiscoverFusionArgs) {
             eprintln!();
             eprintln!("=== Workload {}/{} ===", i + 1, cmd.workloads.len());
         }
+        let t0 = std::time::Instant::now();
         let stats = run_workload(workload, cmd.max_window);
+        let elapsed = t0.elapsed();
         eprintln!(
-            "  {} instructions profiled",
-            stats.total_instructions
+            "  {} instructions profiled in {:.1}s",
+            stats.total_instructions,
+            elapsed.as_secs_f64()
         );
         all_stats.push(stats);
     }
