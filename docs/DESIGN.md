@@ -1,4 +1,4 @@
-Beating a JIT Compiler with an Interpreter
+# Beating a JIT Compiler with an Interpreter
 
 ## Introduction
 
