@@ -125,38 +125,19 @@ impl CodeEmitter {
     // L0 Local Register Cache
     // =========================================================================
 
-    /// Emit INIT_L0: function prologue to swap fp[0]↔fp[K] and set l0.
-    pub fn emit_init_l0(&mut self, hot_local_idx: u32) -> usize {
+    /// Emit INIT_LOCALS: combined prologue to swap+fill all 3 hot locals in one dispatch.
+    pub fn emit_init_locals(&mut self, k0: u32, k1: u32, k2: u32) -> usize {
         self.emit(TempInst::new(
-            op_init_l0,
-            PatternData::InitL0 {
-                hot_local_idx: hot_local_idx as u16,
+            op_init_locals,
+            PatternData::InitLocals {
+                hot_local_idx_0: k0 as u16,
+                hot_local_idx_1: k1 as u16,
+                hot_local_idx_2: k2 as u16,
             },
             WasmOpcode::OP(NOP),
         ))
     }
 
-    /// Emit INIT_L1: function prologue to swap fp[1]↔fp[K1_eff] and set l1.
-    pub fn emit_init_l1(&mut self, hot_local_idx: u32) -> usize {
-        self.emit(TempInst::new(
-            op_init_l1,
-            PatternData::InitL1 {
-                hot_local_idx: hot_local_idx as u16,
-            },
-            WasmOpcode::OP(NOP),
-        ))
-    }
-
-    /// Emit INIT_L2: function prologue to swap fp[2]↔fp[K2_eff] and set l2.
-    pub fn emit_init_l2(&mut self, hot_local_idx: u32) -> usize {
-        self.emit(TempInst::new(
-            op_init_l2,
-            PatternData::InitL2 {
-                hot_local_idx: hot_local_idx as u16,
-            },
-            WasmOpcode::OP(NOP),
-        ))
-    }
 
     // =========================================================================
     // SP-based Arithmetic (handlers use sp[-1], sp[-2])

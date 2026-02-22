@@ -70,21 +70,29 @@ FORCE_INLINE struct Instruction* impl_f64_const(IMPL_PARAMS_POP0_PUSH1) {
 }
 
 // =============================================================================
-// L0 Local Register Cache Operations
+// Combined Local Register Init (saves 2 dispatches vs 3 separate init_l*)
 // =============================================================================
 
-// init_l0: function prologue — swap fp[0]↔fp[K], set *p_l0
-FORCE_INLINE struct Instruction* impl_init_l0(IMPL_PARAMS_BASE) {
+// init_locals: function prologue — perform all 3 hot local swaps+fills in one dispatch
+FORCE_INLINE struct Instruction* impl_init_locals(IMPL_PARAMS_BASE) {
     (void)ctx;
-    uint16_t K = init_l0_decode_hot_local_idx(pc);
-    if (K != 0) {
-        uint64_t tmp = fp[0];
-        fp[0] = fp[K];
-        fp[K] = tmp;
-    }
+    uint16_t K0 = init_locals_decode_hot_local_idx_0(pc);
+    uint16_t K1 = init_locals_decode_hot_local_idx_1(pc);
+    uint16_t K2 = init_locals_decode_hot_local_idx_2(pc);
+
+    if (K0 != 0) { uint64_t tmp = fp[0]; fp[0] = fp[K0]; fp[K0] = tmp; }
     *p_l0 = fp[0];
+    if (K1 != 1) { uint64_t tmp = fp[1]; fp[1] = fp[K1]; fp[K1] = tmp; }
+    *p_l1 = fp[1];
+    if (K2 != 2) { uint64_t tmp = fp[2]; fp[2] = fp[K2]; fp[K2] = tmp; }
+    *p_l2 = fp[2];
+
     return pc_next(pc);
 }
+
+// =============================================================================
+// L0 Local Register Cache Operations
+// =============================================================================
 
 // local_get_l0: push l0 to TOS
 FORCE_INLINE struct Instruction* impl_local_get_l0(IMPL_PARAMS_POP0_PUSH1) {
@@ -114,19 +122,6 @@ FORCE_INLINE struct Instruction* impl_local_tee_l0(IMPL_PARAMS_POP1_PUSH1) {
 // L1 Local Register Cache Operations
 // =============================================================================
 
-// init_l1: function prologue — swap fp[1]↔fp[K], set *p_l1
-FORCE_INLINE struct Instruction* impl_init_l1(IMPL_PARAMS_BASE) {
-    (void)ctx;
-    uint16_t K = init_l1_decode_hot_local_idx(pc);
-    if (K != 1) {
-        uint64_t tmp = fp[1];
-        fp[1] = fp[K];
-        fp[K] = tmp;
-    }
-    *p_l1 = fp[1];
-    return pc_next(pc);
-}
-
 // local_get_l1: push l1 to TOS
 FORCE_INLINE struct Instruction* impl_local_get_l1(IMPL_PARAMS_POP0_PUSH1) {
     (void)ctx; (void)pfp;
@@ -154,19 +149,6 @@ FORCE_INLINE struct Instruction* impl_local_tee_l1(IMPL_PARAMS_POP1_PUSH1) {
 // =============================================================================
 // L2 Local Register Cache Operations
 // =============================================================================
-
-// init_l2: function prologue — swap fp[2]↔fp[K], set *p_l2
-FORCE_INLINE struct Instruction* impl_init_l2(IMPL_PARAMS_BASE) {
-    (void)ctx;
-    uint16_t K = init_l2_decode_hot_local_idx(pc);
-    if (K != 2) {
-        uint64_t tmp = fp[2];
-        fp[2] = fp[K];
-        fp[K] = tmp;
-    }
-    *p_l2 = fp[2];
-    return pc_next(pc);
-}
 
 // local_get_l2: push l2 to TOS
 FORCE_INLINE struct Instruction* impl_local_get_l2(IMPL_PARAMS_POP0_PUSH1) {

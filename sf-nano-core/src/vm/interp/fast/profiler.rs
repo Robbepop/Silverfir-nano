@@ -10,8 +10,7 @@ extern crate std;
 
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
-use std::sync::{Mutex, OnceLock};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 
 /// Maximum supported window size for sequence capture.
 pub const MAX_WINDOW_SIZE: usize = 8;
@@ -19,20 +18,40 @@ pub const MAX_WINDOW_SIZE: usize = 8;
 // Global configuration
 static ENABLED: AtomicBool = AtomicBool::new(false);
 static WINDOW_SIZE: AtomicUsize = AtomicUsize::new(2);
-static TOTAL_INSTRUCTIONS: AtomicU64 = AtomicU64::new(0);
-
-// Global sequence storage
-static SEQUENCES: OnceLock<Mutex<HashMap<SequenceKey, u64>>> = OnceLock::new();
-
-// Interned handler name strings
-static INTERNED_NAMES: OnceLock<Mutex<HashMap<&'static [u8], &'static str>>> = OnceLock::new();
 
 /// Sequence key: array of handler names representing an instruction sequence.
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+///
+/// Uses pointer-based Hash/Eq since all names are interned (unique pointer per
+/// unique string content). This makes HashMap operations faster than
+/// string-content hashing.
+#[derive(Debug, Clone)]
 pub struct SequenceKey {
     names: [&'static str; MAX_WINDOW_SIZE],
     len: usize,
 }
+
+impl core::hash::Hash for SequenceKey {
+    #[inline]
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+        self.len.hash(state);
+        for name in &self.names[..self.len] {
+            (name.as_ptr() as usize).hash(state);
+        }
+    }
+}
+
+impl PartialEq for SequenceKey {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.len == other.len
+            && self.names[..self.len]
+                .iter()
+                .zip(other.names[..other.len].iter())
+                .all(|(a, b)| core::ptr::eq(a.as_ptr(), b.as_ptr()))
+    }
+}
+
+impl Eq for SequenceKey {}
 
 impl SequenceKey {
     /// Format the sequence as human-readable string.
@@ -81,9 +100,64 @@ fn is_control_flow(name: &str) -> bool {
     )
 }
 
-// Thread-local sliding window
+// All profiler state in a single thread-local to minimize TLS lookups.
+struct ProfilerState {
+    window: SlidingWindow,
+    sequences: HashMap<SequenceKey, u64>,
+    // Cache: C pointer address -> interned &'static str (already normalized)
+    name_cache: HashMap<usize, &'static str>,
+    // Pool: ensures unique pointer per unique string content (for pointer-based Eq)
+    str_pool: HashMap<&'static str, &'static str>,
+    total: u64,
+}
+
+impl ProfilerState {
+    fn new() -> Self {
+        Self {
+            window: SlidingWindow::new(),
+            sequences: HashMap::new(),
+            name_cache: HashMap::new(),
+            str_pool: HashMap::new(),
+            total: 0,
+        }
+    }
+
+    /// Intern a C string pointer. Fast path: HashMap lookup by integer key.
+    /// Slow path (first call per unique C pointer): parse C string, normalize,
+    /// deduplicate via str_pool.
+    #[inline]
+    fn intern(&mut self, c_name: *const core::ffi::c_char) -> &'static str {
+        let addr = c_name as usize;
+        if let Some(&cached) = self.name_cache.get(&addr) {
+            return cached;
+        }
+        self.intern_slow(c_name, addr)
+    }
+
+    #[inline(never)]
+    #[cold]
+    fn intern_slow(&mut self, c_name: *const core::ffi::c_char, addr: usize) -> &'static str {
+        let raw = intern_name_from_c(c_name);
+        let normalized = normalize_handler_name(raw);
+        // Ensure pointer uniqueness: same content -> same pointer
+        let interned = *self.str_pool.entry(normalized).or_insert(normalized);
+        self.name_cache.insert(addr, interned);
+        interned
+    }
+
+    fn clear(&mut self) {
+        self.window.clear();
+        self.sequences.clear();
+        self.total = 0;
+    }
+
+    fn set_capacity(&mut self, cap: usize) {
+        self.window.set_capacity(cap);
+    }
+}
+
 std::thread_local! {
-    static WINDOW: RefCell<SlidingWindow> = RefCell::new(SlidingWindow::new());
+    static STATE: RefCell<ProfilerState> = RefCell::new(ProfilerState::new());
 }
 
 struct SlidingWindow {
@@ -101,6 +175,7 @@ impl SlidingWindow {
         }
     }
 
+    #[inline]
     fn push(&mut self, name: &'static str) -> Option<SequenceKey> {
         if self.capacity == 1 {
             self.buffer[0] = name;
@@ -124,6 +199,7 @@ impl SlidingWindow {
         }
     }
 
+    #[inline]
     fn to_key(&self) -> SequenceKey {
         SequenceKey {
             names: self.buffer,
@@ -145,8 +221,8 @@ impl SlidingWindow {
 // FFI Entry Point (called from C handlers)
 // ============================================================================
 
-/// Intern a C string to get a `&'static str` with deduplication.
-fn intern_name(c_name: *const core::ffi::c_char) -> &'static str {
+/// Parse a C string and leak it to get a `&'static str`.
+fn intern_name_from_c(c_name: *const core::ffi::c_char) -> &'static str {
     let c_bytes = unsafe {
         let mut len = 0;
         let mut p = c_name;
@@ -157,31 +233,12 @@ fn intern_name(c_name: *const core::ffi::c_char) -> &'static str {
         core::slice::from_raw_parts(c_name as *const u8, len)
     };
 
-    let interned = INTERNED_NAMES.get_or_init(|| Mutex::new(HashMap::new()));
-    let mut map = interned.lock().unwrap();
-
-    if let Some(&existing) = map.get(c_bytes) {
-        return existing;
-    }
-
-    // Leak a copy to get 'static lifetime
     let owned = std::string::String::from(core::str::from_utf8(c_bytes).unwrap_or("?"));
-    let leaked: &'static str = std::boxed::Box::leak(owned.into_boxed_str());
-    map.insert(unsafe { core::slice::from_raw_parts(leaked.as_ptr(), leaked.len()) }, leaked);
-    leaked
-}
-
-/// FFI entry point called from C handlers when profiling is enabled.
-#[no_mangle]
-pub unsafe extern "C" fn fast_profile_record(name: *const core::ffi::c_char) {
-    if !ENABLED.load(Ordering::Relaxed) {
-        return;
-    }
-    let interned = intern_name(name);
-    record_impl(interned);
+    std::boxed::Box::leak(owned.into_boxed_str())
 }
 
 /// Normalize handler names so profiler data matches the discovery pipeline.
+#[inline]
 fn normalize_handler_name(name: &'static str) -> &'static str {
     match name {
         "br_if_simple" => "br_if",
@@ -189,17 +246,26 @@ fn normalize_handler_name(name: &'static str) -> &'static str {
     }
 }
 
-fn record_impl(name: &'static str) {
-    TOTAL_INSTRUCTIONS.fetch_add(1, Ordering::Relaxed);
-    let name = normalize_handler_name(name);
+/// FFI entry point called from C handlers when profiling is enabled.
+///
+/// Split into thin wrapper + separate impl to minimize register spills.
+/// The wrapper is just an ENABLED check + branch (36 bytes).
+#[no_mangle]
+pub unsafe extern "C" fn fast_profile_record(name: *const core::ffi::c_char) {
+    if !ENABLED.load(Ordering::Relaxed) {
+        return;
+    }
+    fast_profile_record_impl(name);
+}
 
-    WINDOW.with(|w| {
-        if let Some(key) = w.borrow_mut().push(name) {
-            if let Some(map) = SEQUENCES.get() {
-                if let Ok(mut counts) = map.lock() {
-                    *counts.entry(key).or_insert(0) += 1;
-                }
-            }
+#[inline(never)]
+unsafe fn fast_profile_record_impl(name: *const core::ffi::c_char) {
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        let interned = s.intern(name);
+        s.total += 1;
+        if let Some(key) = s.window.push(interned) {
+            *s.sequences.entry(key).or_insert(0) += 1;
         }
     });
 }
@@ -213,13 +279,10 @@ pub fn enable(window_size: usize) {
     let ws = window_size.clamp(1, MAX_WINDOW_SIZE);
     WINDOW_SIZE.store(ws, Ordering::Relaxed);
 
-    SEQUENCES.get_or_init(|| Mutex::new(HashMap::new()));
-    INTERNED_NAMES.get_or_init(|| Mutex::new(HashMap::new()));
-
-    WINDOW.with(|w| {
-        let mut window = w.borrow_mut();
-        window.set_capacity(ws);
-        window.clear();
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        s.clear();
+        s.set_capacity(ws);
     });
 
     ENABLED.store(true, Ordering::Release);
@@ -229,22 +292,20 @@ pub fn enable(window_size: usize) {
 pub fn take_stats() -> FastProfileStats {
     ENABLED.store(false, Ordering::Release);
 
-    let total = TOTAL_INSTRUCTIONS.swap(0, Ordering::Relaxed);
     let window_size = WINDOW_SIZE.load(Ordering::Relaxed);
 
-    let sequences = SEQUENCES
-        .get()
-        .and_then(|m| m.lock().ok())
-        .map(|mut m| core::mem::take(&mut *m))
-        .unwrap_or_default();
+    STATE.with(|s| {
+        let mut s = s.borrow_mut();
+        let total = s.total;
+        let sequences = core::mem::take(&mut s.sequences);
+        s.clear();
 
-    WINDOW.with(|w| w.borrow_mut().clear());
-
-    FastProfileStats {
-        total_instructions: total,
-        window_size,
-        sequences,
-    }
+        FastProfileStats {
+            total_instructions: total,
+            window_size,
+            sequences,
+        }
+    })
 }
 
 /// Check if profiling is currently enabled.

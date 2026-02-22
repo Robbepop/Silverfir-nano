@@ -101,11 +101,13 @@ pub fn build_for_function(
     let mut stack = StackTracker::new(params_count, locals_count, results_count, hot_locals);
     let mut emitter = CodeEmitter::new();
 
-    // Emit init_l0/init_l1/init_l2 to maintain the lN = fp[N] invariants.
+    // Emit combined init_locals to swap+fill all 3 hot locals in one dispatch.
     // Call/return handlers unconditionally spill/fill via fp[0], fp[1], fp[2].
-    emitter.emit_init_l0(hot_locals[0].unwrap_or(0));
-    emitter.emit_init_l1(hot_locals[1].unwrap_or(1));
-    emitter.emit_init_l2(hot_locals[2].unwrap_or(2));
+    emitter.emit_init_locals(
+        hot_locals[0].unwrap_or(0),
+        hot_locals[1].unwrap_or(1),
+        hot_locals[2].unwrap_or(2),
+    );
 
     // Decode and dispatch (includes fusion at decode time)
     dispatch::decode_and_dispatch(code, &ctx, &mut stack, &mut emitter)?;

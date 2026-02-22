@@ -1402,11 +1402,13 @@ tos_pattern = { pop = 3, push = 0 }
 # =============================================================================
 
 [[handler]]
-op = "init_l0"
+op = "init_locals"
 c_impl = true
 tos_pattern = "none"
 encoding.fields = [
-    { name = "hot_local_idx", bits = 16 },
+    { name = "hot_local_idx_0", bits = 16 },
+    { name = "hot_local_idx_1", bits = 16 },
+    { name = "hot_local_idx_2", bits = 16 },
 ]
 
 [[handler]]
@@ -1429,14 +1431,6 @@ tos_pattern = { pop = 1, push = 1 }
 # =============================================================================
 
 [[handler]]
-op = "init_l1"
-c_impl = true
-tos_pattern = "none"
-encoding.fields = [
-    { name = "hot_local_idx", bits = 16 },
-]
-
-[[handler]]
 op = "local_get_l1"
 c_impl = true
 tos_pattern = { pop = 0, push = 1 }
@@ -1454,14 +1448,6 @@ tos_pattern = { pop = 1, push = 1 }
 # =============================================================================
 # L2 Local Register Cache
 # =============================================================================
-
-[[handler]]
-op = "init_l2"
-c_impl = true
-tos_pattern = "none"
-encoding.fields = [
-    { name = "hot_local_idx", bits = 16 },
-]
 
 [[handler]]
 op = "local_get_l2"
