@@ -22,6 +22,8 @@ Test machine:
 
 ![All benchmark results](benchmarks/all_results.svg)
 
+See [full benchmark results](benchmarks/wasi/RESULTS.md) for details.
+
 ## Highlights
 
 - **Extreme performance** — outperforms Wasmtime's single-pass JIT (Winch) on CoreMark and Lua Fibonacci, reaching 62% of Cranelift on CoreMark
