@@ -24,8 +24,8 @@ Test machine:
 
 ## Highlights
 
-- **Extreme performance** — beats Wasmtime's single-pass JIT (Winch) and reaches 62% of Cranelift on Apple M4 CoreMark
-- **Ultra-compact** — the `no_std` core is only **~200KB** stripped, with *zero runtime dependencies*
+- **Extreme performance** — outperforms Wasmtime's single-pass JIT (Winch) on CoreMark and Lua Fibonacci, reaching 62% of Cranelift on CoreMark
+- **Ultra-compact** — the `no_std` core is only **~230KB** stripped, with *zero runtime dependencies*
 - **`no_std`** — the core library requires only `alloc`; runs anywhere from embedded to bare-metal
 - **Full WebAssembly 2.0** — multi-value, reference types, bulk memory operations, and more
 - **Configurable fusion** — profile-guided instruction fusion for workload-specific optimization
@@ -34,8 +34,8 @@ Test machine:
 
 | Build | Size | Features |
 |-------|------|----------|
-| `sf-nano-cli-minimal` (release) | **~200 KB** | `no_std`, no WASI, no fusion |
-| `sf-nano-cli` (release) | ~1.0 MB | Full: WASI + fusion + std (needed for wasi)|
+| `sf-nano-cli-minimal` (release) | **~230 KB** | `no_std`, no WASI, no fusion |
+| `sf-nano-cli` (release) | ~3.0 MB | Full: WASI + fusion + std (needed for wasi)|
 
 The minimal build includes the complete WebAssembly 2.0 interpreter with **zero external runtime dependencies**.
 
