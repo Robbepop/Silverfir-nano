@@ -34,6 +34,20 @@ fn impl_params_name(fused: &FusedHandler) -> &'static str {
 /// Each base instruction is modeled as a stack operation:
 ///   - Result: what it pushes (or None for side-effect-only ops)
 ///   - Consumes: how many stack values it pops
+/// Check if a fused pattern contains float mul + float add/sub, which the C compiler
+/// could contract into FMA. Only these patterns need a barrier on the mul result.
+fn needs_fp_mul_barrier(pattern: &[String]) -> bool {
+    let has_fmul = pattern.iter().any(|op| op == "f32_mul" || op == "f64_mul");
+    let has_fadd_sub = pattern
+        .iter()
+        .any(|op| matches!(op.as_str(), "f32_add" | "f32_sub" | "f64_add" | "f64_sub"));
+    has_fmul && has_fadd_sub
+}
+
+fn is_float_mul(op: &str) -> bool {
+    op == "f32_mul" || op == "f64_mul"
+}
+
 struct StackSim {
     /// Named variables on the simulated stack
     vars: Vec<String>,
@@ -41,14 +55,17 @@ struct StackSim {
     counter: usize,
     /// Lines of C code emitted
     lines: Vec<String>,
+    /// Whether to emit FP_MUL_BARRIER after float mul results
+    emit_mul_barrier: bool,
 }
 
 impl StackSim {
-    fn new() -> Self {
+    fn new(emit_mul_barrier: bool) -> Self {
         Self {
             vars: Vec::new(),
             counter: 0,
             lines: Vec::new(),
+            emit_mul_barrier,
         }
     }
 
@@ -246,6 +263,10 @@ impl StackSim {
                 let lhs = self.pop();
                 let var = self.fresh_var();
                 self.emit(format!("    uint64_t {} = {}({}, {});", var, sem, lhs, rhs));
+                // Emit barrier after float mul to prevent FMA contraction with subsequent add/sub
+                if self.emit_mul_barrier && is_float_mul(op) {
+                    self.emit(format!("    FP_MUL_BARRIER({});", var));
+                }
                 self.push(var);
             }
 
@@ -317,7 +338,7 @@ fn generate_fused_c_handler(code: &mut String, fused: &FusedHandler, categories:
     }
 
     // Simulate stack and emit code
-    let mut sim = StackSim::new();
+    let mut sim = StackSim::new(needs_fp_mul_barrier(&fused.pattern));
 
     // Pre-populate stack with TOS input values
     if !tos_none {

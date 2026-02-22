@@ -295,6 +295,14 @@ static inline uint64_t sem_rotr64(uint64_t v, uint64_t s) { s &= 63; return (v >
 // Requires u32_to_f32/f32_to_u32/u64_to_f64/f64_to_u64 from vm_trampoline.h
 // =============================================================================
 
+// FP_MUL_BARRIER: prevents FP contraction (mul+add → FMA) in fused handlers.
+// WASM requires strict sequential float evaluation, but -ffast-math enables
+// contraction that #pragma cannot reliably override. The empty asm makes the
+// compiler treat the uint64_t result as opaque, preventing it from eliding
+// the f64_to_u64/u64_to_f64 roundtrip needed for FMA contraction.
+// Only emitted by the code generator in fused patterns with mul+add/sub.
+#define FP_MUL_BARRIER(v) __asm__ __volatile__("" : "+r"(v))
+
 #define SEM_F32_ADD(a, b)   ((uint64_t)f32_to_u32(u32_to_f32((uint32_t)(a)) + u32_to_f32((uint32_t)(b))))
 #define SEM_F32_SUB(a, b)   ((uint64_t)f32_to_u32(u32_to_f32((uint32_t)(a)) - u32_to_f32((uint32_t)(b))))
 #define SEM_F32_MUL(a, b)   ((uint64_t)f32_to_u32(u32_to_f32((uint32_t)(a)) * u32_to_f32((uint32_t)(b))))
