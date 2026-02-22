@@ -14,9 +14,13 @@ path = "src/main.rs"
 sf-nano-core = { path = "../sf-nano-core", default-features = false }
 libc = { version = "0.2", default-features = false }
 
+[profile.dev]
+panic = "abort"
+
 [profile.release]
 lto = true
 codegen-units = 1
 opt-level = "z"
 panic = "abort"
 strip = true
+overflow-checks = false
