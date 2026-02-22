@@ -163,48 +163,6 @@ pub fn is_tos_none(fused: &FusedHandler) -> bool {
     )
 }
 
-/// Get (pop, push) stack effect for a single fusible op.
-pub fn single_op_pop_push(categories: &CategoryMap, op: &str) -> (u8, u8) {
-    match op {
-        "local_get" | "local_get_l0" | "local_get_l1" | "local_get_l2" => (0, 1),
-        "local_set" | "local_set_l0" | "local_set_l1" | "local_set_l2" => (1, 0),
-        "local_tee" | "local_tee_l0" | "local_tee_l1" | "local_tee_l2" => (1, 1),
-        "i32_const" | "i64_const" => (0, 1),
-        "br_if" | "if_" => (1, 0),
-        _ => match categories.get(op) {
-            Some(OpCategory::PureBinop) | Some(OpCategory::TrappingBinop) => (2, 1),
-            Some(OpCategory::PureUnary) => (1, 1),
-            Some(OpCategory::Load) => (1, 1),
-            Some(OpCategory::Store) => (2, 0),
-            _ => panic!("Unknown op for single_op_pop_push: {}", op),
-        }
-    }
-}
-
-/// Compute peak intermediate stack growth for a fused pattern.
-/// This is the maximum number of additional values on the stack at any point
-/// during the non-fused execution of the pattern's individual ops.
-///
-/// For example, `local_get → i32_const → i32_and` has net push +1 but peak +2,
-/// because after local_get and i32_const both push, the stack has grown by 2
-/// before i32_and pops 2 and pushes 1.
-///
-/// Using peak instead of net ensures the fused path emits the same spills as
-/// the non-fused path, keeping spill_depth consistent for subsequent instructions.
-pub fn compute_peak_push(categories: &CategoryMap, pattern: &[String]) -> usize {
-    let mut delta: i32 = 0;
-    let mut peak: i32 = 0;
-    for op in pattern {
-        let (pop, push) = single_op_pop_push(categories, op);
-        delta -= pop as i32;
-        delta += push as i32;
-        if delta > peak {
-            peak = delta;
-        }
-    }
-    peak.max(0) as usize
-}
-
 /// Determine whether ctx is used by the handler (memory ops and trapping ops need it).
 pub fn needs_ctx(categories: &CategoryMap, fused: &FusedHandler) -> bool {
     fused

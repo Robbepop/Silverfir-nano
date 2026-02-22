@@ -178,17 +178,15 @@ static inline uint64_t sem_rotr64(uint64_t v, uint64_t s) { s &= 63; return (v >
 
 #define SEM_LOAD(ctx, addr, offset, byte_count, load_body) \
     uint64_t ea_ = (uint64_t)(uint32_t)(addr) + (uint32_t)(offset); \
-    if (unlikely(ea_ + (byte_count) > ctx_mem0_size(ctx))) { \
+    if (unlikely(ea_ + (byte_count) > ctx_mem0_size(ctx))) \
         return c_trap(ctx, "out of bounds memory access"); \
-    } \
     uint8_t* base_ = ctx_mem0_base(ctx); \
     load_body
 
 #define SEM_STORE(ctx, addr, offset, byte_count, store_body) \
     uint64_t ea_ = (uint64_t)(uint32_t)(addr) + (uint32_t)(offset); \
-    if (unlikely(ea_ + (byte_count) > ctx_mem0_size(ctx))) { \
+    if (unlikely(ea_ + (byte_count) > ctx_mem0_size(ctx))) \
         return c_trap(ctx, "out of bounds memory access"); \
-    } \
     uint8_t* base_ = ctx_mem0_base(ctx); \
     store_body
 
