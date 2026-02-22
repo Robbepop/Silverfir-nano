@@ -1,7 +1,7 @@
 # Silverfir-nano
 
 A blazing-fast, ultra-compact WebAssembly 2.0 interpreter built from the ground up for performance, portability, and minimal footprint.
-On Apple M4 CoreMark, Silverfir-nano reaches roughly **67%** of a single-pass JIT and **43%** of a full-power Cranelift JIT, while staying a pure interpreter.
+On Apple M4, Silverfir-nano **outperforms Wasmtime's single-pass JIT** (Winch) on CoreMark and Lua Fibonacci, reaching **62%** of the optimizing Cranelift JIT — while staying a pure interpreter.
 
 ## Performance
 
@@ -12,15 +12,19 @@ Test machine:
 
 ### CoreMark
 
-![CoreMark runtime comparison on Apple M4](benchmarks/coremark_m4.svg)
+![CoreMark runtime comparison on Apple M4](benchmarks/coremark.svg)
 
 ### Lua Fibonacci
 
 ![Lua Fibonacci benchmark](benchmarks/lua_fib.svg)
 
+### All Results
+
+![All benchmark results](benchmarks/all_results.svg)
+
 ## Highlights
 
-- **Extreme performance** — ~67% of single-pass JIT and ~43% of full-power Cranelift JIT on Apple M4 CoreMark
+- **Extreme performance** — beats Wasmtime's single-pass JIT (Winch) and reaches 62% of Cranelift on Apple M4 CoreMark
 - **Ultra-compact** — the `no_std` core is only **~200KB** stripped, with *zero runtime dependencies*
 - **`no_std`** — the core library requires only `alloc`; runs anywhere from embedded to bare-metal
 - **Full WebAssembly 2.0** — multi-value, reference types, bulk memory operations, and more
