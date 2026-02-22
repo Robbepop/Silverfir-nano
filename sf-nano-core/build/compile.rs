@@ -83,7 +83,6 @@ pub fn compile_fast_trampoline(out_dir: &str) {
             .flag("-O3")
             .flag("-ffast-math")
             .flag("-fno-finite-math-only")
-            .flag("-ffp-contract=off")
             .flag("-foptimize-sibling-calls")
             .flag("-march=native")
             .flag("-Wno-unused-parameter");
