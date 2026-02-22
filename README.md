@@ -1,7 +1,7 @@
 # Silverfir-nano
 
 A blazing-fast, ultra-compact WebAssembly 2.0 interpreter built from the ground up for performance, portability, and minimal footprint.
-On Apple M4, Silverfir-nano **outperforms Wasmtime's single-pass JIT** (Winch) on CoreMark and Lua Fibonacci, reaching **62%** of the optimizing Cranelift JIT — while staying a pure interpreter.
+On Apple M4, Silverfir-nano **outperforms Wasmtime's single-pass JIT** (Winch) on CoreMark and Lua Fibonacci, reaching **62%** of the optimizing Cranelift JIT — while staying a pure interpreter. Read the [design article](docs/DESIGN.md) for a deep dive into how it works.
 
 ## Performance
 
