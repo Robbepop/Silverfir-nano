@@ -57,13 +57,27 @@ TESTS = [
         "pattern": None,
         "source": None,
     },
+    {
+        "name": "lua/sunfish",
+        "cwd": os.path.join(SCRIPT_DIR, "lua"),
+        "args": ["lua.wasm", "sunfish.lua"],
+        "pattern": r"Score:\s+(\S+)",
+        "source": "stdout",
+    },
+    {
+        "name": "lua/json_bench",
+        "cwd": os.path.join(SCRIPT_DIR, "lua"),
+        "args": ["lua.wasm", "json_bench.lua"],
+        "pattern": r"Score:\s+(\S+)",
+        "source": "stdout",
+    },
 ]
 
 
-def run_test(cli, test):
+def run_test(cli, test, cli_extra=()):
     name = test["name"]
     cwd = test["cwd"]
-    cmd = [cli] + test["args"]
+    cmd = [cli] + cli_extra + test["args"]
     stdin_file = test.get("stdin")
     pattern = test.get("pattern")
     source = test.get("source")
@@ -145,9 +159,12 @@ def main():
     parser = argparse.ArgumentParser(description="Run WASI benchmark tests")
     parser.add_argument("--exec", dest="cli", default=DEFAULT_CLI,
                         help="Path to the WASM runtime executable")
+    parser.add_argument("--cli-args", default="",
+                        help="Extra args for the runtime (e.g. '--dir .' for wasmtime)")
     args = parser.parse_args()
 
     cli = args.cli
+    cli_extra = args.cli_args.split() if args.cli_args else []
     if not os.path.exists(cli):
         print(f"ERROR: runtime not found at {cli}", file=sys.stderr)
         if cli == DEFAULT_CLI:
@@ -162,7 +179,7 @@ def main():
     for i, test in enumerate(TESTS, 1):
         name = test["name"]
         print(f"[{i}/{total}] {name} ...", end=" ", flush=True)
-        result = run_test(cli, test)
+        result = run_test(cli, test, cli_extra)
         results.append(result)
         _, status, metric, _ = result
         print(f"{status}  {metric}")
