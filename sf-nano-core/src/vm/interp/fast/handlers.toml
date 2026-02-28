@@ -58,21 +58,6 @@ fields = [
     { name = "idx", bits = 64 },
 ]
 
-# Type check operations
-[[pattern]]
-name = "type_check"
-fields = [
-    { name = "ref_type_low", bits = 64 },
-    { name = "ref_type_high", bits = 64 },
-]
-
-# Struct new pattern (used by struct_new_default)
-[[pattern]]
-name = "struct_new"
-fields = [
-    { name = "typeidx", bits = 64 },
-]
-
 # =============================================================================
 # VALUE PATTERNS
 # =============================================================================
@@ -1216,116 +1201,6 @@ tos_pattern = { pop = 1, push = 1 }
 [[handler]]
 op = "ref_eq"
 tos_pattern = { pop = 2, push = 1 }
-
-# GC operations (FB prefix)
-[[handler]]
-op = "ref_i31"
-opcode_prefix = "fb"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "i31_get_s"
-opcode_prefix = "fb"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "i31_get_u"
-opcode_prefix = "fb"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "ref_cast"
-opcode_prefix = "fb"
-custom = true
-pattern = "type_check"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "ref_cast_null"
-opcode_prefix = "fb"
-custom = true
-pattern = "type_check"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "ref_test"
-opcode_prefix = "fb"
-custom = true
-pattern = "type_check"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "ref_test_null"
-opcode_prefix = "fb"
-custom = true
-pattern = "type_check"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "struct_new_default"
-opcode_prefix = "fb"
-custom = true
-pattern = "struct_new"
-tos_pattern = { pop = 0, push = 1 }
-
-[[handler]]
-op = "array_new_default"
-opcode_prefix = "fb"
-custom = true
-encoding.fields = [
-    { name = "typeidx", bits = 64 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "struct_get"
-opcode_prefix = "fb"
-custom = true
-encoding.fields = [
-    { name = "typeidx", bits = 64 },
-    { name = "fieldidx", bits = 64 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "struct_set"
-opcode_prefix = "fb"
-custom = true
-encoding.fields = [
-    { name = "typeidx", bits = 64 },
-    { name = "fieldidx", bits = 64 },
-]
-tos_pattern = { pop = 2, push = 0 }
-
-[[handler]]
-op = "struct_get_s"
-opcode_prefix = "fb"
-custom = true
-encoding.fields = [
-    { name = "typeidx", bits = 64 },
-    { name = "fieldidx", bits = 64 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "struct_get_u"
-opcode_prefix = "fb"
-custom = true
-encoding.fields = [
-    { name = "typeidx", bits = 64 },
-    { name = "fieldidx", bits = 64 },
-]
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "any_convert_extern"
-opcode_prefix = "fb"
-tos_pattern = { pop = 1, push = 1 }
-
-[[handler]]
-op = "extern_convert_any"
-opcode_prefix = "fb"
-tos_pattern = { pop = 1, push = 1 }
 
 [[handler]]
 op = "call_ref"

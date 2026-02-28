@@ -18,6 +18,7 @@ use wast::{
 // ---------------------------------------------------------------------------
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum TestError {
     Runtime { context: String, error: WasmError },
     Infrastructure(String),
@@ -61,6 +62,7 @@ impl TestError {
 // ---------------------------------------------------------------------------
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum TestResult {
     Pass,
     Fail(TestError),
