@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Run discover-fusion across all WASI benchmarks to generate a merged fusion table.
+"""Run discover-fusion across WASI benchmarks to generate a merged fusion table.
 
 Builds with --features profile, then runs discover-fusion with all workloads
 combined. Each workload is first tested individually with a timeout to skip
 workloads that are too slow for profiling.
 
 Usage:
-    python3 discover_fusion.py                  # default: top 500, window 8
+    python3 discover_fusion.py                  # default: all workloads, top 500, window 8
     python3 discover_fusion.py --top 300 -w 4   # custom settings
     python3 discover_fusion.py --install         # also copy result to build tree
+    python3 discover_fusion.py --only bzip2 lz4 sha256   # only specific benchmarks
 """
 
 import argparse
@@ -62,6 +63,24 @@ WORKLOADS = [
         "cwd": os.path.join(SCRIPT_DIR, "lua"),
         # time=3 users=20: reduce work for profiling (200 users = very slow under profiling)
         "args": ["lua.wasm", "json_bench.lua", "3", "20"],
+    },
+    {
+        "name": "bzip2/bzip2.wasm",
+        "cwd": os.path.join(SCRIPT_DIR, "bzip2"),
+        # Use short-duration profile variant (MIN_SECONDS=1) to avoid timeout under profiling
+        "args": ["bzip2_profile.wasm"],
+    },
+    {
+        "name": "lz4/lz4.wasm",
+        "cwd": os.path.join(SCRIPT_DIR, "lz4"),
+        # Use short-duration profile variant (MIN_SECONDS=1) to avoid timeout under profiling
+        "args": ["lz4_profile.wasm"],
+    },
+    {
+        "name": "sha256/sha256.wasm",
+        "cwd": os.path.join(SCRIPT_DIR, "sha256"),
+        # Use short-duration profile variant (MIN_SECONDS=1) to avoid timeout under profiling
+        "args": ["sha256_profile.wasm"],
     },
 ]
 
@@ -139,6 +158,9 @@ def main():
                         help="Skip cargo build (use existing binary)")
     parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT,
                         help=f"Per-workload timeout in seconds (default: {DEFAULT_TIMEOUT})")
+    parser.add_argument("--only", nargs="+", metavar="NAME",
+                        help="Only include workloads whose name contains one of these strings "
+                             "(e.g., --only bzip2 lz4 sha256)")
     args = parser.parse_args()
 
     if not args.skip_build:
@@ -149,13 +171,25 @@ def main():
         print("Run without --skip-build to build first", file=sys.stderr)
         sys.exit(1)
 
+    # Filter workloads if --only is specified
+    workloads = WORKLOADS
+    if args.only:
+        workloads = [w for w in WORKLOADS
+                     if any(f in w["name"] for f in args.only)]
+        if not workloads:
+            print(f"ERROR: no workloads matched --only {args.only}", file=sys.stderr)
+            print(f"Available: {[w['name'] for w in WORKLOADS]}", file=sys.stderr)
+            sys.exit(1)
+        print(f"Filtered to {len(workloads)} workloads: {[w['name'] for w in workloads]}")
+        print()
+
     # Test each workload individually with timeout
     print(f"Testing workloads (timeout={args.timeout}s each):")
     print(f"{'Workload':<30} {'Status':<12} {'Time':>8}")
     print("-" * 52)
 
     passing = []
-    for w in WORKLOADS:
+    for w in workloads:
         ok, elapsed = test_workload(w, args.timeout, args.window)
         if ok is None:
             status = "SKIP (missing)"

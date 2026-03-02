@@ -12,7 +12,7 @@ mod context;
 mod dispatch;
 mod emitter;
 mod finalizer;
-mod hot_local;
+pub mod hot_local;
 // Auto-generated from handlers.toml [[fused]] entries.
 // See `build/fast_interp/gen_fusion.rs` for the generator.
 #[cfg(feature = "fusion")]
@@ -24,7 +24,7 @@ mod temp_inst;
 
 pub use context::CompileContext;
 pub use emitter::CodeEmitter;
-pub use stack::{BlockKind, ControlFrame, StackTracker};
+pub use stack::{BlockKind, ControlFrame, StackTracker, HOT_LOCAL_COUNT};
 pub use temp_inst::TempInst;
 
 use crate::{
